@@ -3,7 +3,7 @@ services:
     name: cybersure-secureanswer
     runtime: node
     plan: starter
-    buildCommand: npm install
+    buildCommand: npm install --build-from-source
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
