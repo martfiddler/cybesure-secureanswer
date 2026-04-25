@@ -1030,4 +1030,568 @@ async function loadDashboard() {
       $('dashPending').innerHTML = d.pendingAssessments.map(a => `
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
           <div><div style="font-size:13px;font-weight:600">${a.supplier_name||'Unknown'}</div>
-          <div style="font-size
+          <div style="font-size:11px;color:var(--text-dim)">${a.supplier_email} · ${fmtDate(a.created_at)}</div></div>
+          <span class="badge badge-amber">${a.status}</span>
+        </div>`).join('');
+      $('pendingBadge').textContent = d.pendingAssessments.length;
+      $('pendingBadge').style.display = 'inline';
+    }
+    const pct = d.usage.questionnaires.pct;
+    const col = pct>=90?'var(--danger)':pct>=75?'var(--warning)':'var(--success)';
+    $('dashUsage').innerHTML = `
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:13px;color:var(--text-dim)">Questionnaires Used</span>
+          <span style="font-size:13px;font-weight:700;color:${col}">${d.usage.questionnaires.used} / ${d.usage.questionnaires.limit}</span>
+        </div>
+        <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${col};border-radius:4px;transition:width 0.5s"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:6px">${pct}% of your plan used</div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="window.open(window.UPGRADE_URL,'_blank')">⬆️ Upgrade Plan</button>`;
+  } catch(e) { console.error('Dashboard error:', e); }
+}
+
+async function loadSources() {
+  try {
+    state.sources = await api('GET', '/api/knowledge');
+    renderSourceList();
+  } catch(e) { console.error(e); }
+}
+
+function renderSourceList() {
+  const s = state.sources;
+  $('sourceList').innerHTML = s.length ? s.map(src => `
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--glass);border:1px solid var(--border);border-radius:7px">
+      <span style="font-size:14px">${src.type==='sharepoint'?'🏢':src.type==='confluence'?'📘':'🌐'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${src.name}</div>
+        <div style="font-size:10px;color:var(--text-dim)">${src.doc_count} docs</div>
+      </div>
+      <span class="badge badge-green" style="font-size:9px">●</span>
+    </div>`).join('') : '<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:10px">No sources connected</div>';
+  $('sourceCount').textContent = s.length ? `${s.length} source${s.length>1?'s':''} connected` : 'No sources — add one in Settings';
+  if (s.length && state.uploadedFile) $('runBtn').disabled = false;
+}
+
+async function loadKnowledgeFull() {
+  try {
+    const sources = await api('GET', '/api/knowledge');
+    state.sources = sources;
+    $('sourceListFull').innerHTML = sources.length ? sources.map(s => `
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:8px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:18px">
+          ${s.type==='sharepoint'?'🏢':s.type==='confluence'?'📘':'🌐'}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600">${s.name}</div>
+          <div style="font-size:11px;color:var(--text-dim)">${s.type} · ${s.doc_count} documents · Last scanned ${fmtDate(s.last_scanned)}</div>
+        </div>
+        <span class="badge badge-green">Connected</span>
+        <button class="btn btn-danger btn-sm" onclick="deleteSource('${s.id}')">Remove</button>
+      </div>`).join('') :
+      '<div class="empty"><div class="empty-ico">🔗</div><h3>No sources connected</h3><p>Add a SharePoint library or other document source</p></div>';
+  } catch(e) { console.error(e); }
+}
+
+function showAddSource() { openModal('modalSource'); }
+function toggleSrcFields() {
+  $('spFields').style.display = $('srcType').value==='sharepoint'?'block':'none';
+}
+
+async function addSource() {
+  try {
+    await api('POST', '/api/knowledge', {
+      name:$('srcName').value, type:$('srcType').value, siteUrl:$('srcUrl').value,
+      libraryName:$('srcLib').value, tenantId:$('srcTenant').value,
+      clientId:$('srcClient').value, clientSecret:$('srcSecret').value
+    });
+    closeModal('modalSource');
+    toast('✅ Knowledge source connected');
+    loadSources(); loadKnowledgeFull();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function deleteSource(id) {
+  if (!confirm('Remove this knowledge source?')) return;
+  try {
+    await api('DELETE', `/api/knowledge/${id}`);
+    toast('Source removed');
+    loadSources(); loadKnowledgeFull();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+$('fi').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  state.uploadedFile = f;
+  $('fileName').textContent = f.name;
+  $('fileSize').textContent = fmtSize(f.size);
+  $('fileInfo').style.display = 'block';
+  $('runNote').textContent = state.sources.length ? 'Ready to analyse' : 'Add a knowledge source first';
+  if (state.sources.length) $('runBtn').disabled = false;
+});
+
+const uz = $('uz');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('over'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('over'));
+uz.addEventListener('drop', e => {
+  e.preventDefault(); uz.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) { $('fi').files = e.dataTransfer.files; $('fi').dispatchEvent(new Event('change')); }
+});
+
+async function readFileText(file) {
+  return new Promise((resolve, reject) => {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext==='xlsx') {
+      const r = new FileReader();
+      r.onload = e => {
+        try {
+          const wb = XLSX.read(e.target.result,{type:'binary'});
+          let text = '';
+          wb.SheetNames.forEach(n => { text += XLSX.utils.sheet_to_csv(wb.Sheets[n])+'\n'; });
+          resolve(text);
+        } catch { resolve('Could not parse Excel file'); }
+      };
+      r.readAsBinaryString(file);
+    } else {
+      const r = new FileReader();
+      r.onload = e => resolve(e.target.result);
+      r.onerror = reject;
+      r.readAsText(file);
+    }
+  });
+}
+
+async function runAnalysis() {
+  if (!state.uploadedFile) return;
+  $('runBtn').disabled = true;
+  $('emptyQ').style.display = 'none';
+  $('qList').style.display = 'block';
+  $('qList').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-dim)"><div class="spin" style="margin:0 auto 12px"></div>Reading questionnaire...</div>';
+  setProgress(10);
+  try {
+    const run = await api('POST', '/api/questionnaires/run', { fileName:state.uploadedFile.name, title:state.uploadedFile.name });
+    state.currentRun = run.runId;
+    const text = await readFileText(state.uploadedFile);
+    const lines = text.split('\n').map(l=>l.trim()).filter(l=>l.length>10);
+    const questions = lines.filter(l=>l.includes('?')||/^\d+[\.\)]/.test(l)).slice(0,50);
+    if (!questions.length) {
+      toast('No questions detected in file','warn');
+      $('qList').innerHTML = '<div class="empty"><div class="empty-ico">❓</div><h3>No questions found</h3><p>Make sure your file contains questions</p></div>';
+      setProgress(0); $('runBtn').disabled = false; return;
+    }
+    $('qList').innerHTML = '';
+    state.questions = [];
+    const sourceContext = state.sources.map(s=>s.name).join(', ')||'general ISMS knowledge';
+    for (let i=0; i<questions.length; i++) {
+      const q = questions[i];
+      setProgress(10+Math.round((i/questions.length)*80));
+      $('qList').innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-dim)"><div class="spin" style="margin:0 auto 12px"></div>Answering question ${i+1} of ${questions.length}...</div>`;
+      try {
+        const prompt = `You are a cybersecurity expert answering a security questionnaire. Using knowledge from: ${sourceContext}.
+Question: ${q}
+Respond ONLY in JSON: {"answer":"...","confidence":85,"category":"...","reasoning":"...","improvements":["..."],"sources":["${sourceContext}"]}`;
+        const resp = await api('POST', '/api/claude', { prompt });
+        let parsed;
+        try { parsed = JSON.parse(resp.text.replace(/\`\`\`json|\`\`\`/g,'').trim()); }
+        catch { parsed = { answer:resp.text, confidence:60, category:'General', reasoning:'', improvements:[], sources:[] }; }
+        const qData = { run_id:run.runId, question_num:i+1, question_text:q, category:parsed.category||'General',
+          answer:parsed.answer, confidence:parsed.confidence||60, reasoning:parsed.reasoning||'',
+          sources:parsed.sources||[], improvements:parsed.improvements||[] };
+        const saved = await api('POST', `/api/questionnaires/runs/${run.runId}/questions`, {
+          questionNum:i+1, questionText:q, category:qData.category, answer:qData.answer,
+          confidence:qData.confidence, reasoning:qData.reasoning, sources:qData.sources, improvements:qData.improvements
+        });
+        qData.id = saved.id;
+        state.questions.push(qData);
+        renderQuestions();
+      } catch(qErr) { console.error('Question error:',qErr); }
+    }
+    await api('PATCH', `/api/questionnaires/runs/${run.runId}/complete`);
+    setProgress(100); setTimeout(()=>setProgress(0),800);
+    $('exportBar').classList.add('show');
+    toast(`✅ Answered ${state.questions.length} questions`);
+    renderQuestions(); $('runBtn').disabled = false;
+  } catch(e) { toast(e.message,'err'); setProgress(0); $('runBtn').disabled = false; }
+}
+
+function renderQuestions() {
+  if (!state.questions.length) return;
+  $('qList').innerHTML = state.questions.map((q,i) => {
+    const cls = q.confidence>=75?'high':q.confidence<50?'low':'';
+    const confCls = q.confidence>=75?'conf-h':q.confidence>=50?'conf-m':'conf-l';
+    const fillCol = q.confidence>=75?'var(--success)':q.confidence>=50?'var(--warning)':'var(--danger)';
+    return `
+      <div class="qcard ${cls}" style="animation-delay:${i*0.05}s">
+        <div class="qhead" onclick="toggleQ(${i})">
+          <div class="qnum">${q.question_num}</div>
+          <div class="qinfo"><div class="qtxt">${q.question_text}</div><span class="qcat">${q.category}</span></div>
+          <div class="qright">
+            <div class="conf ${confCls}">
+              <div class="cmeter"><div class="cfill" style="width:${q.confidence}%;background:${fillCol}"></div></div>
+              ${q.confidence}%
+            </div>
+            <div class="chev" id="chev-${i}">▼</div>
+          </div>
+        </div>
+        <div class="qbody" id="qbody-${i}">
+          <div class="qlbl">Answer</div>
+          <div class="abox" contenteditable="true">${q.answer}</div>
+          ${q.reasoning?`<div class="qlbl">Reasoning</div><div class="rbox">${q.reasoning}</div>`:''}
+          ${q.improvements&&q.improvements.length?`
+            <div class="qlbl">Suggested Improvements</div>
+            <div class="imp-box">${q.improvements.map(imp=>`<div style="font-size:12px;margin-bottom:5px">• ${imp}</div>`).join('')}</div>`
+            :'<div class="imp-box good"><div style="font-size:12px">✅ No improvements needed</div></div>'}
+        </div>
+      </div>`; }).join('');
+}
+
+function toggleQ(i) {
+  document.getElementById(`qbody-${i}`).classList.toggle('open');
+  document.getElementById(`chev-${i}`).classList.toggle('open');
+}
+
+async function loadHistory() {
+  try {
+    const runs = await api('GET','/api/questionnaires');
+    $('historyBody').innerHTML = runs.length ? runs.map(r=>`
+      <tr>
+        <td>${fmtDate(r.created_at)}</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.title||r.file_name}</td>
+        <td>${r.total_questions}</td>
+        <td>${confBadge(r.avg_confidence)}</td>
+        <td><span class="badge ${r.status==='completed'?'badge-green':'badge-amber'}">${r.status}</span></td>
+        <td><button class="btn btn-outline btn-sm" onclick="viewRun('${r.id}')">View</button></td>
+      </tr>`).join('') :
+      '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:30px">No questionnaires run yet</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+async function viewRun(id) {
+  try {
+    const {run,questions} = await api('GET',`/api/questionnaires/runs/${id}`);
+    state.currentRun = id; state.questions = questions;
+    navigate('questionnaire');
+    $('emptyQ').style.display='none'; $('qList').style.display='block';
+    $('exportBar').classList.add('show'); renderQuestions();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function loadSuppliers() {
+  try {
+    state.suppliers = await api('GET','/api/suppliers');
+    $('suppliersBody').innerHTML = state.suppliers.length ? state.suppliers.map(s=>`
+      <tr>
+        <td><div style="font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text-dim)">${s.domain||''}</div></td>
+        <td>${s.category||'—'}</td>
+        <td><span class="badge ${s.criticality==='critical'?'badge-red':s.criticality==='high'?'badge-amber':s.criticality==='low'?'badge-green':'badge-grey'}">${s.criticality}</span></td>
+        <td>${riskBadge(s.risk_level)}</td>
+        <td>${s.overall_score?s.overall_score+'%':'—'}</td>
+        <td>${fmtDate(s.last_assessed)}</td>
+        <td style="display:flex;gap:5px">
+          <button class="btn btn-outline btn-sm" onclick="showSendAssessment('${s.id}','${s.contact_email}','${s.name}')">📤 Assess</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteSupplier('${s.id}')">✕</button>
+        </td>
+      </tr>`).join('') :
+      '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px">No suppliers added yet</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+function showAddSupplier() { openModal('modalSupplier'); }
+
+async function addSupplier() {
+  try {
+    await api('POST','/api/suppliers',{
+      name:$('supName').value, domain:$('supDomain').value, contactName:$('supContact').value,
+      contactEmail:$('supEmail').value, category:$('supCat').value,
+      criticality:$('supCrit').value, notes:$('supNotes').value
+    });
+    closeModal('modalSupplier'); toast('✅ Supplier added'); loadSuppliers();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function deleteSupplier(id) {
+  if (!confirm('Delete this supplier?')) return;
+  try { await api('DELETE',`/api/suppliers/${id}`); toast('Supplier deleted'); loadSuppliers(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+async function loadAssessments() {
+  try {
+    const assessments = await api('GET','/api/assessments');
+    $('assessmentsBody').innerHTML = assessments.length ? assessments.map(a=>`
+      <tr>
+        <td style="font-weight:600">${a.supplier_name||'—'}</td>
+        <td>${a.supplier_email}</td>
+        <td>${fmtDate(a.created_at)}</td>
+        <td><span class="badge ${a.status==='completed'?'badge-green':a.status==='in_progress'?'badge-blue':'badge-amber'}">${a.status}</span></td>
+        <td>${a.score?a.score+'%':'—'}</td>
+        <td>${a.risk_level?riskBadge(a.risk_level):'—'}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="copyLink('${a.secure_token}')">🔗 Copy Link</button></td>
+      </tr>`).join('') :
+      '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px">No assessments sent yet</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+function copyLink(token) {
+  navigator.clipboard.writeText(`${window.location.origin}/assess/${token}`)
+    .then(()=>toast('✅ Link copied to clipboard'));
+}
+
+async function showSendAssessment(supplierId, email, name) {
+  const suppliers = state.suppliers.length ? state.suppliers : await api('GET','/api/suppliers');
+  state.suppliers = suppliers;
+  $('assSupplier').innerHTML = '<option value="">Select supplier...</option>' +
+    suppliers.map(s=>`<option value="${s.id}" ${s.id===supplierId?'selected':''}>${s.name}</option>`).join('');
+  if (email) $('assEmail').value = email;
+  if (name) $('assName').value = name;
+  openModal('modalAssessment');
+}
+
+async function sendAssessment() {
+  try {
+    await api('POST','/api/assessments/send',{
+      supplierId:$('assSupplier').value, supplierEmail:$('assEmail').value,
+      supplierName:$('assName').value, title:$('assTitle').value
+    });
+    closeModal('modalAssessment'); toast('✅ Assessment sent'); loadAssessments();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function loadRisk() {
+  try {
+    const d = await api('GET','/api/suppliers/dashboard');
+    $('riskStats').innerHTML = `
+      <div class="stat-card blue"><div class="stat-val">${d.summary.total}</div><div class="stat-lbl">Total Suppliers</div></div>
+      <div class="stat-card green"><div class="stat-val">${d.summary.avg_score}%</div><div class="stat-lbl">Avg Score</div></div>
+      <div class="stat-card red"><div class="stat-val">${d.summary.critical}</div><div class="stat-lbl">Critical Risk</div></div>
+      <div class="stat-card amber"><div class="stat-val">${d.summary.high}</div><div class="stat-lbl">High Risk</div></div>
+      <div class="stat-card green"><div class="stat-val">${d.summary.low}</div><div class="stat-lbl">Low Risk</div></div>
+      <div class="stat-card purple"><div class="stat-val">${d.summary.unknown}</div><div class="stat-lbl">Unassessed</div></div>`;
+    $('riskBody').innerHTML = d.recentAssessments.length ? d.recentAssessments.map(a=>`
+      <tr>
+        <td style="font-weight:600">${a.supplier_name||'—'}</td>
+        <td>${confBadge(a.score)}</td>
+        <td>${riskBadge(a.risk_level)}</td>
+        <td>${fmtDate(a.completed_at)}</td>
+      </tr>`).join('') :
+      '<tr><td colspan="4" style="text-align:center;color:var(--text-dim);padding:20px">No completed assessments</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+async function loadUsers() {
+  try {
+    const users = await api('GET','/api/users');
+    $('usersBody').innerHTML = users.length ? users.map(u=>`
+      <tr>
+        <td style="font-weight:600">${u.first_name} ${u.last_name}</td>
+        <td>${u.email}</td>
+        <td><span class="badge badge-blue">${u.role}</span></td>
+        <td><span class="badge ${u.status==='active'?'badge-green':'badge-red'}">${u.status}</span></td>
+        <td>${fmtDate(u.last_login)}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="suspendUser('${u.id}','${u.status}')">${u.status==='active'?'Suspend':'Activate'}</button></td>
+      </tr>`).join('') :
+      '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:30px">No users found</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+function showInviteUser() { openModal('modalUser'); }
+
+async function inviteUser() {
+  try {
+    await api('POST','/api/users/invite',{
+      inviteEmail:$('invEmail').value, firstName:$('invFirst').value,
+      lastName:$('invLast').value, role:$('invRole').value
+    });
+    closeModal('modalUser'); toast('✅ User invited'); loadUsers();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function suspendUser(id, status) {
+  try {
+    await api('PATCH',`/api/users/${id}`,{status:status==='active'?'suspended':'active'});
+    toast('✅ User updated'); loadUsers();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function loadAdmin() {
+  try {
+    const [stats,orgs] = await Promise.all([api('GET','/api/admin/stats'),api('GET','/api/admin/organisations')]);
+    $('adminStats').innerHTML = `
+      <div class="stat-card blue"><div class="stat-val">${stats.organisations.total}</div><div class="stat-lbl">Organisations</div></div>
+      <div class="stat-card green"><div class="stat-val">${stats.organisations.active}</div><div class="stat-lbl">Active</div></div>
+      <div class="stat-card purple"><div class="stat-val">${stats.users.total}</div><div class="stat-lbl">Total Users</div></div>
+      <div class="stat-card amber"><div class="stat-val">${stats.questionnaires.total}</div><div class="stat-lbl">Questionnaires</div></div>`;
+    $('adminOrgsBody').innerHTML = orgs.length ? orgs.map(o=>`
+      <tr>
+        <td><div style="font-weight:600">${o.name}</div><div style="font-size:11px;color:var(--text-dim)">${o.domain||''}</div></td>
+        <td>${planBadge(o.plan)}</td>
+        <td><div style="font-size:12px">${o.questionnaires_used}/${o.questionnaire_limit}</div></td>
+        <td>${o.user_count}</td>
+        <td><span class="badge ${o.status==='active'?'badge-green':'badge-red'}">${o.status}</span></td>
+        <td style="display:flex;gap:5px">
+          <button class="btn btn-outline btn-sm" onclick="topupOrg('${o.id}')">+ Top-up</button>
+          <button class="btn btn-danger btn-sm" onclick="toggleOrgStatus('${o.id}','${o.status}')">${o.status==='active'?'Suspend':'Activate'}</button>
+        </td>
+      </tr>`).join('') :
+      '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:30px">No organisations yet</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+function showCreateOrg() { openModal('modalOrg'); }
+
+async function createOrg() {
+  try {
+    await api('POST','/api/admin/organisations',{
+      orgName:$('orgName').value, domain:$('orgDomain').value, plan:$('orgPlan').value,
+      adminEmail:$('orgEmail').value, adminFirstName:$('orgFirst').value,
+      adminLastName:$('orgLast').value, logoUrl:$('orgLogo').value, brandingName:$('orgBrand').value
+    });
+    closeModal('modalOrg'); toast('✅ Organisation created'); loadAdmin();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function topupOrg(id) {
+  const add = prompt('How many questionnaires to add?','10');
+  if (!add) return;
+  try { await api('POST',`/api/admin/organisations/${id}/topup`,{add:parseInt(add)}); toast(`✅ Added ${add} questionnaires`); loadAdmin(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+async function toggleOrgStatus(id, status) {
+  try {
+    await api('PATCH',`/api/admin/organisations/${id}`,{status:status==='active'?'suspended':'active'});
+    toast('✅ Updated'); loadAdmin();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function loadSupplierPortal(token) {
+  $('supplierPortal').classList.add('active');
+  try {
+    const {assessment,completed} = await api('GET',`/api/assessments/token/${token}`);
+    $('spOrgName').textContent = `Security Assessment from ${assessment.org_name||'CybeSure'}`;
+    if (assessment.logo_url) { $('spLogoImg').src=assessment.logo_url; $('spOrgLogo').style.display='block'; }
+    if (completed) {
+      $('spBody').innerHTML = `<div class="sp-card" style="text-align:center">
+        <div style="font-size:48px;margin-bottom:14px">✅</div>
+        <h2 style="color:#fff;margin-bottom:8px">Assessment Complete</h2>
+        <p style="color:var(--text-dim)">Your responses have been submitted. Thank you.</p>
+        ${assessment.score?`<div style="font-size:32px;font-weight:800;color:var(--blue);margin-top:16px">${assessment.score}%</div><div style="color:var(--text-dim)">Your Score</div>`:''}
+      </div>`; return;
+    }
+    const questions = [
+      {q:'Does your organisation have an Information Security Management System (ISMS)?',cat:'Governance'},
+      {q:'Do you conduct regular security risk assessments?',cat:'Risk Management'},
+      {q:'Do you have a documented incident response plan?',cat:'Incident Response'},
+      {q:'How do you manage access controls and user privileges?',cat:'Access Control'},
+      {q:'Do you encrypt data at rest and in transit?',cat:'Data Protection'},
+      {q:'Do you conduct regular security awareness training for staff?',cat:'Training'},
+      {q:'Do you have a business continuity and disaster recovery plan?',cat:'Business Continuity'},
+      {q:'How do you manage third-party supplier security risks?',cat:'Supply Chain'},
+      {q:'Do you have vulnerability management and patching processes?',cat:'Vulnerability Management'},
+      {q:'Are you certified to any security standards (ISO 27001, SOC 2, Cyber Essentials)?',cat:'Compliance'}
+    ];
+    let answers = questions.map(()=>({answer:'',confidence:null}));
+
+    function renderPortal() {
+      $('spProgFill').style.width=(answers.filter(a=>a.confidence!==null).length/questions.length*100)+'%';
+      $('spBody').innerHTML = questions.map((q,i)=>`
+        <div class="sp-card">
+          <div class="sp-q-num">Question ${i+1} of ${questions.length} · ${q.cat}</div>
+          <div class="sp-q-txt">${q.q}</div>
+          <textarea class="sp-textarea" id="spa-${i}" placeholder="Please provide your answer...">${answers[i].answer}</textarea>
+          <div class="sp-conf">
+            <span style="font-size:11px;color:var(--text-dim);margin-right:4px">Confidence:</span>
+            <button class="sp-conf-btn ${answers[i].confidence===75?'sel-h':''}" onclick="setConf(${i},75)">✅ High</button>
+            <button class="sp-conf-btn ${answers[i].confidence===50?'sel-m':''}" onclick="setConf(${i},50)">⚠️ Medium</button>
+            <button class="sp-conf-btn ${answers[i].confidence===25?'sel-l':''}" onclick="setConf(${i},25)">❌ Low</button>
+          </div>
+        </div>`).join('')+`
+        <div style="text-align:center;padding:20px">
+          <button class="btn btn-blue" style="padding:14px 40px;font-size:15px" onclick="submitPortal('${token}')">Submit Assessment →</button>
+        </div>`;
+      questions.forEach((_,i)=>{
+        const ta=$(`spa-${i}`);
+        if(ta) ta.addEventListener('input',e=>{answers[i].answer=e.target.value;});
+      });
+    }
+
+    window.setConf=(i,val)=>{answers[i].answer=$(`spa-${i}`)?.value||answers[i].answer;answers[i].confidence=val;renderPortal();};
+
+    window.submitPortal=async(token)=>{
+      questions.forEach((_,i)=>{answers[i].answer=$(`spa-${i}`)?.value||answers[i].answer;});
+      const incomplete=answers.filter(a=>!a.answer||a.confidence===null);
+      if(incomplete.length){toast(`Please complete all ${incomplete.length} remaining questions`,'warn');return;}
+      try {
+        const result=await api('POST',`/api/assessments/token/${token}/submit`,{
+          answers:answers.map((a,i)=>({questionNum:i+1,questionText:questions[i].q,answer:a.answer,confidence:a.confidence,category:questions[i].cat}))
+        });
+        $('spBody').innerHTML=`<div class="sp-card" style="text-align:center">
+          <div style="font-size:48px;margin-bottom:14px">🎉</div>
+          <h2 style="color:#fff;margin-bottom:8px">Thank You!</h2>
+          <p style="color:var(--text-dim)">Your assessment has been submitted.</p>
+          <div style="font-size:32px;font-weight:800;color:var(--blue);margin-top:16px">${result.score}%</div>
+          <div style="color:var(--text-dim);margin-bottom:8px">Your Score</div>
+          ${riskBadge(result.riskLevel)}
+        </div>`;
+        $('spProgFill').style.width='100%';
+      } catch(e){toast(e.message,'err');}
+    };
+    renderPortal();
+  } catch(e) {
+    $('spBody').innerHTML=`<div class="sp-card" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:14px">❌</div>
+      <h2 style="color:#fff;margin-bottom:8px">Invalid Link</h2>
+      <p style="color:var(--text-dim)">This assessment link is invalid or has expired.</p>
+    </div>`;
+  }
+}
+
+function exportJSON() {
+  const blob=new Blob([JSON.stringify(state.questions,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='questionnaire.json';a.click();
+}
+
+function exportExcel() {
+  const rows=[['#','Question','Category','Answer','Confidence','Reasoning']];
+  state.questions.forEach(q=>rows.push([q.question_num,q.question_text,q.category,q.answer,q.confidence+'%',q.reasoning]));
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Answers');
+  XLSX.writeFile(wb,'questionnaire.xlsx');
+}
+
+function exportPDF() {
+  const win=window.open('','_blank');
+  win.document.write(`<html><head><title>Questionnaire</title><style>
+    body{font-family:Arial,sans-serif;padding:20px;color:#333}
+    h1{color:#0d1b3e}.q{margin-bottom:20px;padding:15px;border:1px solid #ddd;border-radius:8px}
+    .num{font-size:11px;color:#666;margin-bottom:5px}.txt{font-weight:600;margin-bottom:8px}
+    .ans{background:#f5f5f5;padding:10px;border-radius:5px;font-size:13px}
+    .conf{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-top:6px}
+    .high{background:#dcfce7;color:#16a34a}.med{background:#fef9c3;color:#ca8a04}.low{background:#fee2e2;color:#dc2626}
+  </style></head><body>
+    <h1>🛡 CybeSure SecureAnswer — Questionnaire Report</h1>
+    <p>Generated: ${new Date().toLocaleDateString('en-GB')}</p>
+    ${state.questions.map(q=>`
+      <div class="q">
+        <div class="num">Q${q.question_num} · ${q.category}</div>
+        <div class="txt">${q.question_text}</div>
+        <div class="ans">${q.answer}</div>
+        <span class="conf ${q.confidence>=75?'high':q.confidence>=50?'med':'low'}">${q.confidence}% confidence</span>
+      </div>`).join('')}
+  </body></html>`);
+  win.document.close(); win.print();
+}
+
+function exportWord() {
+  const content=state.questions.map(q=>`Q${q.question_num}: ${q.question_text}\n\nAnswer: ${q.answer}\n\nConfidence: ${q.confidence}%\n\n---\n\n`).join('');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'text/plain'}));a.download='questionnaire.txt';a.click();
+}
+
+</script>
+</body>
+</html>
