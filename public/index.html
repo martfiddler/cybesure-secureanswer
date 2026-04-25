@@ -9,15 +9,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&family=Source+Code+Pro:wght@400;500&display=swap');
-:root{
-----navy:#0d1b3e;----navy--deep:#070f24;----navy--mid:#132044;----navy--light:#1e3060;
-----blue:#4a9edd;----blue--dim:rgba(74,158,221,0.12);----blue--glow:rgba(74,158,221,0.3);----blue--dark:#2d7cc7;
-----text:#e2eaf8;----text--dim:#7a90b8;----border:rgba(74,158,221,0.18);
-----card:rgba(19,32,68,0.95);----glass:rgba(255,255,255,0.04);
-----success:#22c55e;----warning:#f5a623;----danger:#e8445a;----purple:#8b5cf6;
-}
 *{margin:0;padding:0;box--sizing:border--box;}
-body{font--family:'Raleway',sans--serif;background:var(----navy--deep);color:var(----text);min--height:100vh;overflow--x:hidden;}
+body{:root{
+--navy:#0d1b3e;--navy-deep:#070f24;--navy-mid:#132044;--navy-light:#1e3060;
+--blue:#4a9edd;--blue-dim:rgba(74,158,221,0.12);--blue-glow:rgba(74,158,221,0.3);--blue-dark:#2d7cc7;
+--text:#e2eaf8;--text-dim:#7a90b8;--border:rgba(74,158,221,0.18);
+--card:rgba(19,32,68,0.95);--glass:rgba(255,255,255,0.04);
+--success:#22c55e;--warning:#f5a623;--danger:#e8445a;--purple:#8b5cf6;
+}font--family:'Raleway',sans--serif;background:var(----navy--deep);color:var(----text);min--height:100vh;overflow--x:hidden;}
 body::before{content:'';position:fixed;inset:0;pointer--events:none;z--index:0;
 background:radial--gradient(ellipse 80% 60% at 15% 10%,rgba(74,158,221,0.07) 0%,transparent 55%),
 repeating--linear--gradient(0deg,transparent,transparent 70px,rgba(74,158,221,0.013) 70px,rgba(74,158,221,0.013) 71px),
