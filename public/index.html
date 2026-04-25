@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,18 +10,18 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&family=Source+Code+Pro:wght@400;500&display=swap');
 :root{
-  --navy:#0d1b3e;--navy-deep:#070f24;--navy-mid:#132044;--navy-light:#1e3060;
-  --blue:#4a9edd;--blue-dim:rgba(74,158,221,0.12);--blue-glow:rgba(74,158,221,0.3);--blue-dark:#2d7cc7;
-  --text:#e2eaf8;--text-dim:#7a90b8;--border:rgba(74,158,221,0.18);
-  --card:rgba(19,32,68,0.95);--glass:rgba(255,255,255,0.04);
-  --success:#22c55e;--warning:#f5a623;--danger:#e8445a;--purple:#8b5cf6;
+--navy:#0d1b3e;--navy-deep:#070f24;--navy-mid:#132044;--navy-light:#1e3060;
+--blue:#4a9edd;--blue-dim:rgba(74,158,221,0.12);--blue-glow:rgba(74,158,221,0.3);--blue-dark:#2d7cc7;
+--text:#e2eaf8;--text-dim:#7a90b8;--border:rgba(74,158,221,0.18);
+--card:rgba(19,32,68,0.95);--glass:rgba(255,255,255,0.04);
+--success:#22c55e;--warning:#f5a623;--danger:#e8445a;--purple:#8b5cf6;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Raleway',sans-serif;background:var(--navy-deep);color:var(--text);min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 80% 60% at 15% 10%,rgba(74,158,221,0.07) 0%,transparent 55%),
-  repeating-linear-gradient(0deg,transparent,transparent 70px,rgba(74,158,221,0.013) 70px,rgba(74,158,221,0.013) 71px),
-  repeating-linear-gradient(90deg,transparent,transparent 70px,rgba(74,158,221,0.013) 70px,rgba(74,158,221,0.013) 71px);}
+background:radial-gradient(ellipse 80% 60% at 15% 10%,rgba(74,158,221,0.07) 0%,transparent 55%),
+repeating-linear-gradient(0deg,transparent,transparent 70px,rgba(74,158,221,0.013) 70px,rgba(74,158,221,0.013) 71px),
+repeating-linear-gradient(90deg,transparent,transparent 70px,rgba(74,158,221,0.013) 70px,rgba(74,158,221,0.013) 71px);}
 ::-webkit-scrollbar{width:4px;height:4px;} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -34,33 +35,33 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .screen.active{display:flex;}
 
 /* ── LOGIN SCREEN ── */
-#loginScreen{align-items:center;justify-content:center;background:var(--navy-deep);}
+#loginScreen{align-items:center;justify-content:center;background:var(–navy-deep);}
 .login-wrap{width:100%;max-width:420px;padding:24px;animation:fadeUp 0.5s ease;}
 .login-logo{text-align:center;margin-bottom:32px;}
 .login-logo .brand{font-size:38px;font-weight:900;color:#fff;letter-spacing:-1px;}
-.login-logo .brand span{color:var(--blue);}
-.login-logo .tag{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);margin-top:4px;}
+.login-logo .brand span{color:var(–blue);}
+.login-logo .tag{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(–text-dim);margin-top:4px;}
 .login-logo .shield{width:48px;height:54px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(74,158,221,0.5));}
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.login-card{background:var(–card);border:1px solid var(–border);border-radius:16px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
 .login-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;text-align:center;}
-.login-sub{font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:24px;}
+.login-sub{font-size:13px;color:var(–text-dim);text-align:center;margin-bottom:24px;}
 .form-group{margin-bottom:16px;}
-.form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;display:block;}
-.form-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:9px;
-  padding:12px 16px;color:#fff;font-family:'Raleway',sans-serif;font-size:14px;transition:all 0.2s;}
-.form-input:focus{outline:none;border-color:var(--blue);background:var(--blue-dim);box-shadow:0 0 0 3px rgba(74,158,221,0.1);}
-.form-input::placeholder{color:var(--text-dim);}
-.form-error{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+.form-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(–blue);margin-bottom:6px;display:block;}
+.form-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(–border);border-radius:9px;
+padding:12px 16px;color:#fff;font-family:‘Raleway’,sans-serif;font-size:14px;transition:all 0.2s;}
+.form-input:focus{outline:none;border-color:var(–blue);background:var(–blue-dim);box-shadow:0 0 0 3px rgba(74,158,221,0.1);}
+.form-input::placeholder{color:var(–text-dim);}
+.form-error{font-size:12px;color:var(–danger);margin-top:5px;display:none;}
 .btn-primary{width:100%;padding:14px;border-radius:10px;border:none;cursor:pointer;
-  font-family:'Raleway',sans-serif;font-size:15px;font-weight:700;
-  background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;
-  box-shadow:0 6px 24px rgba(74,158,221,0.35);transition:all 0.2s;margin-top:8px;}
+font-family:‘Raleway’,sans-serif;font-size:15px;font-weight:700;
+background:linear-gradient(135deg,var(–blue),var(–blue-dark));color:#fff;
+box-shadow:0 6px 24px rgba(74,158,221,0.35);transition:all 0.2s;margin-top:8px;}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(74,158,221,0.5);}
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.login-link{text-align:center;margin-top:14px;font-size:12px;color:var(--text-dim);}
-.login-link a{color:var(--blue);text-decoration:none;cursor:pointer;}
-.login-footer{text-align:center;margin-top:24px;font-size:11px;color:var(--text-dim);}
-.login-footer span{color:var(--blue);font-weight:700;}
+.login-link{text-align:center;margin-top:14px;font-size:12px;color:var(–text-dim);}
+.login-link a{color:var(–blue);text-decoration:none;cursor:pointer;}
+.login-footer{text-align:center;margin-top:24px;font-size:11px;color:var(–text-dim);}
+.login-footer span{color:var(–blue);font-weight:700;}
 
 /* ── CHANGE PASSWORD ── */
 #changePwScreen{align-items:center;justify-content:center;background:rgba(7,15,36,0.97);}
@@ -69,61 +70,61 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 #appScreen{flex-direction:column;}
 
 /* ── TOP NAV ── */
-.topnav{height:56px;background:rgba(7,15,36,0.98);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:100;position:relative;}
+.topnav{height:56px;background:rgba(7,15,36,0.98);border-bottom:1px solid var(–border);
+display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:100;position:relative;}
 .tn-logo{display:flex;align-items:center;gap:10px;}
 .tn-shield{width:26px;height:30px;filter:drop-shadow(0 0 6px rgba(74,158,221,0.4));}
 .tn-brand{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.3px;}
-.tn-brand span{color:var(--blue);}
-.tn-product{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);
-  background:var(--blue-dim);border:1px solid var(--border);padding:3px 9px;border-radius:10px;}
+.tn-brand span{color:var(–blue);}
+.tn-product{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–blue);
+background:var(–blue-dim);border:1px solid var(–border);padding:3px 9px;border-radius:10px;}
 .tn-spacer{flex:1;}
 .tn-org{display:flex;align-items:center;gap:8px;}
-.tn-org-logo{width:28px;height:28px;border-radius:6px;object-fit:cover;border:1px solid var(--border);}
-.tn-org-name{font-size:12px;font-weight:600;color:var(--text-dim);max-width:140px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tn-org-logo{width:28px;height:28px;border-radius:6px;object-fit:cover;border:1px solid var(–border);}
+.tn-org-name{font-size:12px;font-weight:600;color:var(–text-dim);max-width:140px;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tn-usage{display:flex;align-items:center;gap:6px;padding:4px 12px;
-  background:var(--glass);border:1px solid var(--border);border-radius:14px;}
-.tn-usage-bar{width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+background:var(–glass);border:1px solid var(–border);border-radius:14px;}
+.tn-usage-bar{width:60px;height:4px;background:var(–border);border-radius:2px;overflow:hidden;}
 .tn-usage-fill{height:100%;border-radius:2px;transition:width 0.4s;}
-.tn-usage-txt{font-size:10px;font-weight:700;font-family:'Source Code Pro',monospace;}
-.tn-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);
-  box-shadow:0 0 6px var(--blue);animation:pulse 2s infinite;}
-.tn-user{width:34px;height:34px;border-radius:8px;background:var(--blue-dim);
-  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;cursor:pointer;position:relative;}
-.tn-user-menu{position:absolute;top:calc(100%+8px);right:0;background:var(--navy-mid);
-  border:1px solid var(--border);border-radius:10px;min-width:180px;padding:6px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);display:none;z-index:200;}
+.tn-usage-txt{font-size:10px;font-weight:700;font-family:‘Source Code Pro’,monospace;}
+.tn-dot{width:6px;height:6px;border-radius:50%;background:var(–blue);
+box-shadow:0 0 6px var(–blue);animation:pulse 2s infinite;}
+.tn-user{width:34px;height:34px;border-radius:8px;background:var(–blue-dim);
+border:1px solid var(–border);display:flex;align-items:center;justify-content:center;
+font-size:13px;font-weight:700;cursor:pointer;position:relative;}
+.tn-user-menu{position:absolute;top:calc(100%+8px);right:0;background:var(–navy-mid);
+border:1px solid var(–border);border-radius:10px;min-width:180px;padding:6px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);display:none;z-index:200;}
 .tn-user-menu.open{display:block;animation:fadeUp 0.2s ease;}
 .tn-menu-item{padding:9px 13px;border-radius:7px;font-size:13px;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;gap:8px;}
-.tn-menu-item:hover{background:var(--glass);}
-.tn-menu-item.danger{color:var(--danger);}
+.tn-menu-item:hover{background:var(–glass);}
+.tn-menu-item.danger{color:var(–danger);}
 
 /* ── APP BODY ── */
 .app-body{flex:1;display:flex;overflow:hidden;}
 
 /* ── SIDEBAR ── */
 .sidebar{width:220px;min-width:220px;background:rgba(7,15,36,0.8);
-  border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+border-right:1px solid var(–border);display:flex;flex-direction:column;overflow-y:auto;}
 .sb-section{padding:14px 12px 6px;font-size:9px;font-weight:700;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--text-dim);}
+text-transform:uppercase;color:var(–text-dim);}
 .sb-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;
-  border-radius:0;font-size:13px;font-weight:500;color:var(--text-dim);
-  transition:all 0.15s;border-left:3px solid transparent;margin:1px 0;}
-.sb-item:hover{background:var(--glass);color:var(--text);}
-.sb-item.active{background:var(--blue-dim);color:var(--blue);border-left-color:var(--blue);font-weight:700;}
+border-radius:0;font-size:13px;font-weight:500;color:var(–text-dim);
+transition:all 0.15s;border-left:3px solid transparent;margin:1px 0;}
+.sb-item:hover{background:var(–glass);color:var(–text);}
+.sb-item.active{background:var(–blue-dim);color:var(–blue);border-left-color:var(–blue);font-weight:700;}
 .sb-item .ico{font-size:16px;width:20px;text-align:center;}
-.sb-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:9px;font-weight:700;
-  padding:1px 5px;border-radius:8px;min-width:16px;text-align:center;}
-.sb-divider{height:1px;background:var(--border);margin:8px 12px;}
-.sb-plan{padding:12px 14px;margin:8px;background:var(--blue-dim);border:1px solid var(--border);border-radius:10px;}
-.sb-plan-name{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
-.sb-plan-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:4px;}
+.sb-badge{margin-left:auto;background:var(–danger);color:#fff;font-size:9px;font-weight:700;
+padding:1px 5px;border-radius:8px;min-width:16px;text-align:center;}
+.sb-divider{height:1px;background:var(–border);margin:8px 12px;}
+.sb-plan{padding:12px 14px;margin:8px;background:var(–blue-dim);border:1px solid var(–border);border-radius:10px;}
+.sb-plan-name{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–blue);margin-bottom:4px;}
+.sb-plan-bar{height:4px;background:var(–border);border-radius:2px;overflow:hidden;margin-bottom:4px;}
 .sb-plan-fill{height:100%;border-radius:2px;transition:width 0.5s;}
-.sb-plan-txt{font-size:11px;color:var(--text-dim);}
-.sb-upgrade{display:block;text-align:center;padding:7px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));
-  color:#fff;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;margin-top:7px;border:none;width:100%;font-family:'Raleway',sans-serif;}
+.sb-plan-txt{font-size:11px;color:var(–text-dim);}
+.sb-upgrade{display:block;text-align:center;padding:7px;background:linear-gradient(135deg,var(–blue),var(–blue-dark));
+color:#fff;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;margin-top:7px;border:none;width:100%;font-family:‘Raleway’,sans-serif;}
 
 /* ── MAIN CONTENT PANELS ── */
 .main{flex:1;overflow-y:auto;padding:24px;}
@@ -133,37 +134,37 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 /* ── PAGE HEADER ── */
 .page-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
 .page-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
-.page-sub{font-size:13px;color:var(--text-dim);margin-top:2px;}
+.page-sub{font-size:13px;color:var(–text-dim);margin-top:2px;}
 .page-actions{margin-left:auto;display:flex;gap:9px;}
 
 /* ── STAT CARDS ── */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;
-  transition:border-color 0.2s;}
+.stat-card{background:var(–card);border:1px solid var(–border);border-radius:12px;padding:18px;
+transition:border-color 0.2s;}
 .stat-card:hover{border-color:rgba(74,158,221,0.35);}
 .stat-val{font-size:30px;font-weight:800;line-height:1;margin-bottom:4px;}
-.stat-lbl{font-size:11px;color:var(--text-dim);font-weight:500;}
-.stat-card.blue .stat-val{color:var(--blue);}
-.stat-card.green .stat-val{color:var(--success);}
-.stat-card.amber .stat-val{color:var(--warning);}
-.stat-card.red .stat-val{color:var(--danger);}
-.stat-card.purple .stat-val{color:var(--purple);}
+.stat-lbl{font-size:11px;color:var(–text-dim);font-weight:500;}
+.stat-card.blue .stat-val{color:var(–blue);}
+.stat-card.green .stat-val{color:var(–success);}
+.stat-card.amber .stat-val{color:var(–warning);}
+.stat-card.red .stat-val{color:var(–danger);}
+.stat-card.purple .stat-val{color:var(–purple);}
 
 /* ── CARDS ── */
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;}
-.card-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.card{background:var(–card);border:1px solid var(–border);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+.card-header{padding:16px 18px;border-bottom:1px solid var(–border);display:flex;align-items:center;gap:10px;}
 .card-title{font-size:14px;font-weight:700;color:#fff;}
 .card-body{padding:18px;}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;border:none;
-  cursor:pointer;font-family:'Raleway',sans-serif;font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap;}
+cursor:pointer;font-family:‘Raleway’,sans-serif;font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap;}
 .btn:hover{transform:translateY(-1px);}
-.btn-blue{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;box-shadow:0 4px 14px rgba(74,158,221,0.3);}
-.btn-outline{background:transparent;color:var(--blue);border:1px solid var(--border);}
-.btn-outline:hover{border-color:var(--blue);background:var(--blue-dim);}
-.btn-danger{background:rgba(232,68,90,0.12);color:var(--danger);border:1px solid rgba(232,68,90,0.2);}
-.btn-green{background:rgba(34,197,94,0.12);color:var(--success);border:1px solid rgba(34,197,94,0.2);}
+.btn-blue{background:linear-gradient(135deg,var(–blue),var(–blue-dark));color:#fff;box-shadow:0 4px 14px rgba(74,158,221,0.3);}
+.btn-outline{background:transparent;color:var(–blue);border:1px solid var(–border);}
+.btn-outline:hover{border-color:var(–blue);background:var(–blue-dim);}
+.btn-danger{background:rgba(232,68,90,0.12);color:var(–danger);border:1px solid rgba(232,68,90,0.2);}
+.btn-green{background:rgba(34,197,94,0.12);color:var(–success);border:1px solid rgba(34,197,94,0.2);}
 .btn-sm{padding:6px 12px;font-size:12px;}
 .btn-icon{padding:7px;border-radius:7px;}
 
@@ -171,627 +172,644 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .tbl-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
 thead th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);
-  border-bottom:1px solid var(--border);white-space:nowrap;}
+letter-spacing:1.5px;text-transform:uppercase;color:var(–text-dim);
+border-bottom:1px solid var(–border);white-space:nowrap;}
 tbody td{padding:12px 14px;border-bottom:1px solid rgba(74,158,221,0.08);font-size:13px;vertical-align:middle;}
 tbody tr:hover td{background:rgba(74,158,221,0.03);}
 tbody tr:last-child td{border-bottom:none;}
 
 /* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:10px;
-  font-size:11px;font-weight:700;white-space:nowrap;}
-.badge-blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(74,158,221,0.2);}
-.badge-green{background:rgba(34,197,94,0.1);color:var(--success);border:1px solid rgba(34,197,94,0.2);}
-.badge-amber{background:rgba(245,166,35,0.1);color:var(--warning);border:1px solid rgba(245,166,35,0.2);}
-.badge-red{background:rgba(232,68,90,0.1);color:var(--danger);border:1px solid rgba(232,68,90,0.2);}
-.badge-grey{background:var(--glass);color:var(--text-dim);border:1px solid var(--border);}
-.badge-purple{background:rgba(139,92,246,0.1);color:var(--purple);border:1px solid rgba(139,92,246,0.2);}
+font-size:11px;font-weight:700;white-space:nowrap;}
+.badge-blue{background:var(–blue-dim);color:var(–blue);border:1px solid rgba(74,158,221,0.2);}
+.badge-green{background:rgba(34,197,94,0.1);color:var(–success);border:1px solid rgba(34,197,94,0.2);}
+.badge-amber{background:rgba(245,166,35,0.1);color:var(–warning);border:1px solid rgba(245,166,35,0.2);}
+.badge-red{background:rgba(232,68,90,0.1);color:var(–danger);border:1px solid rgba(232,68,90,0.2);}
+.badge-grey{background:var(–glass);color:var(–text-dim);border:1px solid var(–border);}
+.badge-purple{background:rgba(139,92,246,0.1);color:var(–purple);border:1px solid rgba(139,92,246,0.2);}
 
 /* ── UPLOAD ZONE ── */
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;
-  cursor:pointer;transition:all 0.25s;background:var(--glass);}
-.upload-zone:hover,.upload-zone.over{border-color:var(--blue);background:var(--blue-dim);}
+.upload-zone{border:2px dashed var(–border);border-radius:12px;padding:32px;text-align:center;
+cursor:pointer;transition:all 0.25s;background:var(–glass);}
+.upload-zone:hover,.upload-zone.over{border-color:var(–blue);background:var(–blue-dim);}
 .upload-zone .ico{font-size:36px;margin-bottom:10px;}
-.upload-zone .txt{font-size:14px;color:var(--text-dim);line-height:1.6;}
-.upload-zone .txt strong{color:var(--text);display:block;margin-bottom:2px;}
+.upload-zone .txt{font-size:14px;color:var(–text-dim);line-height:1.6;}
+.upload-zone .txt strong{color:var(–text);display:block;margin-bottom:2px;}
 
 /* ── Q CARDS ── */
-.qcard{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;
-  overflow:hidden;transition:border-color 0.2s;animation:fadeUp 0.3s ease forwards;opacity:0;}
+.qcard{background:var(–card);border:1px solid var(–border);border-radius:12px;margin-bottom:10px;
+overflow:hidden;transition:border-color 0.2s;animation:fadeUp 0.3s ease forwards;opacity:0;}
 .qcard:hover{border-color:rgba(74,158,221,0.3);}
 .qcard.high{border-color:rgba(34,197,94,0.2);}
 .qcard.low{border-color:rgba(232,68,90,0.2);}
 .qhead{display:flex;align-items:flex-start;gap:10px;padding:13px 15px;cursor:pointer;}
-.qnum{min-width:26px;height:26px;border-radius:6px;background:var(--blue-dim);color:var(--blue);
-  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
-  font-family:'Source Code Pro',monospace;flex-shrink:0;}
+.qnum{min-width:26px;height:26px;border-radius:6px;background:var(–blue-dim);color:var(–blue);
+display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
+font-family:‘Source Code Pro’,monospace;flex-shrink:0;}
 .qinfo{flex:1;} .qtxt{font-size:13px;font-weight:600;line-height:1.5;margin-bottom:4px;}
-.qcat{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--glass);
-  color:var(--text-dim);border:1px solid var(--border);}
+.qcat{font-size:10px;padding:2px 6px;border-radius:4px;background:var(–glass);
+color:var(–text-dim);border:1px solid var(–border);}
 .qright{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .conf{display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700;}
-.conf-h{background:rgba(34,197,94,0.1);color:var(--success);border:1px solid rgba(34,197,94,0.2);}
-.conf-m{background:rgba(245,166,35,0.1);color:var(--warning);border:1px solid rgba(245,166,35,0.2);}
-.conf-l{background:rgba(232,68,90,0.1);color:var(--danger);border:1px solid rgba(232,68,90,0.2);}
-.cmeter{width:40px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.conf-h{background:rgba(34,197,94,0.1);color:var(–success);border:1px solid rgba(34,197,94,0.2);}
+.conf-m{background:rgba(245,166,35,0.1);color:var(–warning);border:1px solid rgba(245,166,35,0.2);}
+.conf-l{background:rgba(232,68,90,0.1);color:var(–danger);border:1px solid rgba(232,68,90,0.2);}
+.cmeter{width:40px;height:3px;background:var(–border);border-radius:2px;overflow:hidden;}
 .cfill{height:100%;border-radius:2px;}
 .chev{transition:transform 0.3s;opacity:0.4;flex-shrink:0;}
 .chev.open{transform:rotate(180deg);}
-.qbody{padding:0 15px;display:none;border-top:1px solid var(--border);}
+.qbody{padding:0 15px;display:none;border-top:1px solid var(–border);}
 .qbody.open{display:block;padding-top:13px;padding-bottom:14px;}
-.qlbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:7px;}
-.abox{background:var(--glass);border:1px solid var(--border);border-radius:8px;padding:11px 13px;
-  font-size:13px;line-height:1.75;color:#fff;min-height:55px;margin-bottom:11px;}
-.abox[contenteditable]:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim);}
-.rbox{font-size:11px;color:var(--text-dim);line-height:1.6;padding:8px 11px;
-  background:var(--glass);border:1px solid var(--border);border-radius:7px;margin-bottom:11px;}
+.qlbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin-bottom:7px;}
+.abox{background:var(–glass);border:1px solid var(–border);border-radius:8px;padding:11px 13px;
+font-size:13px;line-height:1.75;color:#fff;min-height:55px;margin-bottom:11px;}
+.abox[contenteditable]:focus{outline:none;border-color:var(–blue);box-shadow:0 0 0 3px var(–blue-dim);}
+.rbox{font-size:11px;color:var(–text-dim);line-height:1.6;padding:8px 11px;
+background:var(–glass);border:1px solid var(–border);border-radius:7px;margin-bottom:11px;}
 .src-row{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;
-  background:var(--glass);border:1px solid var(--border);border-radius:7px;margin-bottom:5px;}
+background:var(–glass);border:1px solid var(–border);border-radius:7px;margin-bottom:5px;}
 .src-ico{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
 .imp-box{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:9px;padding:12px 13px;margin-bottom:11px;}
 .imp-box.good{background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.18);}
 .spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);
-  border-top-color:var(--blue);animation:spin 0.7s linear infinite;flex-shrink:0;}
+border-top-color:var(–blue);animation:spin 0.7s linear infinite;flex-shrink:0;}
 
 /* ── MODAL ── */
 .modal-bg{position:fixed;inset:0;background:rgba(4,9,20,0.85);backdrop-filter:blur(10px);
-  z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
 .modal-bg.open{display:flex;animation:fadeIn 0.25s ease;}
-.modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;
-  padding:28px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;
-  box-shadow:0 30px 80px rgba(0,0,0,0.6);animation:fadeUp 0.3s ease;}
+.modal{background:var(–navy-mid);border:1px solid var(–border);border-radius:16px;
+padding:28px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;
+box-shadow:0 30px 80px rgba(0,0,0,0.6);animation:fadeUp 0.3s ease;}
 .modal h2{font-size:17px;font-weight:700;color:#fff;margin-bottom:6px;}
-.modal p{font-size:13px;color:var(--text-dim);margin-bottom:18px;line-height:1.6;}
+.modal p{font-size:13px;color:var(–text-dim);margin-bottom:18px;line-height:1.6;}
 .modal-footer{display:flex;gap:8px;margin-top:18px;}
 .modal-footer button{flex:1;padding:11px;border-radius:8px;border:none;cursor:pointer;
-  font-family:'Raleway',sans-serif;font-size:13px;font-weight:700;}
-.m-cancel{background:var(--glass);color:var(--text-dim);border:1px solid var(--border)!important;}
-.m-confirm{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;}
-.m-danger{background:linear-gradient(135deg,var(--danger),#c0392b);color:#fff;}
+font-family:‘Raleway’,sans-serif;font-size:13px;font-weight:700;}
+.m-cancel{background:var(–glass);color:var(–text-dim);border:1px solid var(–border)!important;}
+.m-confirm{background:linear-gradient(135deg,var(–blue),var(–blue-dark));color:#fff;}
+.m-danger{background:linear-gradient(135deg,var(–danger),#c0392b);color:#fff;}
 
 /* ── TOASTS ── */
 .toasts{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:999;}
-.toast{padding:10px 16px;border-radius:9px;background:rgba(13,27,62,0.97);border:1px solid var(--border);
-  backdrop-filter:blur(16px);font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;
-  animation:fadeUp 0.3s ease;box-shadow:0 6px 20px rgba(0,0,0,0.4);max-width:300px;}
+.toast{padding:10px 16px;border-radius:9px;background:rgba(13,27,62,0.97);border:1px solid var(–border);
+backdrop-filter:blur(16px);font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;
+animation:fadeUp 0.3s ease;box-shadow:0 6px 20px rgba(0,0,0,0.4);max-width:300px;}
 .toast.ok{border-color:rgba(34,197,94,0.3);}
 .toast.err{border-color:rgba(232,68,90,0.3);}
 .toast.warn{border-color:rgba(245,166,35,0.3);}
 
 /* ── EXPORT BAR ── */
 .export-bar{display:none;align-items:center;gap:8px;padding:10px 18px;
-  background:rgba(7,15,36,0.99);border-bottom:2px solid var(--blue);flex-wrap:wrap;flex-shrink:0;}
+background:rgba(7,15,36,0.99);border-bottom:2px solid var(–blue);flex-wrap:wrap;flex-shrink:0;}
 .export-bar.show{display:flex;}
 .exp-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:8px;border:none;
-  cursor:pointer;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;transition:all 0.2s;}
+cursor:pointer;font-family:‘Raleway’,sans-serif;font-size:12px;font-weight:700;transition:all 0.2s;}
 .exp-btn:hover{transform:translateY(-1px);}
 .eb-word{background:#0078d4;color:#fff;} .eb-excel{background:#107c10;color:#fff;}
-.eb-pdf{background:#c00000;color:#fff;} .eb-json{background:var(--blue-dim);color:var(--blue);border:1px solid var(--border)!important;}
+.eb-pdf{background:#c00000;color:#fff;} .eb-json{background:var(–blue-dim);color:var(–blue);border:1px solid var(–border)!important;}
 
 /* ── LIMIT REACHED ── */
 .limit-banner{background:linear-gradient(135deg,rgba(232,68,90,0.12),rgba(245,166,35,0.08));
-  border:1px solid rgba(232,68,90,0.25);border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;}
-.limit-banner h3{font-size:16px;font-weight:700;color:var(--danger);margin-bottom:8px;}
-.limit-banner p{font-size:13px;color:var(--text-dim);margin-bottom:14px;}
+border:1px solid rgba(232,68,90,0.25);border-radius:12px;padding:20px;margin-bottom:20px;text-align:center;}
+.limit-banner h3{font-size:16px;font-weight:700;color:var(–danger);margin-bottom:8px;}
+.limit-banner p{font-size:13px;color:var(–text-dim);margin-bottom:14px;}
 .limit-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 
 /* ── SUPPLIER PORTAL ── */
-#supplierPortal{position:fixed;inset:0;background:var(--navy-deep);z-index:1000;display:none;overflow-y:auto;}
+#supplierPortal{position:fixed;inset:0;background:var(–navy-deep);z-index:1000;display:none;overflow-y:auto;}
 #supplierPortal.active{display:block;}
-.sp-header{background:rgba(7,15,36,0.95);border-bottom:1px solid var(--border);padding:18px 28px;}
-.sp-prog{height:3px;background:var(--border);}
-.sp-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#6bb8f0);transition:width 0.4s;}
+.sp-header{background:rgba(7,15,36,0.95);border-bottom:1px solid var(–border);padding:18px 28px;}
+.sp-prog{height:3px;background:var(–border);}
+.sp-prog-fill{height:100%;background:linear-gradient(90deg,var(–blue),#6bb8f0);transition:width 0.4s;}
 .sp-body{max-width:720px;margin:0 auto;padding:32px 20px;}
-.sp-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;}
-.sp-q-num{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+.sp-card{background:var(–card);border:1px solid var(–border);border-radius:14px;padding:24px;margin-bottom:16px;}
+.sp-q-num{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin-bottom:8px;}
 .sp-q-txt{font-size:15px;font-weight:600;color:#fff;line-height:1.6;margin-bottom:14px;}
-.sp-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:9px;
-  padding:12px 15px;color:#fff;font-family:'Raleway',sans-serif;font-size:13px;resize:vertical;
-  min-height:90px;transition:all 0.2s;}
-.sp-textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,158,221,0.1);}
+.sp-textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(–border);border-radius:9px;
+padding:12px 15px;color:#fff;font-family:‘Raleway’,sans-serif;font-size:13px;resize:vertical;
+min-height:90px;transition:all 0.2s;}
+.sp-textarea:focus{outline:none;border-color:var(–blue);box-shadow:0 0 0 3px rgba(74,158,221,0.1);}
 .sp-conf{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
-.sp-conf-btn{padding:6px 14px;border-radius:7px;border:1px solid var(--border);background:var(--glass);
-  color:var(--text-dim);cursor:pointer;font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;transition:all 0.2s;}
-.sp-conf-btn.sel-h{background:rgba(34,197,94,0.15);border-color:var(--success);color:var(--success);}
-.sp-conf-btn.sel-m{background:rgba(245,166,35,0.12);border-color:var(--warning);color:var(--warning);}
-.sp-conf-btn.sel-l{background:rgba(232,68,90,0.1);border-color:var(--danger);color:var(--danger);}
+.sp-conf-btn{padding:6px 14px;border-radius:7px;border:1px solid var(–border);background:var(–glass);
+color:var(–text-dim);cursor:pointer;font-family:‘Raleway’,sans-serif;font-size:12px;font-weight:600;transition:all 0.2s;}
+.sp-conf-btn.sel-h{background:rgba(34,197,94,0.15);border-color:var(–success);color:var(–success);}
+.sp-conf-btn.sel-m{background:rgba(245,166,35,0.12);border-color:var(–warning);color:var(–warning);}
+.sp-conf-btn.sel-l{background:rgba(232,68,90,0.1);border-color:var(–danger);color:var(–danger);}
 
 /* ── EMPTY STATE ── */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 20px;text-align:center;opacity:0.6;}
+padding:60px 20px;text-align:center;opacity:0.6;}
 .empty-ico{font-size:48px;margin-bottom:14px;}
-.empty h3{font-size:15px;font-weight:600;color:var(--text-dim);margin-bottom:6px;}
-.empty p{font-size:12px;color:var(--text-dim);max-width:240px;line-height:1.7;}
+.empty h3{font-size:15px;font-weight:600;color:var(–text-dim);margin-bottom:6px;}
+.empty p{font-size:12px;color:var(–text-dim);max-width:240px;line-height:1.7;}
 
 /* ── PROGRESS BAR ── */
-.prog-wrap{height:3px;background:var(--border);display:none;flex-shrink:0;}
+.prog-wrap{height:3px;background:var(–border);display:none;flex-shrink:0;}
 .prog-wrap.on{display:block;}
-.prog-bar{height:100%;background:linear-gradient(90deg,var(--blue),#6bb8f0);transition:width 0.4s;box-shadow:0 0 8px var(--blue-glow);}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(–blue),#6bb8f0);transition:width 0.4s;box-shadow:0 0 8px var(–blue-glow);}
 
 /* ── ADMIN PANEL ── */
 .admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px;}
 </style>
+
 </head>
 <body>
 
 <!-- ══════════════════════════════════════════════════════
-     LOGIN SCREEN
+LOGIN SCREEN
 ══════════════════════════════════════════════════════ -->
+
 <div class="screen active" id="loginScreen">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <svg class="shield" viewBox="0 0 80 92" fill="none">
-        <path d="M40 4L8 18V46C8 64 22 80 40 88C58 80 72 64 72 46V18L40 4Z" fill="#0a1f4e" stroke="#4a9edd" stroke-width="2"/>
-        <path d="M40 12L16 24V46C16 60 26 73 40 80C54 73 64 60 64 46V24L40 12Z" fill="#1a3a7a"/>
-        <circle cx="40" cy="46" r="14" stroke="#4a9edd" stroke-width="2.5" fill="none"/>
-        <line x1="40" y1="28" x2="40" y2="64" stroke="#4a9edd" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
-      <div class="brand">Cybe<span>Sure</span></div>
-      <div class="tag">Cyber Security Simplicity</div>
-    </div>
-    <div class="login-card">
-      <div class="login-title">Sign In to SecureAnswer</div>
-      <div class="login-sub">Enter your credentials to access your account</div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="loginEmail" placeholder="you@company.com" autocomplete="email">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="loginPw" placeholder="Your password" autocomplete="current-password">
-        <div class="form-error" id="loginErr"></div>
-      </div>
-      <button class="btn-primary" id="loginBtn" onclick="doLogin()">Sign In →</button>
-      <div class="login-link"><a onclick="showForgot()">Forgot your password?</a></div>
-    </div>
-    <div class="login-footer">Powered by <span>CybeSure SecureAnswer</span> · cybersure.co.uk</div>
-  </div>
+<div class="login-wrap">
+<div class="login-logo">
+<svg class="shield" viewBox="0 0 80 92" fill="none">
+<path d="M40 4L8 18V46C8 64 22 80 40 88C58 80 72 64 72 46V18L40 4Z" fill="#0a1f4e" stroke="#4a9edd" stroke-width="2"/>
+<path d="M40 12L16 24V46C16 60 26 73 40 80C54 73 64 60 64 46V24L40 12Z" fill="#1a3a7a"/>
+<circle cx="40" cy="46" r="14" stroke="#4a9edd" stroke-width="2.5" fill="none"/>
+<line x1="40" y1="28" x2="40" y2="64" stroke="#4a9edd" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="brand">Cybe<span>Sure</span></div>
+<div class="tag">Cyber Security Simplicity</div>
+</div>
+<div class="login-card">
+<div class="login-title">Sign In to SecureAnswer</div>
+<div class="login-sub">Enter your credentials to access your account</div>
+<div class="form-group">
+<label class="form-label">Email Address</label>
+<input class="form-input" type="email" id="loginEmail" placeholder="you@company.com" autocomplete="email">
+</div>
+<div class="form-group">
+<label class="form-label">Password</label>
+<input class="form-input" type="password" id="loginPw" placeholder="Your password" autocomplete="current-password">
+<div class="form-error" id="loginErr"></div>
+</div>
+<button class="btn-primary" id="loginBtn" onclick="doLogin()">Sign In →</button>
+<div class="login-link"><a onclick="showForgot()">Forgot your password?</a></div>
+</div>
+<div class="login-footer">Powered by <span>CybeSure SecureAnswer</span> · cybersure.co.uk</div>
+</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     CHANGE PASSWORD SCREEN
+CHANGE PASSWORD SCREEN
 ══════════════════════════════════════════════════════ -->
+
 <div class="screen" id="changePwScreen">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="brand">Cybe<span>Sure</span></div>
-    </div>
-    <div class="login-card">
-      <div class="login-title">🔒 Set Your Password</div>
-      <div class="login-sub">You must set a new password before continuing</div>
-      <div class="form-group">
-        <label class="form-label">New Password</label>
-        <input class="form-input" type="password" id="newPw" placeholder="Minimum 8 characters">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Confirm Password</label>
-        <input class="form-input" type="password" id="confirmPw" placeholder="Repeat your password">
-        <div class="form-error" id="pwErr"></div>
-      </div>
-      <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;padding:10px;background:var(--blue-dim);border-radius:7px;border:1px solid var(--border)">
-        Must contain: uppercase, lowercase, number, min 8 characters
-      </div>
-      <button class="btn-primary" onclick="doChangePw()">Set Password & Continue →</button>
-    </div>
-  </div>
+<div class="login-wrap">
+<div class="login-logo">
+<div class="brand">Cybe<span>Sure</span></div>
+</div>
+<div class="login-card">
+<div class="login-title">🔒 Set Your Password</div>
+<div class="login-sub">You must set a new password before continuing</div>
+<div class="form-group">
+<label class="form-label">New Password</label>
+<input class="form-input" type="password" id="newPw" placeholder="Minimum 8 characters">
+</div>
+<div class="form-group">
+<label class="form-label">Confirm Password</label>
+<input class="form-input" type="password" id="confirmPw" placeholder="Repeat your password">
+<div class="form-error" id="pwErr"></div>
+</div>
+<div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;padding:10px;background:var(--blue-dim);border-radius:7px;border:1px solid var(--border)">
+Must contain: uppercase, lowercase, number, min 8 characters
+</div>
+<button class="btn-primary" onclick="doChangePw()">Set Password & Continue →</button>
+</div>
+</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     MAIN APP SCREEN
+MAIN APP SCREEN
 ══════════════════════════════════════════════════════ -->
+
 <div class="screen" id="appScreen">
 
-  <!-- Top nav -->
-  <div class="topnav">
-    <div class="tn-logo">
-      <svg class="tn-shield" viewBox="0 0 80 92" fill="none">
-        <path d="M40 4L8 18V46C8 64 22 80 40 88C58 80 72 64 72 46V18L40 4Z" fill="#0a1f4e" stroke="#4a9edd" stroke-width="1.5"/>
-        <path d="M40 12L16 24V46C16 60 26 73 40 80C54 73 64 60 64 46V24L40 12Z" fill="#1a3a7a"/>
-        <circle cx="40" cy="46" r="12" stroke="#4a9edd" stroke-width="2" fill="none"/>
-        <line x1="40" y1="30" x2="40" y2="62" stroke="#4a9edd" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <div><div class="tn-brand">Cybe<span>Sure</span></div></div>
-    </div>
-    <div class="tn-product">SecureAnswer</div>
-    <div class="tn-spacer"></div>
-    <div class="tn-org" id="tnOrg"></div>
-    <div class="tn-usage" id="tnUsage" title="Questionnaire usage"></div>
-    <div style="display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--glass);border:1px solid var(--border);border-radius:12px;">
-      <div class="tn-dot"></div>
-      <span style="font-size:10px;color:var(--text-dim)">Live</span>
-    </div>
-    <div class="tn-user" id="tnUser" onclick="toggleUserMenu()">
-      <span id="tnInitials">?</span>
-      <div class="tn-user-menu" id="userMenu">
-        <div class="tn-menu-item" onclick="navigate('settings')">⚙️ Settings</div>
-        <div class="tn-menu-item" onclick="navigate('knowledge')">🏢 Knowledge Sources</div>
-        <div class="tn-menu-item" onclick="navigate('users')">👥 Team Members</div>
-        <div class="tn-menu-item" id="adminMenuItem" style="display:none" onclick="navigate('admin')">🔧 Admin Panel</div>
-        <div style="height:1px;background:var(--border);margin:4px 0;"></div>
-        <div class="tn-menu-item danger" onclick="doLogout()">🚪 Sign Out</div>
-      </div>
-    </div>
-  </div>
+<!-- Top nav -->
 
-  <!-- Progress bar -->
-  <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
+<div class="topnav">
+<div class="tn-logo">
+<svg class="tn-shield" viewBox="0 0 80 92" fill="none">
+<path d="M40 4L8 18V46C8 64 22 80 40 88C58 80 72 64 72 46V18L40 4Z" fill="#0a1f4e" stroke="#4a9edd" stroke-width="1.5"/>
+<path d="M40 12L16 24V46C16 60 26 73 40 80C54 73 64 60 64 46V24L40 12Z" fill="#1a3a7a"/>
+<circle cx="40" cy="46" r="12" stroke="#4a9edd" stroke-width="2" fill="none"/>
+<line x1="40" y1="30" x2="40" y2="62" stroke="#4a9edd" stroke-width="2" stroke-linecap="round"/>
+</svg>
+<div><div class="tn-brand">Cybe<span>Sure</span></div></div>
+</div>
+<div class="tn-product">SecureAnswer</div>
+<div class="tn-spacer"></div>
+<div class="tn-org" id="tnOrg"></div>
+<div class="tn-usage" id="tnUsage" title="Questionnaire usage"></div>
+<div style="display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--glass);border:1px solid var(--border);border-radius:12px;">
+<div class="tn-dot"></div>
+<span style="font-size:10px;color:var(--text-dim)">Live</span>
+</div>
+<div class="tn-user" id="tnUser" onclick="toggleUserMenu()">
+<span id="tnInitials">?</span>
+<div class="tn-user-menu" id="userMenu">
+<div class="tn-menu-item" onclick="navigate('settings')">⚙️ Settings</div>
+<div class="tn-menu-item" onclick="navigate('knowledge')">🏢 Knowledge Sources</div>
+<div class="tn-menu-item" onclick="navigate('users')">👥 Team Members</div>
+<div class="tn-menu-item" id="adminMenuItem" style="display:none" onclick="navigate('admin')">🔧 Admin Panel</div>
+<div style="height:1px;background:var(--border);margin:4px 0;"></div>
+<div class="tn-menu-item danger" onclick="doLogout()">🚪 Sign Out</div>
+</div>
+</div>
+</div>
 
-  <!-- Export bar -->
-  <div class="export-bar" id="exportBar">
-    <span style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);">📥 Download</span>
-    <div style="width:1px;height:24px;background:var(--border);margin:0 4px;"></div>
-    <button class="exp-btn eb-word" onclick="exportWord()">📄 Word</button>
-    <button class="exp-btn eb-excel" onclick="exportExcel()">📊 Excel</button>
-    <button class="exp-btn eb-pdf" onclick="exportPDF()">📕 PDF</button>
-    <button class="exp-btn eb-json" onclick="exportJSON()">⚙️ JSON</button>
-  </div>
+<!-- Progress bar -->
 
-  <!-- App body -->
-  <div class="app-body">
+<div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sb-section">Main</div>
-      <div class="sb-item active" id="nav-dashboard" onclick="navigate('dashboard')"><span class="ico">🏠</span>Dashboard</div>
-      <div class="sb-item" id="nav-questionnaire" onclick="navigate('questionnaire')"><span class="ico">📋</span>Questionnaires</div>
-      <div class="sb-item" id="nav-history" onclick="navigate('history')"><span class="ico">📂</span>History</div>
-      <div class="sb-divider"></div>
-      <div class="sb-section">Suppliers</div>
-      <div class="sb-item" id="nav-suppliers" onclick="navigate('suppliers')"><span class="ico">🏢</span>Supplier Register</div>
-      <div class="sb-item" id="nav-assessments" onclick="navigate('assessments')"><span class="ico">📤</span>Assessments<span class="sb-badge" id="pendingBadge" style="display:none">0</span></div>
-      <div class="sb-item" id="nav-risk" onclick="navigate('risk')"><span class="ico">⚠️</span>Risk Dashboard</div>
-      <div class="sb-divider"></div>
-      <div class="sb-section">Settings</div>
-      <div class="sb-item" id="nav-knowledge" onclick="navigate('knowledge')"><span class="ico">🔗</span>ISMS Sources</div>
-      <div class="sb-item" id="nav-users" onclick="navigate('users')"><span class="ico">👥</span>Team</div>
-      <div class="sb-item" id="nav-admin" style="display:none" onclick="navigate('admin')"><span class="ico">🔧</span>Admin Panel</div>
-      <div style="flex:1;"></div>
-      <div class="sb-plan" id="sbPlan"></div>
-    </aside>
+<!-- Export bar -->
 
-    <!-- Main content -->
-    <main class="main">
+<div class="export-bar" id="exportBar">
+<span style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);">📥 Download</span>
+<div style="width:1px;height:24px;background:var(--border);margin:0 4px;"></div>
+<button class="exp-btn eb-word" onclick="exportWord()">📄 Word</button>
+<button class="exp-btn eb-excel" onclick="exportExcel()">📊 Excel</button>
+<button class="exp-btn eb-pdf" onclick="exportPDF()">📕 PDF</button>
+<button class="exp-btn eb-json" onclick="exportJSON()">⚙️ JSON</button>
+</div>
 
-      <!-- ── DASHBOARD ── -->
-      <div class="view active" id="view-dashboard">
-        <div class="page-header">
-          <div><div class="page-title" id="dashGreeting">Dashboard</div><div class="page-sub">Your security questionnaire overview</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="navigate('questionnaire')">+ New Questionnaire</button>
-          </div>
-        </div>
-        <div class="stat-grid" id="dashStats"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="card">
-            <div class="card-header"><span style="font-size:16px">⏳</span><div class="card-title">Pending Supplier Assessments</div></div>
-            <div class="card-body" id="dashPending"><div class="empty"><div class="empty-ico">✅</div><h3>All clear</h3><p>No pending assessments</p></div></div>
-          </div>
-          <div class="card">
-            <div class="card-header"><span style="font-size:16px">📊</span><div class="card-title">Questionnaire Usage</div></div>
-            <div class="card-body" id="dashUsage"></div>
-          </div>
-        </div>
-      </div>
+<!-- App body -->
 
-      <!-- ── QUESTIONNAIRE ── -->
-      <div class="view" id="view-questionnaire">
-        <div class="page-header">
-          <div><div class="page-title">Run a Questionnaire</div><div class="page-sub">Upload a questionnaire and get AI-powered answers from your ISMS library</div></div>
-        </div>
-        <div id="limitBanner" style="display:none" class="limit-banner">
-          <h3>🚫 Questionnaire Limit Reached</h3>
-          <p>You have used all questionnaires in your current plan.</p>
-          <div class="limit-btns">
-            <button class="btn btn-blue" onclick="window.open(window.UPGRADE_URL,'_blank')">⬆️ Upgrade Plan</button>
-            <button class="btn btn-outline" onclick="window.open(window.TOPUP_URL,'_blank')">➕ Buy 10 More (Top-up)</button>
-          </div>
-        </div>
-        <div id="qRunWrap">
-          <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;">
-            <!-- Left panel -->
-            <div>
-              <div class="card">
-                <div class="card-header"><span style="font-size:16px">📂</span><div class="card-title">Questionnaire File</div></div>
-                <div class="card-body">
-                  <div class="upload-zone" id="uz" onclick="document.getElementById('fi').click()">
-                    <input type="file" id="fi" accept=".docx,.xlsx,.pdf,.txt,.csv" style="display:none">
-                    <div class="ico">📂</div>
-                    <div class="txt"><strong>Drop or click to upload</strong>DOCX · XLSX · PDF · CSV · TXT</div>
-                  </div>
-                  <div id="fileInfo" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border:1px solid rgba(74,158,221,0.3);border-radius:8px;">
-                    <div style="font-size:13px;font-weight:600;color:#fff" id="fileName"></div>
-                    <div style="font-size:11px;color:var(--text-dim)" id="fileSize"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header"><span style="font-size:16px">🏢</span><div class="card-title">ISMS Sources</div></div>
-                <div class="card-body">
-                  <div id="sourceList" style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px;"></div>
-                  <div style="font-size:11px;color:var(--text-dim);text-align:center;padding:5px;background:var(--blue-dim);border-radius:5px;border:1px solid var(--border)" id="sourceCount"></div>
-                </div>
-              </div>
-              <button class="btn btn-blue" style="width:100%;justify-content:center;padding:14px;" id="runBtn" onclick="runAnalysis()" disabled>
-                ▶ Analyse &amp; Auto-Answer
-              </button>
-              <div style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:7px" id="runNote">Upload a questionnaire to begin</div>
-            </div>
-            <!-- Right panel -->
-            <div>
-              <div id="emptyQ" class="empty" style="height:400px;">
-                <div class="empty-ico">🛡</div>
-                <h3>Ready when you are</h3>
-                <p>Upload a questionnaire and click Analyse to get started</p>
-              </div>
-              <div id="qList" style="display:none"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="app-body">
 
-      <!-- ── HISTORY ── -->
-      <div class="view" id="view-history">
-        <div class="page-header">
-          <div><div class="page-title">Questionnaire History</div><div class="page-sub">All completed questionnaire runs</div></div>
-        </div>
-        <div class="card">
-          <div class="card-body tbl-wrap">
-            <table id="historyTable">
-              <thead><tr><th>Date</th><th>File</th><th>Questions</th><th>Avg Confidence</th><th>Status</th><th></th></tr></thead>
-              <tbody id="historyBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+```
+<!-- Sidebar -->
+<aside class="sidebar">
+<div class="sb-section">Main</div>
+<div class="sb-item active" id="nav-dashboard" onclick="navigate('dashboard')"><span class="ico">🏠</span>Dashboard</div>
+<div class="sb-item" id="nav-questionnaire" onclick="navigate('questionnaire')"><span class="ico">📋</span>Questionnaires</div>
+<div class="sb-item" id="nav-history" onclick="navigate('history')"><span class="ico">📂</span>History</div>
+<div class="sb-divider"></div>
+<div class="sb-section">Suppliers</div>
+<div class="sb-item" id="nav-suppliers" onclick="navigate('suppliers')"><span class="ico">🏢</span>Supplier Register</div>
+<div class="sb-item" id="nav-assessments" onclick="navigate('assessments')"><span class="ico">📤</span>Assessments<span class="sb-badge" id="pendingBadge" style="display:none">0</span></div>
+<div class="sb-item" id="nav-risk" onclick="navigate('risk')"><span class="ico">⚠️</span>Risk Dashboard</div>
+<div class="sb-divider"></div>
+<div class="sb-section">Settings</div>
+<div class="sb-item" id="nav-knowledge" onclick="navigate('knowledge')"><span class="ico">🔗</span>ISMS Sources</div>
+<div class="sb-item" id="nav-users" onclick="navigate('users')"><span class="ico">👥</span>Team</div>
+<div class="sb-item" id="nav-admin" style="display:none" onclick="navigate('admin')"><span class="ico">🔧</span>Admin Panel</div>
+<div style="flex:1;"></div>
+<div class="sb-plan" id="sbPlan"></div>
+</aside>
 
-      <!-- ── SUPPLIERS ── -->
-      <div class="view" id="view-suppliers">
-        <div class="page-header">
-          <div><div class="page-title">Supplier Register</div><div class="page-sub">Manage your supplier relationships and risk ratings</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="showAddSupplier()">+ Add Supplier</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body tbl-wrap">
-            <table>
-              <thead><tr><th>Supplier</th><th>Category</th><th>Criticality</th><th>Risk Level</th><th>Score</th><th>Last Assessed</th><th>Actions</th></tr></thead>
-              <tbody id="suppliersBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<!-- Main content -->
+<main class="main">
 
-      <!-- ── ASSESSMENTS ── -->
-      <div class="view" id="view-assessments">
-        <div class="page-header">
-          <div><div class="page-title">Supplier Assessments</div><div class="page-sub">Send and track security questionnaires to your suppliers</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="showSendAssessment()">📤 Send Assessment</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body tbl-wrap">
-            <table>
-              <thead><tr><th>Supplier</th><th>Email</th><th>Sent</th><th>Status</th><th>Score</th><th>Risk</th><th>Actions</th></tr></thead>
-              <tbody id="assessmentsBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<!-- ── DASHBOARD ── -->
+<div class="view active" id="view-dashboard">
+<div class="page-header">
+<div><div class="page-title" id="dashGreeting">Dashboard</div><div class="page-sub">Your security questionnaire overview</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="navigate('questionnaire')">+ New Questionnaire</button>
+</div>
+</div>
+<div class="stat-grid" id="dashStats"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+<div class="card">
+<div class="card-header"><span style="font-size:16px">⏳</span><div class="card-title">Pending Supplier Assessments</div></div>
+<div class="card-body" id="dashPending"><div class="empty"><div class="empty-ico">✅</div><h3>All clear</h3><p>No pending assessments</p></div></div>
+</div>
+<div class="card">
+<div class="card-header"><span style="font-size:16px">📊</span><div class="card-title">Questionnaire Usage</div></div>
+<div class="card-body" id="dashUsage"></div>
+</div>
+</div>
+</div>
 
-      <!-- ── RISK DASHBOARD ── -->
-      <div class="view" id="view-risk">
-        <div class="page-header">
-          <div><div class="page-title">Supplier Risk Dashboard</div><div class="page-sub">Your supplier risk posture at a glance</div></div>
-        </div>
-        <div class="stat-grid" id="riskStats"></div>
-        <div class="card">
-          <div class="card-header"><span style="font-size:16px">📊</span><div class="card-title">Recent Assessments</div></div>
-          <div class="card-body tbl-wrap">
-            <table>
-              <thead><tr><th>Supplier</th><th>Score</th><th>Risk Level</th><th>Assessed</th></tr></thead>
-              <tbody id="riskBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<!-- ── QUESTIONNAIRE ── -->
+<div class="view" id="view-questionnaire">
+<div class="page-header">
+<div><div class="page-title">Run a Questionnaire</div><div class="page-sub">Upload a questionnaire and get AI-powered answers from your ISMS library</div></div>
+</div>
+<div id="limitBanner" style="display:none" class="limit-banner">
+<h3>🚫 Questionnaire Limit Reached</h3>
+<p>You have used all questionnaires in your current plan.</p>
+<div class="limit-btns">
+<button class="btn btn-blue" onclick="window.open(window.UPGRADE_URL,'_blank')">⬆️ Upgrade Plan</button>
+<button class="btn btn-outline" onclick="window.open(window.TOPUP_URL,'_blank')">➕ Buy 10 More (Top-up)</button>
+</div>
+</div>
+<div id="qRunWrap">
+<div style="display:grid;grid-template-columns:280px 1fr;gap:16px;">
+<!-- Left panel -->
+<div>
+<div class="card">
+<div class="card-header"><span style="font-size:16px">📂</span><div class="card-title">Questionnaire File</div></div>
+<div class="card-body">
+<div class="upload-zone" id="uz" onclick="document.getElementById('fi').click()">
+<input type="file" id="fi" accept=".docx,.xlsx,.pdf,.txt,.csv" style="display:none">
+<div class="ico">📂</div>
+<div class="txt"><strong>Drop or click to upload</strong>DOCX · XLSX · PDF · CSV · TXT</div>
+</div>
+<div id="fileInfo" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border:1px solid rgba(74,158,221,0.3);border-radius:8px;">
+<div style="font-size:13px;font-weight:600;color:#fff" id="fileName"></div>
+<div style="font-size:11px;color:var(--text-dim)" id="fileSize"></div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><span style="font-size:16px">🏢</span><div class="card-title">ISMS Sources</div></div>
+<div class="card-body">
+<div id="sourceList" style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px;"></div>
+<div style="font-size:11px;color:var(--text-dim);text-align:center;padding:5px;background:var(--blue-dim);border-radius:5px;border:1px solid var(--border)" id="sourceCount"></div>
+</div>
+</div>
+<button class="btn btn-blue" style="width:100%;justify-content:center;padding:14px;" id="runBtn" onclick="runAnalysis()" disabled>
+▶ Analyse &amp; Auto-Answer
+</button>
+<div style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:7px" id="runNote">Upload a questionnaire to begin</div>
+</div>
+<!-- Right panel -->
+<div>
+<div id="emptyQ" class="empty" style="height:400px;">
+<div class="empty-ico">🛡</div>
+<h3>Ready when you are</h3>
+<p>Upload a questionnaire and click Analyse to get started</p>
+</div>
+<div id="qList" style="display:none"></div>
+</div>
+</div>
+</div>
+</div>
 
-      <!-- ── KNOWLEDGE SOURCES ── -->
-      <div class="view" id="view-knowledge">
-        <div class="page-header">
-          <div><div class="page-title">ISMS Knowledge Sources</div><div class="page-sub">Connect your SharePoint libraries and document sources</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="showAddSource()">+ Add Source</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body" id="sourceListFull"></div>
-        </div>
-      </div>
+<!-- ── HISTORY ── -->
+<div class="view" id="view-history">
+<div class="page-header">
+<div><div class="page-title">Questionnaire History</div><div class="page-sub">All completed questionnaire runs</div></div>
+</div>
+<div class="card">
+<div class="card-body tbl-wrap">
+<table id="historyTable">
+<thead><tr><th>Date</th><th>File</th><th>Questions</th><th>Avg Confidence</th><th>Status</th><th></th></tr></thead>
+<tbody id="historyBody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-      <!-- ── TEAM ── -->
-      <div class="view" id="view-users">
-        <div class="page-header">
-          <div><div class="page-title">Team Members</div><div class="page-sub">Manage who has access to SecureAnswer</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="showInviteUser()">+ Invite User</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body tbl-wrap">
-            <table>
-              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Actions</th></tr></thead>
-              <tbody id="usersBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<!-- ── SUPPLIERS ── -->
+<div class="view" id="view-suppliers">
+<div class="page-header">
+<div><div class="page-title">Supplier Register</div><div class="page-sub">Manage your supplier relationships and risk ratings</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="showAddSupplier()">+ Add Supplier</button>
+</div>
+</div>
+<div class="card">
+<div class="card-body tbl-wrap">
+<table>
+<thead><tr><th>Supplier</th><th>Category</th><th>Criticality</th><th>Risk Level</th><th>Score</th><th>Last Assessed</th><th>Actions</th></tr></thead>
+<tbody id="suppliersBody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-      <!-- ── ADMIN PANEL ── -->
-      <div class="view" id="view-admin">
-        <div class="page-header">
-          <div><div class="page-title">🔧 CybeSure Admin Panel</div><div class="page-sub">Manage all client organisations</div></div>
-          <div class="page-actions">
-            <button class="btn btn-blue" onclick="showCreateOrg()">+ Create Organisation</button>
-          </div>
-        </div>
-        <div class="stat-grid" id="adminStats"></div>
-        <div class="card">
-          <div class="card-body tbl-wrap">
-            <table>
-              <thead><tr><th>Organisation</th><th>Plan</th><th>Usage</th><th>Users</th><th>Status</th><th>Actions</th></tr></thead>
-              <tbody id="adminOrgsBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+<!-- ── ASSESSMENTS ── -->
+<div class="view" id="view-assessments">
+<div class="page-header">
+<div><div class="page-title">Supplier Assessments</div><div class="page-sub">Send and track security questionnaires to your suppliers</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="showSendAssessment()">📤 Send Assessment</button>
+</div>
+</div>
+<div class="card">
+<div class="card-body tbl-wrap">
+<table>
+<thead><tr><th>Supplier</th><th>Email</th><th>Sent</th><th>Status</th><th>Score</th><th>Risk</th><th>Actions</th></tr></thead>
+<tbody id="assessmentsBody"></tbody>
+</table>
+</div>
+</div>
+</div>
 
-    </main>
-  </div>
+<!-- ── RISK DASHBOARD ── -->
+<div class="view" id="view-risk">
+<div class="page-header">
+<div><div class="page-title">Supplier Risk Dashboard</div><div class="page-sub">Your supplier risk posture at a glance</div></div>
+</div>
+<div class="stat-grid" id="riskStats"></div>
+<div class="card">
+<div class="card-header"><span style="font-size:16px">📊</span><div class="card-title">Recent Assessments</div></div>
+<div class="card-body tbl-wrap">
+<table>
+<thead><tr><th>Supplier</th><th>Score</th><th>Risk Level</th><th>Assessed</th></tr></thead>
+<tbody id="riskBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ── KNOWLEDGE SOURCES ── -->
+<div class="view" id="view-knowledge">
+<div class="page-header">
+<div><div class="page-title">ISMS Knowledge Sources</div><div class="page-sub">Connect your SharePoint libraries and document sources</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="showAddSource()">+ Add Source</button>
+</div>
+</div>
+<div class="card">
+<div class="card-body" id="sourceListFull"></div>
+</div>
+</div>
+
+<!-- ── TEAM ── -->
+<div class="view" id="view-users">
+<div class="page-header">
+<div><div class="page-title">Team Members</div><div class="page-sub">Manage who has access to SecureAnswer</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="showInviteUser()">+ Invite User</button>
+</div>
+</div>
+<div class="card">
+<div class="card-body tbl-wrap">
+<table>
+<thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Actions</th></tr></thead>
+<tbody id="usersBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ── ADMIN PANEL ── -->
+<div class="view" id="view-admin">
+<div class="page-header">
+<div><div class="page-title">🔧 CybeSure Admin Panel</div><div class="page-sub">Manage all client organisations</div></div>
+<div class="page-actions">
+<button class="btn btn-blue" onclick="showCreateOrg()">+ Create Organisation</button>
+</div>
+</div>
+<div class="stat-grid" id="adminStats"></div>
+<div class="card">
+<div class="card-body tbl-wrap">
+<table>
+<thead><tr><th>Organisation</th><th>Plan</th><th>Usage</th><th>Users</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="adminOrgsBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</main>
+```
+
+</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SUPPLIER ASSESSMENT PORTAL
+SUPPLIER ASSESSMENT PORTAL
 ══════════════════════════════════════════════════════ -->
+
 <div id="supplierPortal">
-  <div class="sp-header">
-    <div style="display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-size:18px;font-weight:800;color:#fff">Cybe<span style="color:var(--blue)">Sure</span> <span style="font-size:13px;color:var(--text-dim);font-weight:400">SecureAnswer</span></div>
-        <div id="spOrgName" style="font-size:12px;color:var(--text-dim);margin-top:2px;"></div>
-      </div>
-      <div id="spOrgLogo" style="display:none"><img style="height:36px;border-radius:6px;" id="spLogoImg" src=""></div>
-    </div>
-  </div>
-  <div class="sp-prog"><div class="sp-prog-fill" id="spProgFill" style="width:0%"></div></div>
-  <div class="sp-body" id="spBody">
-    <div class="empty"><div class="empty-ico">🔄</div><h3>Loading assessment...</h3></div>
-  </div>
+<div class="sp-header">
+<div style="display:flex;align-items:center;justify-content:space-between;">
+<div>
+<div style="font-size:18px;font-weight:800;color:#fff">Cybe<span style="color:var(--blue)">Sure</span> <span style="font-size:13px;color:var(--text-dim);font-weight:400">SecureAnswer</span></div>
+<div id="spOrgName" style="font-size:12px;color:var(--text-dim);margin-top:2px;"></div>
+</div>
+<div id="spOrgLogo" style="display:none"><img style="height:36px;border-radius:6px;" id="spLogoImg" src=""></div>
+</div>
+</div>
+<div class="sp-prog"><div class="sp-prog-fill" id="spProgFill" style="width:0%"></div></div>
+<div class="sp-body" id="spBody">
+<div class="empty"><div class="empty-ico">🔄</div><h3>Loading assessment...</h3></div>
+</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     MODALS
+MODALS
 ══════════════════════════════════════════════════════ -->
 
 <!-- Add Knowledge Source -->
+
 <div class="modal-bg" id="modalSource">
-  <div class="modal">
-    <h2>🔗 Add Knowledge Source</h2>
-    <p>Connect a document library for AI to search when answering questionnaires.</p>
-    <div class="form-group"><label class="form-label">Source Name</label><input class="form-input" id="srcName" placeholder="e.g. Main ISMS Library"></div>
-    <div class="form-group"><label class="form-label">Type</label>
-      <select class="form-input" id="srcType" onchange="toggleSrcFields()">
-        <option value="sharepoint">Microsoft SharePoint</option>
-        <option value="url">Web URL</option>
-        <option value="confluence">Confluence</option>
-      </select>
-    </div>
-    <div id="spFields">
-      <div class="form-group"><label class="form-label">SharePoint Site URL</label><input class="form-input" id="srcUrl" placeholder="https://company.sharepoint.com/sites/ISMS"></div>
-      <div class="form-group"><label class="form-label">Document Library Name</label><input class="form-input" id="srcLib" placeholder="ISMS Policies" value="ISMS Policies"></div>
-      <div class="form-group"><label class="form-label">Tenant ID</label><input class="form-input" id="srcTenant" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
-      <div class="form-group"><label class="form-label">Client ID</label><input class="form-input" id="srcClient" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
-      <div class="form-group"><label class="form-label">Client Secret</label><input class="form-input" id="srcSecret" type="password" placeholder="Your app registration secret"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="m-cancel" onclick="closeModal('modalSource')">Cancel</button>
-      <button class="m-confirm" onclick="addSource()">Connect Source</button>
-    </div>
-  </div>
+<div class="modal">
+<h2>🔗 Add Knowledge Source</h2>
+<p>Connect a document library for AI to search when answering questionnaires.</p>
+<div class="form-group"><label class="form-label">Source Name</label><input class="form-input" id="srcName" placeholder="e.g. Main ISMS Library"></div>
+<div class="form-group"><label class="form-label">Type</label>
+<select class="form-input" id="srcType" onchange="toggleSrcFields()">
+<option value="sharepoint">Microsoft SharePoint</option>
+<option value="url">Web URL</option>
+<option value="confluence">Confluence</option>
+</select>
+</div>
+<div id="spFields">
+<div class="form-group"><label class="form-label">SharePoint Site URL</label><input class="form-input" id="srcUrl" placeholder="https://company.sharepoint.com/sites/ISMS"></div>
+<div class="form-group"><label class="form-label">Document Library Name</label><input class="form-input" id="srcLib" placeholder="ISMS Policies" value="ISMS Policies"></div>
+<div class="form-group"><label class="form-label">Tenant ID</label><input class="form-input" id="srcTenant" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+<div class="form-group"><label class="form-label">Client ID</label><input class="form-input" id="srcClient" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+<div class="form-group"><label class="form-label">Client Secret</label><input class="form-input" id="srcSecret" type="password" placeholder="Your app registration secret"></div>
+</div>
+<div class="modal-footer">
+<button class="m-cancel" onclick="closeModal('modalSource')">Cancel</button>
+<button class="m-confirm" onclick="addSource()">Connect Source</button>
+</div>
+</div>
 </div>
 
 <!-- Invite User -->
+
 <div class="modal-bg" id="modalUser">
-  <div class="modal">
-    <h2>👥 Invite Team Member</h2>
-    <p>They will receive an email with login credentials.</p>
-    <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="invFirst" placeholder="First name"></div>
-    <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="invLast" placeholder="Last name"></div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="invEmail" placeholder="email@company.com" type="email"></div>
-    <div class="form-group"><label class="form-label">Role</label>
-      <select class="form-input" id="invRole">
-        <option value="user">User — Can run questionnaires</option>
-        <option value="manager">Manager — Can manage suppliers and send assessments</option>
-        <option value="org_admin">Admin — Full access to organisation settings</option>
-      </select>
-    </div>
-    <div class="modal-footer">
-      <button class="m-cancel" onclick="closeModal('modalUser')">Cancel</button>
-      <button class="m-confirm" onclick="inviteUser()">Send Invite</button>
-    </div>
-  </div>
+<div class="modal">
+<h2>👥 Invite Team Member</h2>
+<p>They will receive an email with login credentials.</p>
+<div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="invFirst" placeholder="First name"></div>
+<div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="invLast" placeholder="Last name"></div>
+<div class="form-group"><label class="form-label">Email</label><input class="form-input" id="invEmail" placeholder="email@company.com" type="email"></div>
+<div class="form-group"><label class="form-label">Role</label>
+<select class="form-input" id="invRole">
+<option value="user">User — Can run questionnaires</option>
+<option value="manager">Manager — Can manage suppliers and send assessments</option>
+<option value="org_admin">Admin — Full access to organisation settings</option>
+</select>
+</div>
+<div class="modal-footer">
+<button class="m-cancel" onclick="closeModal('modalUser')">Cancel</button>
+<button class="m-confirm" onclick="inviteUser()">Send Invite</button>
+</div>
+</div>
 </div>
 
 <!-- Add Supplier -->
+
 <div class="modal-bg" id="modalSupplier">
-  <div class="modal">
-    <h2>🏢 Add Supplier</h2>
-    <p>Add a supplier to your register to track their security posture.</p>
-    <div class="form-group"><label class="form-label">Supplier Name</label><input class="form-input" id="supName" placeholder="Company name"></div>
-    <div class="form-group"><label class="form-label">Domain</label><input class="form-input" id="supDomain" placeholder="supplier.com"></div>
-    <div class="form-group"><label class="form-label">Contact Name</label><input class="form-input" id="supContact" placeholder="Contact name"></div>
-    <div class="form-group"><label class="form-label">Contact Email</label><input class="form-input" id="supEmail" placeholder="contact@supplier.com" type="email"></div>
-    <div class="form-group"><label class="form-label">Category</label><input class="form-input" id="supCat" placeholder="e.g. Cloud Provider, Software Vendor"></div>
-    <div class="form-group"><label class="form-label">Criticality</label>
-      <select class="form-input" id="supCrit">
-        <option value="critical">Critical — Core business dependency</option>
-        <option value="high">High — Significant impact if unavailable</option>
-        <option value="medium" selected>Medium — Standard supplier</option>
-        <option value="low">Low — Minimal impact</option>
-      </select>
-    </div>
-    <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="supNotes" placeholder="Any additional notes..." style="height:70px;resize:vertical;"></textarea></div>
-    <div class="modal-footer">
-      <button class="m-cancel" onclick="closeModal('modalSupplier')">Cancel</button>
-      <button class="m-confirm" onclick="addSupplier()">Add Supplier</button>
-    </div>
-  </div>
+<div class="modal">
+<h2>🏢 Add Supplier</h2>
+<p>Add a supplier to your register to track their security posture.</p>
+<div class="form-group"><label class="form-label">Supplier Name</label><input class="form-input" id="supName" placeholder="Company name"></div>
+<div class="form-group"><label class="form-label">Domain</label><input class="form-input" id="supDomain" placeholder="supplier.com"></div>
+<div class="form-group"><label class="form-label">Contact Name</label><input class="form-input" id="supContact" placeholder="Contact name"></div>
+<div class="form-group"><label class="form-label">Contact Email</label><input class="form-input" id="supEmail" placeholder="contact@supplier.com" type="email"></div>
+<div class="form-group"><label class="form-label">Category</label><input class="form-input" id="supCat" placeholder="e.g. Cloud Provider, Software Vendor"></div>
+<div class="form-group"><label class="form-label">Criticality</label>
+<select class="form-input" id="supCrit">
+<option value="critical">Critical — Core business dependency</option>
+<option value="high">High — Significant impact if unavailable</option>
+<option value="medium" selected>Medium — Standard supplier</option>
+<option value="low">Low — Minimal impact</option>
+</select>
+</div>
+<div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="supNotes" placeholder="Any additional notes..." style="height:70px;resize:vertical;"></textarea></div>
+<div class="modal-footer">
+<button class="m-cancel" onclick="closeModal('modalSupplier')">Cancel</button>
+<button class="m-confirm" onclick="addSupplier()">Add Supplier</button>
+</div>
+</div>
 </div>
 
 <!-- Send Assessment -->
+
 <div class="modal-bg" id="modalAssessment">
-  <div class="modal">
-    <h2>📤 Send Security Assessment</h2>
-    <p>Send a security questionnaire to a supplier. They will receive a unique secure link.</p>
-    <div class="form-group"><label class="form-label">Supplier</label>
-      <select class="form-input" id="assSupplier"><option value="">Select supplier...</option></select>
-    </div>
-    <div class="form-group"><label class="form-label">Supplier Contact Email</label><input class="form-input" id="assEmail" placeholder="contact@supplier.com" type="email"></div>
-    <div class="form-group"><label class="form-label">Supplier Contact Name</label><input class="form-input" id="assName" placeholder="Contact name"></div>
-    <div class="form-group"><label class="form-label">Assessment Title</label><input class="form-input" id="assTitle" placeholder="Annual Security Assessment 2025" value="Annual Security Assessment"></div>
-    <div class="modal-footer">
-      <button class="m-cancel" onclick="closeModal('modalAssessment')">Cancel</button>
-      <button class="m-confirm" onclick="sendAssessment()">Send Assessment Link →</button>
-    </div>
-  </div>
+<div class="modal">
+<h2>📤 Send Security Assessment</h2>
+<p>Send a security questionnaire to a supplier. They will receive a unique secure link.</p>
+<div class="form-group"><label class="form-label">Supplier</label>
+<select class="form-input" id="assSupplier"><option value="">Select supplier...</option></select>
+</div>
+<div class="form-group"><label class="form-label">Supplier Contact Email</label><input class="form-input" id="assEmail" placeholder="contact@supplier.com" type="email"></div>
+<div class="form-group"><label class="form-label">Supplier Contact Name</label><input class="form-input" id="assName" placeholder="Contact name"></div>
+<div class="form-group"><label class="form-label">Assessment Title</label><input class="form-input" id="assTitle" placeholder="Annual Security Assessment 2025" value="Annual Security Assessment"></div>
+<div class="modal-footer">
+<button class="m-cancel" onclick="closeModal('modalAssessment')">Cancel</button>
+<button class="m-confirm" onclick="sendAssessment()">Send Assessment Link →</button>
+</div>
+</div>
 </div>
 
 <!-- Create Organisation (Admin) -->
+
 <div class="modal-bg" id="modalOrg">
-  <div class="modal">
-    <h2>🏢 Create Client Organisation</h2>
-    <p>Creates the organisation and sends welcome email with login credentials.</p>
-    <div class="form-group"><label class="form-label">Organisation Name</label><input class="form-input" id="orgName" placeholder="Acme Ltd"></div>
-    <div class="form-group"><label class="form-label">Domain</label><input class="form-input" id="orgDomain" placeholder="acme.com"></div>
-    <div class="form-group"><label class="form-label">Plan</label>
-      <select class="form-input" id="orgPlan">
-        <option value="starter">Starter — £3,500/yr — 25 questionnaires</option>
-        <option value="professional">Professional — £7,500/yr — 100 questionnaires</option>
-        <option value="enterprise">Enterprise — £14,995/yr — 300 questionnaires</option>
-        <option value="unlimited">Unlimited — £24,000/yr — Unlimited</option>
-      </select>
-    </div>
-    <div class="form-group"><label class="form-label">Admin First Name</label><input class="form-input" id="orgFirst" placeholder="First name"></div>
-    <div class="form-group"><label class="form-label">Admin Last Name</label><input class="form-input" id="orgLast" placeholder="Last name"></div>
-    <div class="form-group"><label class="form-label">Admin Email</label><input class="form-input" id="orgEmail" placeholder="admin@acme.com" type="email"></div>
-    <div class="form-group"><label class="form-label">Client Logo URL (optional)</label><input class="form-input" id="orgLogo" placeholder="https://...logo.png"></div>
-    <div class="form-group"><label class="form-label">Branding Name (optional)</label><input class="form-input" id="orgBrand" placeholder="Displayed as 'Powered by CybeSure for [BrandName]'"></div>
-    <div class="modal-footer">
-      <button class="m-cancel" onclick="closeModal('modalOrg')">Cancel</button>
-      <button class="m-confirm" onclick="createOrg()">Create & Send Welcome Email</button>
-    </div>
-  </div>
+<div class="modal">
+<h2>🏢 Create Client Organisation</h2>
+<p>Creates the organisation and sends welcome email with login credentials.</p>
+<div class="form-group"><label class="form-label">Organisation Name</label><input class="form-input" id="orgName" placeholder="Acme Ltd"></div>
+<div class="form-group"><label class="form-label">Domain</label><input class="form-input" id="orgDomain" placeholder="acme.com"></div>
+<div class="form-group"><label class="form-label">Plan</label>
+<select class="form-input" id="orgPlan">
+<option value="starter">Starter — £3,500/yr — 25 questionnaires</option>
+<option value="professional">Professional — £7,500/yr — 100 questionnaires</option>
+<option value="enterprise">Enterprise — £14,995/yr — 300 questionnaires</option>
+<option value="unlimited">Unlimited — £24,000/yr — Unlimited</option>
+</select>
+</div>
+<div class="form-group"><label class="form-label">Admin First Name</label><input class="form-input" id="orgFirst" placeholder="First name"></div>
+<div class="form-group"><label class="form-label">Admin Last Name</label><input class="form-input" id="orgLast" placeholder="Last name"></div>
+<div class="form-group"><label class="form-label">Admin Email</label><input class="form-input" id="orgEmail" placeholder="admin@acme.com" type="email"></div>
+<div class="form-group"><label class="form-label">Client Logo URL (optional)</label><input class="form-input" id="orgLogo" placeholder="https://...logo.png"></div>
+<div class="form-group"><label class="form-label">Branding Name (optional)</label><input class="form-input" id="orgBrand" placeholder="Displayed as 'Powered by CybeSure for [BrandName]'"></div>
+<div class="modal-footer">
+<button class="m-cancel" onclick="closeModal('modalOrg')">Cancel</button>
+<button class="m-confirm" onclick="createOrg()">Create & Send Welcome Email</button>
+</div>
+</div>
 </div>
 
 <div class="toasts" id="toasts"></div>
@@ -800,67 +818,67 @@ tbody tr:last-child td{border-bottom:none;}
 // ══════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════
-const API = '';  // Empty = same origin (Render serves both)
+const API = ''; // Empty = same origin (Render serves both)
 let state = { token:null, user:null, currentRun:null, questions:[], sources:[], suppliers:[], uploadedFile:null };
 window.UPGRADE_URL = '/upgrade';
-window.TOPUP_URL   = '/topup';
+window.TOPUP_URL = '/topup';
 
 // ── UTILS ─────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 const fmtDate = d => d ? new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—';
 const fmtSize = b => b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';
-const today   = () => new Date().toISOString().slice(0,10);
+const today = () => new Date().toISOString().slice(0,10);
 
 function toast(msg, type='ok') {
-  const c=$('toasts'), t=document.createElement('div');
-  t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
-  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},4500);
+const c=$('toasts'), t=document.createElement('div');
+t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
+setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},4500);
 }
 
 function setProgress(p) {
-  const w=$('progWrap'), b=$('progBar');
-  if(p>0){w.classList.add('on');b.style.width=p+'%';}
-  else{setTimeout(()=>{w.classList.remove('on');b.style.width='0%';},600);}
+const w=$('progWrap'), b=$('progBar');
+if(p>0){w.classList.add('on');b.style.width=p+'%';}
+else{setTimeout(()=>{w.classList.remove('on');b.style.width='0%';},600);}
 }
 
 function openModal(id){$(id).classList.add('open');}
 function closeModal(id){$(id).classList.remove('open');}
 
 function riskBadge(r) {
-  const map={critical:'badge-red',high:'badge-red',medium:'badge-amber',low:'badge-green',unknown:'badge-grey'};
-  return `<span class="badge ${map[r]||'badge-grey'}">${(r||'Unknown').charAt(0).toUpperCase()+(r||'unknown').slice(1)}</span>`;
+const map={critical:'badge-red',high:'badge-red',medium:'badge-amber',low:'badge-green',unknown:'badge-grey'};
+return `<span class="badge ${map[r]||'badge-grey'}">${(r||'Unknown').charAt(0).toUpperCase()+(r||'unknown').slice(1)}</span>`;
 }
 function confBadge(c) {
-  c=parseInt(c)||0;
-  const cls=c>=75?'badge-green':c>=50?'badge-amber':'badge-red';
-  return `<span class="badge ${cls}">${c}%</span>`;
+c=parseInt(c)||0;
+const cls=c>=75?'badge-green':c>=50?'badge-amber':'badge-red';
+return `<span class="badge ${cls}">${c}%</span>`;
 }
 function planBadge(p) {
-  const map={starter:'badge-grey',professional:'badge-blue',enterprise:'badge-purple',unlimited:'badge-green'};
-  return `<span class="badge ${map[p]||'badge-grey'}">${(p||'starter').charAt(0).toUpperCase()+(p||'starter').slice(1)}</span>`;
+const map={starter:'badge-grey',professional:'badge-blue',enterprise:'badge-purple',unlimited:'badge-green'};
+return `<span class="badge ${map[p]||'badge-grey'}">${(p||'starter').charAt(0).toUpperCase()+(p||'starter').slice(1)}</span>`;
 }
 
 // ── API CALLS ─────────────────────────────────────────────
 async function api(method, path, body, raw=false) {
-  const opts = {
-    method,
-    headers: { 'Content-Type':'application/json', ...(state.token ? {'Authorization':`Bearer ${state.token}`} : {}) }
-  };
-  if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(API+path, opts);
-  if (raw) return r;
-  const data = await r.json().catch(()=>({}));
-  if (!r.ok) {
-    if (r.status===401) { doLogout(); throw new Error('Session expired'); }
-    throw new Error(data.error || `Error ${r.status}`);
-  }
-  return data;
+const opts = {
+method,
+headers: { 'Content-Type':'application/json', ...(state.token ? {'Authorization':`Bearer ${state.token}`} : {}) }
+};
+if (body) opts.body = JSON.stringify(body);
+const r = await fetch(API+path, opts);
+if (raw) return r;
+const data = await r.json().catch(()=>({}));
+if (!r.ok) {
+if (r.status===401) { doLogout(); throw new Error('Session expired'); }
+throw new Error(data.error || `Error ${r.status}`);
+}
+return data;
 }
 
 // ── SCREENS ───────────────────────────────────────────────
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  $(id).classList.add('active');
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+$(id).classList.add('active');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -875,58 +893,58 @@ if (assessToken) loadSupplierPortal(assessToken);
 // Check stored session
 const stored = localStorage.getItem('cs_token');
 if (stored && !assessToken) {
-  state.token = stored;
-  api('GET','/api/auth/me').then(user => {
-    state.user = user;
-    if (user.mustChangePw) showScreen('changePwScreen');
-    else initApp();
-  }).catch(() => { localStorage.removeItem('cs_token'); showScreen('loginScreen'); });
+state.token = stored;
+api('GET','/api/auth/me').then(user => {
+state.user = user;
+if (user.mustChangePw) showScreen('changePwScreen');
+else initApp();
+}).catch(() => { localStorage.removeItem('cs_token'); showScreen('loginScreen'); });
 }
 
 async function doLogin() {
-  const btn=$('loginBtn'), err=$('loginErr');
-  err.style.display='none';
-  btn.disabled=true; btn.textContent='Signing in...';
-  try {
-    const data = await api('POST','/api/auth/login',{ email:$('loginEmail').value, password:$('loginPw').value });
-    state.token = data.token;
-    state.user  = data.user;
-    localStorage.setItem('cs_token', data.token);
-    if (data.mustChangePw) showScreen('changePwScreen');
-    else initApp();
-  } catch(e) {
-    err.textContent = e.message; err.style.display='block';
-    btn.disabled=false; btn.textContent='Sign In →';
-  }
+const btn=$('loginBtn'), err=$('loginErr');
+err.style.display='none';
+btn.disabled=true; btn.textContent='Signing in...';
+try {
+const data = await api('POST','/api/auth/login',{ email:$('loginEmail').value, password:$('loginPw').value });
+state.token = data.token;
+state.user = data.user;
+localStorage.setItem('cs_token', data.token);
+if (data.mustChangePw) showScreen('changePwScreen');
+else initApp();
+} catch(e) {
+err.textContent = e.message; err.style.display='block';
+btn.disabled=false; btn.textContent='Sign In →';
+}
 }
 
 async function doChangePw() {
-  const pw=$('newPw').value, cp=$('confirmPw').value, err=$('pwErr');
-  err.style.display='none';
-  if (pw!==cp) { err.textContent='Passwords do not match'; err.style.display='block'; return; }
-  try {
-    await api('POST','/api/auth/change-password',{ newPassword:pw });
-    state.user.mustChangePw = false;
-    const me = await api('GET','/api/auth/me');
-    state.user = me;
-    toast('✅ Password set successfully');
-    initApp();
-  } catch(e) { err.textContent=e.message; err.style.display='block'; }
+const pw=$('newPw').value, cp=$('confirmPw').value, err=$('pwErr');
+err.style.display='none';
+if (pw!==cp) { err.textContent='Passwords do not match'; err.style.display='block'; return; }
+try {
+await api('POST','/api/auth/change-password',{ newPassword:pw });
+state.user.mustChangePw = false;
+const me = await api('GET','/api/auth/me');
+state.user = me;
+toast('✅ Password set successfully');
+initApp();
+} catch(e) { err.textContent=e.message; err.style.display='block'; }
 }
 
 function doLogout() {
-  localStorage.removeItem('cs_token');
-  state = { token:null, user:null, currentRun:null, questions:[], sources:[], suppliers:[], uploadedFile:null };
-  showScreen('loginScreen');
+localStorage.removeItem('cs_token');
+state = { token:null, user:null, currentRun:null, questions:[], sources:[], suppliers:[], uploadedFile:null };
+showScreen('loginScreen');
 }
 
 async function showForgot() {
-  const email = prompt('Enter your email address to receive a reset link:');
-  if (!email) return;
-  try {
-    await api('POST','/api/auth/forgot-password',{ email });
-    toast('✅ If this email exists a reset link has been sent');
-  } catch(e) { toast('Failed to send reset email','err'); }
+const email = prompt('Enter your email address to receive a reset link:');
+if (!email) return;
+try {
+await api('POST','/api/auth/forgot-password',{ email });
+toast('✅ If this email exists a reset link has been sent');
+} catch(e) { toast('Failed to send reset email','err'); }
 }
 
 function toggleUserMenu() { $('userMenu').classList.toggle('open'); }
@@ -937,43 +955,43 @@ document.addEventListener('click', e => { if (!$('tnUser')?.contains(e.target)) 
 // ══════════════════════════════════════════════════════════
 
 async function initApp() {
-  showScreen('appScreen');
-  const u = state.user;
+showScreen('appScreen');
+const u = state.user;
 
-  // Top nav
-  $('tnInitials').textContent = ((u.firstName||'?')[0]+(u.lastName||'?')[0]).toUpperCase();
+// Top nav
+$('tnInitials').textContent = ((u.firstName||'?')[0]+(u.lastName||'?')[0]).toUpperCase();
 
-  // Org branding
-  const orgDisplay = u.brandingName || u.orgName || 'My Organisation';
-  if (u.logoUrl) {
-    $('tnOrg').innerHTML = `<img class="tn-org-logo" src="${u.logoUrl}" alt="${orgDisplay}" onerror="this.style.display='none'"><span class="tn-org-name">${orgDisplay}</span>`;
-  } else {
-    $('tnOrg').innerHTML = `<span class="tn-org-name">${orgDisplay}</span>`;
-  }
+// Org branding
+const orgDisplay = u.brandingName || u.orgName || 'My Organisation';
+if (u.logoUrl) {
+$('tnOrg').innerHTML = `<img class="tn-org-logo" src="${u.logoUrl}" alt="${orgDisplay}" onerror="this.style.display='none'"><span class="tn-org-name">${orgDisplay}</span>`;
+} else {
+$('tnOrg').innerHTML = `<span class="tn-org-name">${orgDisplay}</span>`;
+}
 
-  // Usage bar
-  const pct = Math.round((u.limits.used/Math.max(u.limits.questionnaires,1))*100);
-  const fillCol = pct>=90?'var(--danger)':pct>=75?'var(--warning)':'var(--success)';
-  $('tnUsage').innerHTML = `<div class="tn-usage-bar"><div class="tn-usage-fill" style="width:${pct}%;background:${fillCol}"></div></div><span class="tn-usage-txt" style="color:${fillCol}">${u.limits.used}/${u.limits.questionnaires}</span>`;
+// Usage bar
+const pct = Math.round((u.limits.used/Math.max(u.limits.questionnaires,1))*100);
+const fillCol = pct>=90?'var(--danger)':pct>=75?'var(--warning)':'var(--success)';
+$('tnUsage').innerHTML = `<div class="tn-usage-bar"><div class="tn-usage-fill" style="width:${pct}%;background:${fillCol}"></div></div><span class="tn-usage-txt" style="color:${fillCol}">${u.limits.used}/${u.limits.questionnaires}</span>`;
 
-  // Show admin items if superadmin
-  if (u.role==='superadmin') {
-    $('nav-admin').style.display='flex';
-    $('adminMenuItem').style.display='flex';
-  }
+// Show admin items if superadmin
+if (u.role==='superadmin') {
+$('nav-admin').style.display='flex';
+$('adminMenuItem').style.display='flex';
+}
 
-  // Sidebar plan widget
-  const planNames = { starter:'Starter',professional:'Professional',enterprise:'Enterprise',unlimited:'Unlimited' };
-  $('sbPlan').innerHTML = `
-    <div class="sb-plan-name">${planNames[u.plan]||'Starter'} Plan</div>
-    <div class="sb-plan-bar"><div class="sb-plan-fill" style="width:${pct}%;background:${fillCol}"></div></div>
-    <div class="sb-plan-txt">${u.limits.used} of ${u.limits.questionnaires} used</div>
-    <button class="sb-upgrade" onclick="window.open('${window.UPGRADE_URL}','_blank')">Upgrade Plan</button>`;
+// Sidebar plan widget
+const planNames = { starter:'Starter',professional:'Professional',enterprise:'Enterprise',unlimited:'Unlimited' };
+$('sbPlan').innerHTML = `
+<div class="sb-plan-name">${planNames[u.plan]||'Starter'} Plan</div>
+<div class="sb-plan-bar"><div class="sb-plan-fill" style="width:${pct}%;background:${fillCol}"></div></div>
+<div class="sb-plan-txt">${u.limits.used} of ${u.limits.questionnaires} used</div>
+<button class="sb-upgrade" onclick="window.open('${window.UPGRADE_URL}','_blank')">Upgrade Plan</button>`;
 
-  // Load initial data
-  loadDashboard();
-  loadSources();
-  navigate('dashboard');
+// Load initial data
+loadDashboard();
+loadSources();
+navigate('dashboard');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -981,656 +999,8 @@ async function initApp() {
 // ══════════════════════════════════════════════════════════
 
 function navigate(view) {
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  const navEl=$(`nav-${view}`), viewEl=$(`view-${view}`);
-  if (navEl) navEl.classList.add('active');
-  if (viewEl) viewEl.classList.add('active');
-  const loaders={
-    dashboard:loadDashboard, history:loadHistory, suppliers:loadSuppliers,
-    assessments:loadAssessments, risk:loadRiskDashboard, knowledge:loadSources,
-    users:loadUsers, admin:loadAdmin
-  };
-  if (loaders[view]) loaders[view]();
-}
-
-// ══════════════════════════════════════════════════════════
-// DASHBOARD
-// ══════════════════════════════════════════════════════════
-
-async function loadDashboard() {
-  try {
-    const d = await api('GET','/api/dashboard');
-    const u = state.user;
-    const hr = new Date().getHours();
-    const greeting = hr<12?'Good morning':'hr<17'?'Good afternoon':'Good evening';
-    $('dashGreeting').textContent = `${greeting}, ${u.firstName||u.orgName}`;
-
-    $('dashStats').innerHTML = `
-      <div class="stat-card blue"><div class="stat-val">${d.stats.totalRuns}</div><div class="stat-lbl">Total Questionnaires</div></div>
-      <div class="stat-card green"><div class="stat-val">${d.stats.avgConfidence}%</div><div class="stat-lbl">Avg Confidence</div></div>
-      <div class="stat-card blue"><div class="stat-val">${d.stats.thisMonth}</div><div class="stat-lbl">This Month</div></div>
-      <div class="stat-card ${d.stats.criticalSuppliers>0?'red':'green'}"><div class="stat-val">${d.stats.totalSuppliers}</div><div class="stat-lbl">Suppliers (${d.stats.criticalSuppliers} Critical)</div></div>
-      <div class="stat-card amber"><div class="stat-val">${d.stats.unassessedSuppliers}</div><div class="stat-lbl">Unassessed Suppliers</div></div>
-      <div class="stat-card purple"><div class="stat-val">${d.stats.knowledgeSources}</div><div class="stat-lbl">ISMS Sources</div></div>`;
-
-    // Pending assessments
-    if (d.pendingAssessments?.length) {
-      $('dashPending').innerHTML = d.pendingAssessments.map(a=>`
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-          <div><div style="font-size:13px;font-weight:600">${a.supplier_name||a.supplier_email}</div>
-          <div style="font-size:11px;color:var(--text-dim)">Sent ${fmtDate(a.created_at)}</div></div>
-          <span class="badge badge-amber">${a.status}</span>
-        </div>`).join('');
-      if (d.pendingAssessments.length>0) { $('pendingBadge').textContent=d.pendingAssessments.length; $('pendingBadge').style.display='block'; }
-    }
-
-    // Usage widget
-    const pct = d.usage.questionnaires.pct;
-    const fillCol = pct>=90?'var(--danger)':pct>=75?'var(--warning)':'var(--success)';
-    $('dashUsage').innerHTML = `
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:13px;font-weight:600">${d.usage.questionnaires.used} used</span>
-        <span style="font-size:13px;color:var(--text-dim)">${d.usage.questionnaires.limit} limit</span>
-      </div>
-      <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px">
-        <div style="height:100%;width:${pct}%;background:${fillCol};border-radius:4px;transition:width 0.5s"></div>
-      </div>
-      <div style="font-size:12px;color:var(--text-dim)">${d.usage.questionnaires.limit-d.usage.questionnaires.used} questionnaires remaining · Resets annually on renewal</div>
-      ${pct>=80?`<button class="btn btn-blue btn-sm" style="margin-top:10px;width:100%;justify-content:center" onclick="window.open('${window.UPGRADE_URL}','_blank')">Upgrade Plan →</button>`:''}`;
-  } catch(e) { console.error(e); }
-}
-
-// ══════════════════════════════════════════════════════════
-// QUESTIONNAIRE
-// ══════════════════════════════════════════════════════════
-
-// File upload
-const uz=$('uz'), fi=$('fi');
-uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('over');});
-uz.addEventListener('dragleave',()=>uz.classList.remove('over'));
-uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('over');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
-fi.addEventListener('change',()=>{if(fi.files[0])handleFile(fi.files[0]);});
-
-function handleFile(f) {
-  state.uploadedFile = f;
-  const ext=f.name.split('.').pop().toLowerCase();
-  const icons={docx:'📄',xlsx:'📊',pdf:'📕',txt:'📝',csv:'📊'};
-  $('fileInfo').style.display='block';
-  $('fileName').textContent=f.name;
-  $('fileSize').textContent=fmtSize(f.size)+' · .'+ext.toUpperCase();
-  $('runBtn').disabled=false;
-  $('runNote').style.display='none';
-  toast(`✅ Loaded: ${f.name}`,'ok');
-}
-
-async function loadSources() {
-  try {
-    const sources = await api('GET','/api/knowledge');
-    state.sources = sources;
-    // Sidebar source list (for questionnaire view)
-    $('sourceList').innerHTML = sources.length ?
-      sources.map(s=>`<div style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--glass);border:1px solid var(--border);border-radius:6px;font-size:11px;">
-        <div style="width:6px;height:6px;border-radius:50%;background:${s.status==='connected'?'var(--success)':'var(--danger)'};flex-shrink:0;"></div>
-        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.name}</span>
-        <span style="color:var(--text-dim)">${s.doc_count||0} docs</span>
-      </div>`).join('') :
-      '<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:10px">No sources connected.<br><a href="#" onclick="navigate(\'knowledge\')" style="color:var(--blue)">Add a source →</a></div>';
-    $('sourceCount').textContent = sources.length ? `${sources.filter(s=>s.status==='connected').length} sources connected` : 'Demo mode — connect SharePoint for real answers';
-
-    // Full source list (knowledge view)
-    $('sourceListFull').innerHTML = sources.length ?
-      sources.map(s=>`<div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--glass);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">
-        <span style="font-size:24px">${s.type==='sharepoint'?'🏢':s.type==='confluence'?'📘':'🌐'}</span>
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:600;color:#fff">${s.name}</div>
-          <div style="font-size:12px;color:var(--text-dim)">${s.site_url||s.type} · ${s.doc_count||0} documents · Last scanned ${fmtDate(s.last_scanned)}</div>
-        </div>
-        <span class="badge ${s.status==='connected'?'badge-green':'badge-red'}">${s.status}</span>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteSource('${s.id}')">🗑</button>
-      </div>`).join('') :
-      '<div class="empty"><div class="empty-ico">🔗</div><h3>No sources connected</h3><p>Add your SharePoint ISMS library to get AI-powered answers</p><button class="btn btn-blue" style="margin-top:14px" onclick="showAddSource()">+ Add Source</button></div>';
-  } catch(e) { console.error(e); }
-}
-
-async function runAnalysis() {
-  if (!state.uploadedFile) return;
-  const me = await api('GET','/api/auth/me').catch(()=>state.user);
-  if (me.limits.used>=me.limits.questionnaires&&me.limits.questionnaires!==999999) {
-    $('limitBanner').style.display='block'; $('qRunWrap').style.display='none'; return;
-  }
-  $('runBtn').disabled=true;
-  $('runBtn').innerHTML='<div class="spin"></div> Analysing...';
-  $('emptyQ').style.display='none';
-  $('qList').style.display='block';
-  $('qList').innerHTML='';
-  $('exportBar').classList.remove('show');
-  state.questions=[]; state.currentRun=null;
-  setProgress(5);
-  try {
-    // Start run
-    const { runId, sources } = await api('POST','/api/questionnaires/run',{
-      fileName:state.uploadedFile.name, title:state.uploadedFile.name,
-      sourceIds:state.sources.map(s=>s.id)
-    });
-    state.currentRun = runId;
-    setProgress(15);
-    // Extract questions via Claude
-    toast('🔍 Extracting questions from questionnaire...','ok');
-    const questions = await extractQuestions();
-    state.questions = questions;
-    for(let i=0;i<questions.length;i++) {
-      setProgress(15+Math.round((i/questions.length)*75));
-      renderPlaceholder(questions[i],i);
-      await answerQuestion(questions[i],i,runId,sources);
-      await new Promise(r=>setTimeout(r,150));
-    }
-    // Complete run
-    await api('PATCH',`/api/questionnaires/runs/${runId}/complete`,{});
-    setProgress(100);
-    $('exportBar').classList.add('show');
-    toast(`✅ ${questions.length} questions answered — download your report above!`,'ok');
-    loadDashboard();
-    await new Promise(r=>setTimeout(r,800));
-    setProgress(0);
-  } catch(e) {
-    if (e.message.includes('LIMIT_REACHED')||e.message.includes('limit')) {
-      $('limitBanner').style.display='block'; $('qRunWrap').style.display='none';
-    } else { toast('❌ '+e.message,'err'); }
-  }
-  $('runBtn').disabled=false;
-  $('runBtn').innerHTML='▶ Re-Analyse';
-}
-
-async function extractQuestions() {
-  const org=state.user?.orgName||'the organisation';
-  const sources=state.sources.map(s=>s.name).join(', ')||'ISMS library';
-  const prompt=`You answer security questionnaires for ${org}. ISMS sources: ${sources}. File: "${state.uploadedFile?.name}". Generate 8 realistic security questionnaire questions covering different topics (access control, encryption, incident response, risk, data protection, BCP, vulnerability management, governance). Return ONLY a JSON array, no backticks:\n[{"id":1,"question":"text","category":"category","type":"yesno|text|evidence"}]`;
-  const raw=await callClaude(prompt);
-  try{return JSON.parse(raw.replace(/```json|```/g,'').trim()).map((q,i)=>({...q,id:i+1,answer:null,confidence:null,sources:[],improvements:[]}));}
-  catch{return [{id:1,question:"Do you maintain a documented ISMS?",category:"Governance",type:"yesno"},{id:2,question:"Describe your access control policy including MFA.",category:"Access Control",type:"text"},{id:3,question:"What encryption standards apply to data at rest and transit?",category:"Cryptography",type:"text"},{id:4,question:"Describe your incident response process.",category:"Incident Response",type:"text"},{id:5,question:"How do you classify sensitive data?",category:"Data Protection",type:"text"},{id:6,question:"What are your RTO/RPO targets?",category:"Business Continuity",type:"text"},{id:7,question:"Describe your vulnerability scanning and patch management.",category:"Vulnerability Management",type:"text"},{id:8,question:"How do you assess third-party supplier risk?",category:"Third-Party Risk",type:"text"}].map(q=>({...q,answer:null,confidence:null,sources:[],improvements:[]}));}
-}
-
-async function answerQuestion(q,i,runId,sources) {
-  const srcCtx=(sources||[]).map(s=>`Library: "${s.name}" (${s.library_name||s.site_url||'SharePoint'})`).join('\n')||'ISMS policies library';
-  const org=state.user?.orgName||'the organisation';
-  const prompt=`You answer security questionnaires for ${org}.\nISMS sources:\n${srcCtx}\n\nQ${q.id} [${q.category}]: "${q.question}"\n\nReturn ONLY JSON (no backticks):\n{"answer":"3-5 sentence professional answer","confidence":85,"reasoning":"why this confidence","sources":[{"document":"doc name","section":"section name","relevance":"High|Medium|Low"}],"improvements":[{"action":"specific action","impact":"High|Medium","effort":"Low|Medium","what_to_add":"what to add to ISMS"}]}`;
-  try {
-    const raw=await callClaude(prompt);
-    const r=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    state.questions[i]={...state.questions[i],...r};
-    // Save to backend
-    await api('POST',`/api/questionnaires/runs/${runId}/questions`,{
-      questionNum:q.id,questionText:q.question,category:q.category,
-      questionType:q.type,answer:r.answer,confidence:r.confidence,
-      reasoning:r.reasoning,sources:r.sources,improvements:r.improvements
-    });
-  } catch {
-    state.questions[i].answer='Unable to generate — please complete manually.';
-    state.questions[i].confidence=0;state.questions[i].sources=[];state.questions[i].improvements=[];
-  }
-  renderAnswered(i);
-}
-
-// ── RENDER Q CARDS ────────────────────────────────────────
-function renderPlaceholder(q,i) {
-  const el=document.createElement('div');
-  el.className='qcard';el.id='qc-'+i;
-  el.style.animationDelay=(i*40)+'ms';
-  el.innerHTML=`<div class="qhead" onclick="toggleQ(${i})">
-    <div class="qnum">Q${q.id}</div>
-    <div class="qinfo"><div class="qtxt">${q.question}</div><div style="display:flex;gap:5px;margin-top:4px"><span class="qcat">${q.category}</span><span class="qcat">${q.type}</span></div></div>
-    <div class="qright" id="qr-${i}"><div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--warning)"><div class="spin"></div>Searching ISMS...</div><svg class="chev" id="cv-${i}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
-  </div><div class="qbody" id="qb-${i}"></div>`;
-  $('qList').appendChild(el);
-}
-
-function renderAnswered(i) {
-  const q=state.questions[i];const c=q.confidence||0;
-  const cls=c>=75?'conf-h':c>=50?'conf-m':'conf-l';
-  const fillCol=c>=75?'var(--success)':c>=50?'var(--warning)':'var(--danger)';
-  if(c>=75)$('qc-'+i).classList.add('high');
-  else if(c<50)$('qc-'+i).classList.add('low');
-  const qr=$('qr-'+i);qr.innerHTML='';
-  const conf=document.createElement('div');
-  conf.className=`conf ${cls}`;
-  conf.innerHTML=`<div class="cmeter"><div class="cfill" style="width:${c}%;background:${fillCol}"></div></div>${c}%`;
-  qr.insertBefore(conf,$('cv-'+i));
-  const srcs=(q.sources||[]).map(s=>`<div class="src-row">
-    <div class="src-ico ${s.document?.endsWith('.docx')?'':''}">📄</div>
-    <div style="flex:1"><div style="font-size:11px;font-weight:600;color:#fff">${s.document||'ISMS Library'}</div>
-    <div style="font-size:11px;color:var(--text-dim)">${s.section||''} ${s.excerpt?'— '+s.excerpt:''}</div></div>
-    <span class="badge badge-${s.relevance==='High'?'green':s.relevance==='Medium'?'amber':'grey'}">${s.relevance||'Med'}</span>
-  </div>`).join('');
-  const imps=(q.improvements||[]).slice(0,3).map((im,idx)=>`<div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;font-size:11px;">
-    <div style="min-width:17px;height:17px;border-radius:50%;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--warning)">${idx+1}</div>
-    <div><div style="font-weight:600;color:#fff;margin-bottom:2px">${im.action}</div>
-    ${im.what_to_add?`<div style="color:var(--text-dim)">Add: ${im.what_to_add}</div>`:''}
-    <div style="display:flex;gap:5px;margin-top:3px"><span class="badge badge-${im.impact==='High'?'red':im.impact==='Medium'?'amber':'grey'}">Impact: ${im.impact}</span><span class="badge badge-${im.effort==='Low'?'green':im.effort==='Medium'?'amber':'red'}">Effort: ${im.effort}</span></div></div>
-  </div>`).join('');
-  $('qb-'+i).innerHTML=`
-    <div class="qlbl">✏️ Generated Answer</div>
-    <div class="abox" contenteditable="true" id="an-${i}">${q.answer||'No answer generated'}</div>
-    ${q.reasoning?`<div class="qlbl">🧠 Reasoning</div><div class="rbox">${q.reasoning}</div>`:''}
-    ${srcs?`<div class="qlbl">📚 ISMS Sources Referenced</div>${srcs}`:''}
-    ${imps&&c<100?`<div class="qlbl">⚡ Improvement Actions</div><div class="imp-box ${c>=75?'good':''}">${imps}</div>`:''}`;
-  const ae=$('an-'+i);
-  if(ae) ae.addEventListener('input',()=>{state.questions[i].answer=ae.textContent;});
-  if(i===0) toggleQ(0);
-}
-
-function toggleQ(i){const b=$('qb-'+i),c=$('cv-'+i);if(!b)return;b.classList.toggle('open');if(c)c.classList.toggle('open');}
-
-// ══════════════════════════════════════════════════════════
-// HISTORY
-// ══════════════════════════════════════════════════════════
-async function loadHistory() {
-  try {
-    const runs = await api('GET','/api/questionnaires');
-    $('historyBody').innerHTML = runs.length ?
-      runs.map(r=>`<tr>
-        <td>${fmtDate(r.created_at)}</td>
-        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.file_name||r.title}</td>
-        <td>${r.total_questions}</td>
-        <td>${confBadge(r.avg_confidence)}</td>
-        <td><span class="badge badge-green">Completed</span></td>
-        <td><button class="btn btn-outline btn-sm" onclick="viewRun('${r.id}')">View</button></td>
-      </tr>`).join('') :
-      '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-dim)">No questionnaires run yet. Go to Questionnaires to get started.</td></tr>';
-  } catch(e) { console.error(e); }
-}
-
-// ══════════════════════════════════════════════════════════
-// SUPPLIERS
-// ══════════════════════════════════════════════════════════
-async function loadSuppliers() {
-  try {
-    const suppliers = await api('GET','/api/suppliers');
-    state.suppliers = suppliers;
-    $('suppliersBody').innerHTML = suppliers.length ?
-      suppliers.map(s=>`<tr>
-        <td><div style="font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text-dim)">${s.domain||''}</div></td>
-        <td>${s.category||'—'}</td>
-        <td><span class="badge badge-${s.criticality==='critical'?'red':s.criticality==='high'?'amber':s.criticality==='medium'?'blue':'grey'}">${s.criticality||'medium'}</span></td>
-        <td>${riskBadge(s.risk_level)}</td>
-        <td>${s.overall_score?confBadge(s.overall_score):'<span class="badge badge-grey">Not assessed</span>'}</td>
-        <td>${fmtDate(s.last_assessed)}</td>
-        <td style="display:flex;gap:5px">
-          <button class="btn btn-outline btn-sm" onclick="sendToSupplier('${s.id}','${s.contact_email||''}','${s.name}')">📤 Assess</button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteSupplier('${s.id}')">🗑</button>
-        </td>
-      </tr>`).join('') :
-      '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-dim)">No suppliers added yet.</td></tr>';
-  } catch(e) { console.error(e); }
-}
-
-function showAddSupplier(){openModal('modalSupplier');}
-async function addSupplier(){
-  try{
-    await api('POST','/api/suppliers',{
-      name:$('supName').value,domain:$('supDomain').value,
-      contactName:$('supContact').value,contactEmail:$('supEmail').value,
-      category:$('supCat').value,criticality:$('supCrit').value,notes:$('supNotes').value
-    });
-    closeModal('modalSupplier');toast('✅ Supplier added');loadSuppliers();
-  }catch(e){toast('❌ '+e.message,'err');}
-}
-async function deleteSupplier(id){
-  if(!confirm('Delete this supplier?'))return;
-  try{await api('DELETE',`/api/suppliers/${id}`);toast('Supplier deleted');loadSuppliers();}
-  catch(e){toast('❌ '+e.message,'err');}
-}
-function sendToSupplier(id,email,name){
-  $('assSupplier').value=id;$('assEmail').value=email;$('assName').value=name;
-  openModal('modalAssessment');
-}
-
-// ══════════════════════════════════════════════════════════
-// ASSESSMENTS
-// ══════════════════════════════════════════════════════════
-async function loadAssessments(){
-  try{
-    const ass=await api('GET','/api/assessments');
-    $('assessmentsBody').innerHTML=ass.length?ass.map(a=>`<tr>
-      <td style="font-weight:600">${a.supplier_name||'Unknown'}</td>
-      <td style="font-size:12px;color:var(--text-dim)">${a.supplier_email}</td>
-      <td>${fmtDate(a.created_at)}</td>
-      <td><span class="badge badge-${a.status==='completed'?'green':a.status==='in_progress'?'blue':'amber'}">${a.status}</span></td>
-      <td>${a.score?confBadge(a.score):'—'}</td>
-      <td>${a.risk_level?riskBadge(a.risk_level):'—'}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="copyAssessLink('${a.secure_token}')">Copy Link</button></td>
-    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-dim)">No assessments sent yet.</td></tr>';
-  }catch(e){console.error(e);}
-}
-
-function showSendAssessment(){
-  // Populate supplier dropdown
-  $('assSupplier').innerHTML='<option value="">Select supplier...</option>'+state.suppliers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  openModal('modalAssessment');
-}
-async function sendAssessment(){
-  try{
-    const suppId=$('assSupplier').value;
-    const {assessmentUrl}=await api('POST','/api/assessments/send',{
-      supplierId:suppId||null,supplierEmail:$('assEmail').value,
-      supplierName:$('assName').value,title:$('assTitle').value
-    });
-    closeModal('modalAssessment');
-    toast('✅ Assessment sent! Link: '+assessmentUrl,'ok');
-    loadAssessments();
-  }catch(e){toast('❌ '+e.message,'err');}
-}
-function copyAssessLink(token){
-  const url=`${window.location.origin}/assess/${token}`;
-  navigator.clipboard.writeText(url).then(()=>toast('✅ Assessment link copied to clipboard'));
-}
-
-// ══════════════════════════════════════════════════════════
-// RISK DASHBOARD
-// ══════════════════════════════════════════════════════════
-async function loadRiskDashboard(){
-  try{
-    const d=await api('GET','/api/suppliers/dashboard');
-    const s=d.summary;
-    $('riskStats').innerHTML=`
-      <div class="stat-card blue"><div class="stat-val">${s.total||0}</div><div class="stat-lbl">Total Suppliers</div></div>
-      <div class="stat-card red"><div class="stat-val">${s.critical||0}</div><div class="stat-lbl">Critical Risk</div></div>
-      <div class="stat-card amber"><div class="stat-val">${s.high||0}</div><div class="stat-lbl">High Risk</div></div>
-      <div class="stat-card green"><div class="stat-val">${s.low||0}</div><div class="stat-lbl">Low Risk</div></div>
-      <div class="stat-card purple"><div class="stat-val">${Math.round(s.avg_score||0)}%</div><div class="stat-lbl">Avg Score</div></div>`;
-    $('riskBody').innerHTML=(d.recentAssessments||[]).length?d.recentAssessments.map(r=>`<tr>
-      <td style="font-weight:600">${r.name}</td>
-      <td>${r.score?confBadge(r.score):'—'}</td>
-      <td>${riskBadge(r.risk_level)}</td>
-      <td>${fmtDate(r.completed_at)}</td>
-    </tr>`).join(''):'<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text-dim)">No assessments completed yet.</td></tr>';
-  }catch(e){console.error(e);}
-}
-
-// ══════════════════════════════════════════════════════════
-// KNOWLEDGE SOURCES
-// ══════════════════════════════════════════════════════════
-function showAddSource(){openModal('modalSource');}
-function toggleSrcFields(){
-  const t=$('srcType').value;$('spFields').style.display=t==='sharepoint'?'block':'none';
-}
-async function addSource(){
-  try{
-    await api('POST','/api/knowledge',{
-      name:$('srcName').value,type:$('srcType').value,
-      siteUrl:$('srcUrl').value,libraryName:$('srcLib').value,
-      tenantId:$('srcTenant').value,clientId:$('srcClient').value,clientSecret:$('srcSecret').value
-    });
-    closeModal('modalSource');toast('✅ Source connected');loadSources();
-  }catch(e){toast('❌ '+e.message,'err');}
-}
-async function deleteSource(id){
-  if(!confirm('Remove this knowledge source?'))return;
-  try{await api('DELETE',`/api/knowledge/${id}`);toast('Source removed');loadSources();}
-  catch(e){toast('❌ '+e.message,'err');}
-}
-
-// ══════════════════════════════════════════════════════════
-// USERS
-// ══════════════════════════════════════════════════════════
-async function loadUsers(){
-  try{
-    const users=await api('GET','/api/users');
-    const roleLabels={superadmin:'Super Admin',org_admin:'Admin',manager:'Manager',user:'User'};
-    $('usersBody').innerHTML=users.length?users.map(u=>`<tr>
-      <td style="font-weight:600">${u.first_name||''} ${u.last_name||''}</td>
-      <td style="font-size:12px;color:var(--text-dim)">${u.email}</td>
-      <td>${planBadge(u.role)}</td>
-      <td><span class="badge badge-${u.status==='active'?'green':'red'}">${u.status}</span></td>
-      <td>${fmtDate(u.last_login)}</td>
-      <td style="display:flex;gap:5px">
-        ${u.status==='active'?`<button class="btn btn-danger btn-sm" onclick="updateUser('${u.id}','suspended')">Suspend</button>`:`<button class="btn btn-green btn-sm" onclick="updateUser('${u.id}','active')">Activate</button>`}
-      </td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-dim)">No users found.</td></tr>';
-  }catch(e){console.error(e);}
-}
-function showInviteUser(){openModal('modalUser');}
-async function inviteUser(){
-  try{
-    await api('POST','/api/users/invite',{inviteEmail:$('invEmail').value,firstName:$('invFirst').value,lastName:$('invLast').value,role:$('invRole').value});
-    closeModal('modalUser');toast('✅ Invitation sent');loadUsers();
-  }catch(e){toast('❌ '+e.message,'err');}
-}
-async function updateUser(id,status){
-  try{await api('PATCH',`/api/users/${id}`,{status});toast('✅ User updated');loadUsers();}
-  catch(e){toast('❌ '+e.message,'err');}
-}
-
-// ══════════════════════════════════════════════════════════
-// ADMIN PANEL (Super Admin)
-// ══════════════════════════════════════════════════════════
-async function loadAdmin(){
-  try{
-    const [stats,orgs]=await Promise.all([api('GET','/api/admin/stats'),api('GET','/api/admin/organisations')]);
-    $('adminStats').innerHTML=`
-      <div class="stat-card blue"><div class="stat-val">${stats.organisations.total}</div><div class="stat-lbl">Total Clients</div></div>
-      <div class="stat-card green"><div class="stat-val">${stats.organisations.active}</div><div class="stat-lbl">Active Clients</div></div>
-      <div class="stat-card purple"><div class="stat-val">${stats.users.total}</div><div class="stat-lbl">Total Users</div></div>
-      <div class="stat-card blue"><div class="stat-val">${stats.questionnaires.total}</div><div class="stat-lbl">Questionnaires Run</div></div>
-      <div class="stat-card amber"><div class="stat-val">${stats.questionnaires.avgConfidence}%</div><div class="stat-lbl">Avg Confidence</div></div>
-      <div class="stat-card green"><div class="stat-val">${stats.suppliers.total}</div><div class="stat-lbl">Total Suppliers</div></div>`;
-    $('adminOrgsBody').innerHTML=orgs.length?orgs.map(o=>`<tr>
-      <td><div style="font-weight:600">${o.name}</div><div style="font-size:11px;color:var(--text-dim)">${o.domain||''}</div></td>
-      <td>${planBadge(o.plan)}</td>
-      <td><div style="font-size:12px">${o.questionnaires_used}/${o.questionnaire_limit}</div>
-        <div style="height:4px;background:var(--border);border-radius:2px;margin-top:4px;width:80px;overflow:hidden">
-          <div style="height:100%;width:${Math.round((o.questionnaires_used/Math.max(o.questionnaire_limit,1))*100)}%;background:var(--blue)"></div>
-        </div></td>
-      <td>${o.user_count||0}</td>
-      <td><span class="badge badge-${o.status==='active'?'green':o.status==='suspended'?'amber':'red'}">${o.status}</span></td>
-      <td style="display:flex;gap:5px;flex-wrap:wrap">
-        <button class="btn btn-outline btn-sm" onclick="topupOrg('${o.id}','${o.name}')">+10 Q</button>
-        <button class="btn btn-${o.status==='active'?'danger':'green'} btn-sm" onclick="toggleOrg('${o.id}','${o.status}')">
-          ${o.status==='active'?'Suspend':'Activate'}</button>
-      </td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-dim)">No client organisations yet.</td></tr>';
-  }catch(e){console.error(e);}
-}
-function showCreateOrg(){openModal('modalOrg');}
-async function createOrg(){
-  try{
-    const r=await api('POST','/api/admin/organisations',{
-      orgName:$('orgName').value,domain:$('orgDomain').value,plan:$('orgPlan').value,
-      adminEmail:$('orgEmail').value,adminFirstName:$('orgFirst').value,adminLastName:$('orgLast').value,
-      logoUrl:$('orgLogo').value,brandingName:$('orgBrand').value
-    });
-    closeModal('modalOrg');toast(`✅ Organisation created! Temp password: ${r.tempPassword}`,'ok');loadAdmin();
-  }catch(e){toast('❌ '+e.message,'err');}
-}
-async function topupOrg(id,name){
-  if(!confirm(`Add 10 questionnaires to ${name}?`))return;
-  try{await api('POST',`/api/admin/organisations/${id}/topup`,{add:10});toast(`✅ 10 questionnaires added to ${name}`);loadAdmin();}
-  catch(e){toast('❌ '+e.message,'err');}
-}
-async function toggleOrg(id,status){
-  const newStatus=status==='active'?'suspended':'active';
-  if(!confirm(`${newStatus==='suspended'?'Suspend':'Activate'} this organisation?`))return;
-  try{await api('PATCH',`/api/admin/organisations/${id}`,{status:newStatus});toast(`✅ Organisation ${newStatus}`);loadAdmin();}
-  catch(e){toast('❌ '+e.message,'err');}
-}
-
-// ══════════════════════════════════════════════════════════
-// SUPPLIER ASSESSMENT PORTAL (public)
-// ══════════════════════════════════════════════════════════
-async function loadSupplierPortal(token){
-  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
-  $('supplierPortal').classList.add('active');
-  try{
-    const {assessment:a,completed}=await api('GET',`/api/assessments/token/${token}`);
-    $('spOrgName').textContent=`Security Assessment from ${a.org_name}`;
-    if(a.logo_url){$('spLogoImg').src=a.logo_url;$('spOrgLogo').style.display='block';}
-    if(completed){
-      $('spBody').innerHTML=`<div class="sp-card" style="text-align:center">
-        <div style="font-size:48px;margin-bottom:16px">✅</div>
-        <h2 style="color:#fff;margin-bottom:8px">Assessment Submitted</h2>
-        <p style="color:var(--text-dim)">Thank you. Your assessment has been submitted to ${a.org_name}.<br>Powered by CybeSure SecureAnswer</p>
-      </div>`;return;
-    }
-    // Generate assessment questions
-    const questions=[
-      {q:"Does your organisation maintain an Information Security Policy?",cat:"Governance"},
-      {q:"Describe your access control and user authentication processes.",cat:"Access Control"},
-      {q:"What encryption standards do you apply to data at rest and in transit?",cat:"Cryptography"},
-      {q:"Describe your incident response and breach notification process.",cat:"Incident Response"},
-      {q:"How do you classify and handle sensitive or personal data?",cat:"Data Protection"},
-      {q:"What are your business continuity and disaster recovery arrangements?",cat:"Business Continuity"},
-      {q:"How do you manage software vulnerabilities and security patches?",cat:"Vulnerability Management"},
-      {q:"Do you hold any security certifications (ISO 27001, Cyber Essentials, SOC2)?",cat:"Governance"},
-    ];
-    const answers=questions.map(q=>({question:q.q,category:q.cat,answer:'',confidence:0}));
-    let current=0;
-    function renderQ(){
-      $('spProgFill').style.width=`${(current/questions.length)*100}%`;
-      $('spBody').innerHTML=`
-        <div style="margin-bottom:20px">
-          <div style="font-size:12px;color:var(--text-dim);margin-bottom:4px">Question ${current+1} of ${questions.length} · ${questions[current].cat}</div>
-          <div style="font-size:13px;color:var(--text-dim)">Complete all questions then click Submit. Progress is not saved automatically.</div>
-        </div>
-        ${questions.map((q,i)=>`
-        <div class="sp-card" style="${i!==current?'opacity:0.4;pointer-events:none':''}">
-          <div class="sp-q-num">Q${i+1} · ${q.cat}</div>
-          <div class="sp-q-txt">${q.q}</div>
-          <textarea class="sp-textarea" id="spa-${i}" placeholder="Your answer..." onchange="answers[${i}].answer=this.value">${answers[i].answer}</textarea>
-          <div style="margin-top:10px;font-size:11px;color:var(--text-dim);margin-bottom:6px">Confidence in this answer:</div>
-          <div class="sp-conf">
-            <button class="sp-conf-btn ${answers[i].confidence===85?'sel-h':''}" onclick="setConf(${i},85)">✅ High (85%)</button>
-            <button class="sp-conf-btn ${answers[i].confidence===60?'sel-m':''}" onclick="setConf(${i},60)">⚠️ Medium (60%)</button>
-            <button class="sp-conf-btn ${answers[i].confidence===30?'sel-l':''}" onclick="setConf(${i},30)">❌ Low (30%)</button>
-          </div>
-        </div>`).join('')}
-        <div style="display:flex;gap:10px;margin-top:20px">
-          ${current>0?`<button class="btn btn-outline" style="flex:1;justify-content:center" onclick="spPrev()">← Previous</button>`:''}
-          ${current<questions.length-1?`<button class="btn btn-blue" style="flex:1;justify-content:center" onclick="spNext()">Next →</button>`
-          :`<button class="btn btn-blue" style="flex:1;justify-content:center" onclick="spSubmit('${token}',answers)">Submit Assessment ✓</button>`}
-        </div>
-        <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--text-dim)">Powered by CybeSure SecureAnswer · cybersure.co.uk</div>`;
-    }
-    window.setConf=(i,v)=>{answers[i].confidence=v;renderQ();};
-    window.spNext=()=>{answers[current].answer=$(`spa-${current}`)?.value||'';if(current<questions.length-1){current++;renderQ();}};
-    window.spPrev=()=>{answers[current].answer=$(`spa-${current}`)?.value||'';if(current>0){current--;renderQ();}};
-    window.spSubmit=async(t,ans)=>{
-      ans[current].answer=$(`spa-${current}`)?.value||'';
-      if(ans.some(a=>!a.answer)){toast('⚠️ Please answer all questions before submitting','warn');return;}
-      try{
-        await api('POST',`/api/assessments/token/${t}/submit`,{answers:ans});
-        $('spBody').innerHTML=`<div class="sp-card" style="text-align:center">
-          <div style="font-size:56px;margin-bottom:16px">✅</div>
-          <h2 style="color:#fff;margin-bottom:10px">Thank you!</h2>
-          <p style="color:var(--text-dim);line-height:1.7">Your assessment has been submitted successfully.<br>The results have been shared with ${a.org_name}.<br><br>Powered by CybeSure SecureAnswer</p>
-        </div>`;
-      }catch(e){toast('❌ '+e.message,'err');}
-    };
-    renderQ();
-  }catch(e){
-    $('spBody').innerHTML=`<div class="sp-card" style="text-align:center">
-      <div style="font-size:48px;margin-bottom:14px">⚠️</div>
-      <h2 style="color:var(--danger);margin-bottom:8px">Link Invalid or Expired</h2>
-      <p style="color:var(--text-dim)">${e.message||'Please contact the organisation that sent this assessment.'}</p>
-    </div>`;
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-// EXPORTS
-// ══════════════════════════════════════════════════════════
-async function exportWord(){
-  if(!state.questions.length){toast('⚠️ No questions to export','err');return;}
-  toast('📄 Building Word document...','ok');
-  try{
-    const{Document,Packer,Paragraph,TextRun,AlignmentType}=docx;
-    const cc=c=>c>=75?'006400':c>=50?'8B6914':'CC0000';
-    const children=[
-      new Paragraph({children:[new TextRun({text:'Cybe',bold:true,size:48,color:'0d1b3e',font:'Calibri'}),new TextRun({text:'Sure',bold:true,size:48,color:'4a9edd',font:'Calibri'})],alignment:AlignmentType.CENTER,spacing:{after:80}}),
-      new Paragraph({children:[new TextRun({text:'SecureAnswer — Completed Questionnaire',bold:true,size:32,color:'0d1b3e',font:'Calibri'})],alignment:AlignmentType.CENTER,spacing:{after:300}}),
-      new Paragraph({children:[new TextRun({text:`Organisation: ${state.user?.orgName||''} | Generated: ${new Date().toLocaleDateString('en-GB')} | Questions: ${state.questions.length}`,size:20,color:'666666',font:'Calibri'})],spacing:{after:400}}),
-    ];
-    state.questions.forEach(q=>{
-      const c=q.confidence||0;
-      children.push(
-        new Paragraph({children:[new TextRun({text:`Q${q.id}. ${q.question}`,bold:true,size:26,font:'Calibri'})],spacing:{before:300,after:80}}),
-        new Paragraph({children:[new TextRun({text:`Category: ${q.category} | Confidence: ${c}%`,size:19,color:cc(c),font:'Calibri'})],spacing:{after:100}}),
-        new Paragraph({children:[new TextRun({text:'Answer:',bold:true,size:22,font:'Calibri'})],spacing:{after:60}}),
-        new Paragraph({children:[new TextRun({text:q.answer||'Not answered',size:21,font:'Calibri'})],spacing:{after:80}}),
-        ...(q.sources?.length?[new Paragraph({children:[new TextRun({text:'Sources: '+q.sources.map(s=>`${s.document} › ${s.section}`).join(' | '),size:19,color:'0078d4',font:'Calibri'})],spacing:{after:60}})]:[]),
-        new Paragraph({children:[new TextRun({text:'─'.repeat(80),color:'cccccc',size:14})],spacing:{after:40}}),
-      );
-    });
-    children.push(new Paragraph({children:[new TextRun({text:'Generated by CybeSure SecureAnswer | cybersure.co.uk',size:16,color:'999999',italics:true,font:'Calibri'})],alignment:AlignmentType.CENTER,spacing:{before:400}}));
-    const doc=new Document({sections:[{properties:{page:{margin:{top:900,bottom:900,left:1200,right:1200}}},children}]});
-    const blob=await Packer.toBlob(doc);dlBlob(blob,'CybeSure_SecureAnswer_'+today()+'.docx');
-    toast('✅ Word document downloaded','ok');
-  }catch(e){toast('❌ Export failed: '+e.message,'err');}
-}
-
-function exportExcel(){
-  if(!state.questions.length){toast('⚠️ No questions to export','err');return;}
-  const wb=XLSX.utils.book_new();
-  const d=[['CybeSure SecureAnswer — Completed Questionnaire'],[''],['Organisation:',state.user?.orgName||''],['Generated:',new Date().toLocaleDateString('en-GB')],[''],
-    ['#','Category','Type','Question','Answer','Confidence %','Level','Primary Source','Section']];
-  state.questions.forEach(q=>{const s=(q.sources||[])[0];const c=q.confidence||0;d.push([q.id,q.category,q.type,q.question,q.answer||'',c,c>=75?'High':c>=50?'Medium':'Low',s?s.document:'—',s?s.section:'—']);});
-  const ws=XLSX.utils.aoa_to_sheet(d);ws['!cols']=[{wch:4},{wch:22},{wch:10},{wch:55},{wch:70},{wch:13},{wch:8},{wch:35},{wch:25}];
-  XLSX.utils.book_append_sheet(wb,ws,'Answers');
-  const s2=[['Improvement Actions'],[''],['Q#','Category','Confidence','Action','What to Add','Impact','Effort']];
-  state.questions.forEach(q=>(q.improvements||[]).forEach((im,i)=>s2.push([i===0?q.id:'',i===0?q.category:'',i===0?q.confidence+'%':'',im.action,im.what_to_add||'',im.impact||'',im.effort||''])));
-  const ws2=XLSX.utils.aoa_to_sheet(s2);XLSX.utils.book_append_sheet(wb,ws2,'Improvements');
-  XLSX.writeFile(wb,'CybeSure_SecureAnswer_'+today()+'.xlsx');
-  toast('✅ Excel downloaded','ok');
-}
-
-function exportPDF(){
-  if(!state.questions.length){toast('⚠️ No questions to export','err');return;}
-  const avg=Math.round(state.questions.reduce((a,q)=>a+(q.confidence||0),0)/Math.max(state.questions.length,1));
-  const cc=c=>c>=75?'#006400':c>=50?'#8B6914':'#CC0000';
-  const rows=state.questions.map(q=>{const c=q.confidence||0;const srcs=(q.sources||[]).map(s=>`<span style="color:#0078d4;font-size:11px">📎 ${s.document} › ${s.section}</span>`).join('<br>');
-    return`<div style="margin-bottom:18px;padding:14px 16px;border:1px solid #dee6f0;border-radius:8px;page-break-inside:avoid">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <div><span style="background:#0d1b3e;color:#4a9edd;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:6px">Q${q.id}</span><span style="background:#e8f0ff;color:#0d2d5e;padding:2px 7px;border-radius:4px;font-size:11px">${q.category}</span></div>
-        <div style="background:${cc(c)};color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700">${c}% ${c>=75?'High':c>=50?'Medium':'Low'}</div>
-      </div>
-      <div style="font-weight:600;font-size:13px;color:#0d1b3e;margin-bottom:8px;line-height:1.5">${q.question}</div>
-      <div style="font-size:13px;line-height:1.75;color:#222;background:#f8faff;padding:11px 13px;border-radius:6px;border-left:3px solid #4a9edd;margin-bottom:${srcs?'7px':'0'}">${q.answer||'Not answered'}</div>
-      ${srcs?`<div>${srcs}</div>`:''}
-    </div>`;}).join('');
-  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>CybeSure SecureAnswer</title>
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Calibri,Arial,sans-serif;color:#222}@media print{.np{display:none!important}@page{margin:12mm;size:A4}}</style></head>
-    <body><div class="np" style="position:fixed;top:14px;right:14px;z-index:100;display:flex;gap:8px">
-      <button onclick="window.print()" style="background:#c00000;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700">🖨️ Save as PDF</button>
-      <button onclick="window.close()" style="background:#eee;color:#333;border:none;padding:10px 14px;border-radius:8px;cursor:pointer">✕</button></div>
-    <div style="background:#0d1b3e;padding:18px 26px;display:flex;justify-content:space-between;align-items:center">
-      <div><div style="font-size:22px;font-weight:800;color:#fff">Cybe<span style="color:#4a9edd">Sure</span></div><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7a90b8;margin-top:2px">SecureAnswer Report</div></div>
-      <div style="text-align:right"><div style="color:#4a9edd;font-size:13px;font-weight:700">${state.user?.orgName||''}</div><div style="color:#7a90b8;font-size:11px">${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div></div></div>
-    <div style="padding:12px 26px;background:#f0f6ff;border-bottom:2px solid #4a9edd;font-size:12px"><strong>Questions:</strong> ${state.questions.length} &nbsp;|&nbsp; <strong>Avg Confidence:</strong> <span style="color:#4a9edd;font-weight:700">${avg}%</span></div>
-    <div style="padding:20px 26px">${rows}</div>
-    <div style="padding:12px 26px;background:#f8faff;border-top:1px solid #e0e8f0;font-size:11px;color:#999;text-align:center">Generated by CybeSure SecureAnswer | cybersure.co.uk</div>
-    <script>window.onload=function(){setTimeout(function(){window.print();},700);};<\/script></body></html>`;
-  const w=window.open('','_blank');w.document.write(html);w.document.close();
-  toast('📕 PDF opened — click Save as PDF in the new window','ok');
-}
-
-function exportJSON(){
-  if(!state.questions.length){toast('⚠️ No questions to export','err');return;}
-  dlBlob(new Blob([JSON.stringify({generated_by:'CybeSure SecureAnswer',organisation:state.user?.orgName,generated_at:new Date().toISOString(),questions:state.questions},null,2)],{type:'application/json'}),'CybeSure_SecureAnswer_'+today()+'.json');
-  toast('✅ JSON downloaded','ok');
-}
-
-function dlBlob(blob,name){const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
-
-// ══════════════════════════════════════════════════════════
-// CLAUDE API
-// ══════════════════════════════════════════════════════════
-async function callClaude(prompt){
-  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
-  if(!r.ok)throw new Error('AI API error '+r.status);
-  const d=await r.json();return d.content.map(b=>b.type==='text'?b.text:'').join('');
-}
-
-// Enter to login
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&$('loginScreen').classList.contains('active'))doLogin();});
-</script>
-</body>
-</html>
+document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+const navEl=$(`nav-${view}`), viewEl=$(`view-${view}`);
+if (navEl) navEl.classList.add('active');
+if (viewEl) viewEl.classList.add('active')
