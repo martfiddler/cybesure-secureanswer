@@ -1004,3 +1004,30 @@ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
 const navEl=$(`nav-${view}`), viewEl=$(`view-${view}`);
 if (navEl) navEl.classList.add('active');
 if (viewEl) viewEl.classList.add('active')
+// load specific views based on navigation
+  if (view === 'history') loadHistory();
+  if (view === 'suppliers') loadSuppliers();
+  if (view === 'assessments') loadAssessments();
+  if (view === 'risk') loadRisk();
+  if (view === 'knowledge') loadKnowledgeFull();
+  if (view === 'users') loadUsers();
+  if (view === 'admin') loadAdmin();
+}
+
+async function loadDashboard() {
+  try {
+    const d = await api('GET', '/api/dashboard');
+    const u = state.user;
+    $('dashGreeting').textContent = `Welcome, ${u.firstName || 'there'} 👋`;
+    $('dashStats').innerHTML = `
+      <div class="stat-card blue"><div class="stat-val">${d.stats.totalRuns}</div><div class="stat-lbl">Questionnaires Run</div></div>
+      <div class="stat-card green"><div class="stat-val">${d.stats.avgConfidence}%</div><div class="stat-lbl">Avg Confidence</div></div>
+      <div class="stat-card amber"><div class="stat-val">${d.stats.thisMonth}</div><div class="stat-lbl">This Month</div></div>
+      <div class="stat-card purple"><div class="stat-val">${d.stats.totalSuppliers}</div><div class="stat-lbl">Suppliers</div></div>
+      <div class="stat-card red"><div class="stat-val">${d.stats.criticalSuppliers}</div><div class="stat-lbl">Critical Risk</div></div>
+      <div class="stat-card blue"><div class="stat-val">${d.stats.knowledgeSources}</div><div class="stat-lbl">ISMS Sources</div></div>`;
+    if (d.pendingAssessments && d.pendingAssessments.length) {
+      $('dashPending').innerHTML = d.pendingAssessments.map(a => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div><div style="font-size:13px;font-weight:600">${a.supplier_name||'Unknown'}</div>
+          <div style="font-size
