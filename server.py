@@ -50,7 +50,210 @@ async def serve_frontend():
             return HTMLResponse(content=f.read())
     return HTMLResponse(content="<h1>CybeSure SecureAnswer is running</h1>")
 
-# ── file parsing ──────────────────────────────────────────────────────────────
+# ── questionnaire extraction ──────────────────────────────────────────────────
+
+def extract_questions_from_excel(data: bytes) -> list[str]:
+    """
+    Smart xlsx/xls questionnaire parser.
+    Tries multiple strategies to find questions:
+    1. Look for a column whose header contains 'question'
+    2. Look for the longest text column
+    3. Look for cells ending in '?'
+    4. Fall back to all non-empty cells
+    """
+    questions = []
+    try:
+        # Try all sheets
+        xl = pd.ExcelFile(io.BytesIO(data))
+        for sheet in xl.sheet_names:
+            try:
+                df = pd.read_excel(io.BytesIO(data), sheet_name=sheet, header=None)
+                if df.empty:
+                    continue
+
+                # Strategy 1: Find row that looks like a header
+                header_row = 0
+                for i in range(min(5, len(df))):
+                    row_vals = [str(v).lower() for v in df.iloc[i] if pd.notna(v)]
+                    if any('question' in v or 'requirement' in v or 'control' in v for v in row_vals):
+                        header_row = i
+                        break
+
+                df_data = df.iloc[header_row+1:].reset_index(drop=True)
+                headers = [str(v).lower().strip() for v in df.iloc[header_row]]
+
+                # Strategy 2: Find column with 'question' in header
+                q_col = None
+                for idx, h in enumerate(headers):
+                    if any(kw in h for kw in ['question', 'requirement', 'control', 'ask', 'query']):
+                        q_col = idx
+                        break
+
+                # Strategy 3: Find column with most question marks
+                if q_col is None:
+                    best_score = 0
+                    for col_idx in range(len(df_data.columns)):
+                        col_vals = df_data.iloc[:, col_idx].dropna().astype(str)
+                        score = sum(1 for v in col_vals if '?' in v or len(v) > 20)
+                        if score > best_score:
+                            best_score = score
+                            q_col = col_idx
+
+                # Strategy 4: Use longest text column
+                if q_col is None:
+                    best_avg = 0
+                    for col_idx in range(len(df_data.columns)):
+                        col_vals = df_data.iloc[:, col_idx].dropna().astype(str)
+                        avg_len = col_vals.str.len().mean() if len(col_vals) > 0 else 0
+                        if avg_len > best_avg:
+                            best_avg = avg_len
+                            q_col = col_idx
+
+                if q_col is not None:
+                    col_data = df_data.iloc[:, q_col].dropna().astype(str)
+                    for val in col_data:
+                        val = val.strip()
+                        if val and len(val) > 5 and val.lower() not in ['nan', 'none', 'n/a', '-', 'question']:
+                            questions.append(val)
+
+                # If still no questions found, grab all text cells > 10 chars
+                if not questions:
+                    for _, row in df_data.iterrows():
+                        for val in row:
+                            if pd.notna(val):
+                                s = str(val).strip()
+                                if len(s) > 10 and s.lower() not in ['nan', 'none', 'n/a']:
+                                    questions.append(s)
+
+            except Exception as e:
+                print(f"Sheet {sheet} error: {e}")
+                continue
+
+    except Exception as e:
+        print(f"Excel parse error: {e}")
+
+    # Deduplicate while preserving order
+    seen = set()
+    unique = []
+    for q in questions:
+        if q not in seen:
+            seen.add(q)
+            unique.append(q)
+
+    return unique
+
+
+def extract_questions_from_csv(data: bytes) -> list[str]:
+    """Smart CSV question extractor."""
+    try:
+        # Try different encodings
+        for enc in ['utf-8', 'latin-1', 'cp1252']:
+            try:
+                df = pd.read_csv(io.BytesIO(data), encoding=enc, header=None)
+                break
+            except Exception:
+                continue
+
+        if df.empty:
+            return []
+
+        # Find header row
+        header_row = 0
+        for i in range(min(3, len(df))):
+            row_vals = [str(v).lower() for v in df.iloc[i] if pd.notna(v)]
+            if any('question' in v or 'requirement' in v for v in row_vals):
+                header_row = i
+                break
+
+        df_data = df.iloc[header_row+1:].reset_index(drop=True)
+        headers = [str(v).lower().strip() for v in df.iloc[header_row]]
+
+        # Find question column
+        q_col = None
+        for idx, h in enumerate(headers):
+            if any(kw in h for kw in ['question', 'requirement', 'control', 'ask']):
+                q_col = idx
+                break
+
+        # Fallback: longest text column
+        if q_col is None:
+            best_avg = 0
+            for col_idx in range(len(df_data.columns)):
+                col_vals = df_data.iloc[:, col_idx].dropna().astype(str)
+                avg_len = col_vals.str.len().mean() if len(col_vals) > 0 else 0
+                if avg_len > best_avg:
+                    best_avg = avg_len
+                    q_col = col_idx
+
+        questions = []
+        if q_col is not None:
+            for val in df_data.iloc[:, q_col].dropna().astype(str):
+                val = val.strip()
+                if val and len(val) > 5 and val.lower() not in ['nan', 'none', 'n/a']:
+                    questions.append(val)
+
+        return questions
+    except Exception as e:
+        print(f"CSV question parse error: {e}")
+        return []
+
+
+def extract_questions_from_docx(data: bytes) -> list[str]:
+    """Extract questions from Word document."""
+    try:
+        doc = Document(io.BytesIO(data))
+        questions = []
+        for p in doc.paragraphs:
+            text = p.text.strip()
+            if text and len(text) > 5:
+                questions.append(text)
+        # Also check tables
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    text = cell.text.strip()
+                    if text and len(text) > 5:
+                        questions.append(text)
+        return questions
+    except Exception as e:
+        print(f"DOCX question parse error: {e}")
+        return []
+
+
+def extract_questions_from_pdf(data: bytes) -> list[str]:
+    """Extract lines from PDF as questions."""
+    try:
+        lines = []
+        with pdfplumber.open(io.BytesIO(data)) as pdf:
+            for page in pdf.pages:
+                text = page.extract_text()
+                if text:
+                    for line in text.split('\n'):
+                        line = line.strip()
+                        if line and len(line) > 5:
+                            lines.append(line)
+        return lines
+    except Exception as e:
+        print(f"PDF question parse error: {e}")
+        return []
+
+
+def extract_questions(filename: str, data: bytes) -> list[str]:
+    """Route to correct question extractor based on file type."""
+    ext = filename.lower().rsplit(".", 1)[-1] if "." in filename else ""
+    if ext in ("xlsx", "xls"):
+        return extract_questions_from_excel(data)
+    elif ext == "csv":
+        return extract_questions_from_csv(data)
+    elif ext in ("docx", "doc"):
+        return extract_questions_from_docx(data)
+    elif ext == "pdf":
+        return extract_questions_from_pdf(data)
+    else:
+        text = data.decode("utf-8", errors="ignore")
+        return [l.strip() for l in text.split('\n') if l.strip() and len(l.strip()) > 5]
+
+# ── document file parsing ─────────────────────────────────────────────────────
 
 def parse_pdf(data: bytes) -> list[str]:
     pages = []
@@ -101,7 +304,7 @@ def parse_doc(data: bytes) -> list[str]:
         pass
     return []
 
-def parse_excel(data: bytes) -> list[str]:
+def parse_excel_doc(data: bytes) -> list[str]:
     try:
         df = pd.read_excel(io.BytesIO(data))
         rows = []
@@ -114,7 +317,7 @@ def parse_excel(data: bytes) -> list[str]:
         print(f"Excel error: {e}")
         return []
 
-def parse_csv(data: bytes) -> list[str]:
+def parse_csv_doc(data: bytes) -> list[str]:
     try:
         df = pd.read_csv(io.BytesIO(data))
         rows = []
@@ -132,8 +335,8 @@ def parse_file(filename: str, data: bytes) -> list[str]:
     if ext == "pdf": return parse_pdf(data)
     elif ext == "docx": return parse_docx(data)
     elif ext == "doc": return parse_doc(data)
-    elif ext in ("xlsx", "xls"): return parse_excel(data)
-    elif ext == "csv": return parse_csv(data)
+    elif ext in ("xlsx", "xls"): return parse_excel_doc(data)
+    elif ext == "csv": return parse_csv_doc(data)
     else: return [data.decode("utf-8", errors="ignore")[:5000]]
 
 # ── URL fetching ──────────────────────────────────────────────────────────────
@@ -153,8 +356,8 @@ def fetch_document_from_url(url: str) -> tuple[str, bytes]:
     if '.' not in filename:
         ct = resp.headers.get('Content-Type', '')
         if 'pdf' in ct: filename += '.pdf'
-        elif 'word' in ct or 'docx' in ct: filename += '.docx'
-        elif 'excel' in ct or 'spreadsheet' in ct: filename += '.xlsx'
+        elif 'word' in ct: filename += '.docx'
+        elif 'excel' in ct: filename += '.xlsx'
     return filename, resp.content
 
 def discover_documents_from_page(url: str) -> list[str]:
@@ -179,7 +382,8 @@ def discover_documents_from_page(url: str) -> list[str]:
 
 def fetch_all_from_url(url: str) -> list[tuple[str, bytes]]:
     results = []
-    if 'drive.google.com/file' in url or 'docs.google.com' in url:
+    # Google Drive single file
+    if 'drive.google.com/file' in url or ('docs.google.com' in url and '/d/' in url):
         file_id = None
         if '/d/' in url: file_id = url.split('/d/')[1].split('/')[0]
         elif 'id=' in url: file_id = url.split('id=')[1].split('&')[0]
@@ -190,6 +394,7 @@ def fetch_all_from_url(url: str) -> list[tuple[str, bytes]]:
                 return results
             except Exception as e:
                 print(f"Google Drive download failed: {e}")
+    # Direct document link
     if is_document_url(url):
         try:
             fname, data = fetch_document_from_url(url)
@@ -197,6 +402,7 @@ def fetch_all_from_url(url: str) -> list[tuple[str, bytes]]:
         except Exception as e:
             print(f"Failed to fetch {url}: {e}")
         return results
+    # Page scan
     try:
         doc_urls = discover_documents_from_page(url)
         if doc_urls:
@@ -259,7 +465,7 @@ def retrieve(session_id: str, question: str) -> list[str]:
             results.append(c)
     return results
 
-# ── Claude prompt ─────────────────────────────────────────────────────────────
+# ── Claude ────────────────────────────────────────────────────────────────────
 
 SYSTEM_PROMPT = """You are a cyber security compliance expert answering a security questionnaire on behalf of an organisation.
 
@@ -279,8 +485,8 @@ Respond in JSON only (no markdown):
 {
   "confidence": "Yes|No|Partial",
   "confidence_pct": 85,
-  "explanation": "Direct answer to the question using specific details from the document content",
-  "sources": ["Key quote or specific detail from the documents that supports this answer"]
+  "explanation": "Direct detailed answer using specific content from the documents",
+  "sources": ["Key quote or specific detail from the documents"]
 }"""
 
 def ask_claude(question: str, chunks: list[str]) -> dict:
@@ -327,11 +533,24 @@ def health():
 
 @app.post("/upload/questionnaire")
 async def upload_questionnaire(file: UploadFile = File(...)):
+    """Upload and parse a security questionnaire file."""
     data = await file.read()
-    rows = parse_file(file.filename, data)
-    questions = [{"id": i, "text": r.strip(), "category": None}
-                 for i, r in enumerate(rows) if r.strip() and len(r.strip()) > 5]
-    return {"questions": questions, "total": len(questions), "filename": file.filename}
+    questions_text = extract_questions(file.filename, data)
+
+    if not questions_text:
+        raise HTTPException(400, f"No questions found in {file.filename}. Please check the file format.")
+
+    questions = [
+        {"id": i, "text": q.strip(), "category": None}
+        for i, q in enumerate(questions_text)
+        if q.strip() and len(q.strip()) > 3
+    ]
+
+    return {
+        "questions": questions,
+        "total": len(questions),
+        "filename": file.filename
+    }
 
 @app.post("/upload/documents")
 async def upload_documents(files: List[UploadFile] = File(...), session_id: str = None):
@@ -441,10 +660,12 @@ class ExportRequest(BaseModel):
 async def export(req: ExportRequest):
     fmt = req.format.lower()
     results = req.results
+
     if fmt == "json":
         content = json.dumps([r.dict() for r in results], indent=2)
         return StreamingResponse(io.BytesIO(content.encode()), media_type="application/json",
             headers={"Content-Disposition": "attachment; filename=secureanswer_results.json"})
+
     if fmt == "excel":
         rows = [{"ID": r.question_id+1, "Question": r.question, "Confidence": r.confidence,
                  "Confidence %": f"{r.confidence_pct}%", "Explanation": r.explanation,
@@ -457,6 +678,7 @@ async def export(req: ExportRequest):
         return StreamingResponse(buf,
             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             headers={"Content-Disposition": "attachment; filename=secureanswer_results.xlsx"})
+
     if fmt == "word":
         doc = Document()
         doc.add_heading("CybeSure SecureAnswer — Compliance Results", 0)
@@ -464,9 +686,9 @@ async def export(req: ExportRequest):
             doc.add_heading(f"Q{r.question_id+1}: {r.question[:100]}", level=2)
             p = doc.add_paragraph()
             run = p.add_run(f"Confidence: {r.confidence} ({r.confidence_pct}%)")
-            run.font.color.rgb = (RGBColor(0,128,0) if r.confidence=="Yes"
+            run.font.color.rgb = (RGBColor(0,160,100) if r.confidence=="Yes"
                                   else RGBColor(200,0,0) if r.confidence=="No"
-                                  else RGBColor(180,100,0))
+                                  else RGBColor(200,130,0))
             run.bold = True
             doc.add_paragraph(r.explanation)
             if r.sources:
@@ -479,6 +701,7 @@ async def export(req: ExportRequest):
         return StreamingResponse(buf,
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             headers={"Content-Disposition": "attachment; filename=secureanswer_results.docx"})
+
     if fmt == "pdf":
         from reportlab.lib.pagesizes import A4
         from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
