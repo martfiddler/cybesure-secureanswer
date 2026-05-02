@@ -120,7 +120,13 @@ def ask_claude(question: str, chunks: list[str]) -> dict:
     )
     text = msg.content[0].text.strip().replace("```json", "").replace("```", "").strip()
     return json.loads(text)
-
+@app.get("/", response_class=HTMLResponse)
+async def serve_frontend():
+    index_path = os.path.join(os.path.dirname(__file__), "index.html")
+    if os.path.exists(index_path):
+        with open(index_path, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Running</h1>")
 @app.get("/health")
 def health():
     return {"status": "ok"}
