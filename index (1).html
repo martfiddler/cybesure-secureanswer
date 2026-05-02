@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CybeSure SecureAnswer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #090c10;
+      --surface: #111520;
+      --surface2: #161c2a;
+      --border: #1e2a3d;
+      --border-bright: #2a3f5f;
+      --accent: #00d4ff;
+      --accent-dim: rgba(0,212,255,0.12);
+      --accent-glow: rgba(0,212,255,0.35);
+      --green: #00ff88;
+      --green-dim: rgba(0,255,136,0.12);
+      --amber: #ffaa00;
+      --amber-dim: rgba(255,170,0,0.12);
+      --red: #ff4455;
+      --red-dim: rgba(255,68,85,0.12);
+      --text: #e2e8f0;
+      --text-dim: #64748b;
+      --text-mid: #94a3b8;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(9,12,16,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-mark {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 8px var(--accent-glow); }
+      50% { box-shadow: 0 0 24px var(--accent-glow), 0 0 48px rgba(0,212,255,0.15); }
+    }
+    .logo-text { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
+    .logo-text span { color: var(--accent); }
+    .badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 8px;
+      letter-spacing: 2px;
+    }
+
+    /* Steps nav */
+    .steps-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 32px 0;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      transition: all 0.3s;
+    }
+    .step-num.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .step-num.done {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-dim);
+    }
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .step-label.active { color: var(--accent); }
+    .step-label.done { color: var(--green); }
+    .step-connector {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin: 0 16px;
+    }
+    .step-connector.done { background: var(--green); opacity: 0.4; }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* Drop zones */
+    .drop-zone {
+      border: 1px dashed var(--border-bright);
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .drop-zone input[type=file] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .drop-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .drop-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .drop-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    /* File list */
+    .file-list { margin-top: 16px; }
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+    .file-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .file-name { flex: 1; color: var(--text-mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-size { color: var(--text-dim); font-size: 11px; }
+    .file-remove { color: var(--red); cursor: pointer; font-size: 16px; line-height: 1; opacity: 0.7; }
+    .file-remove:hover { opacity: 1; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #fff;
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-mid);
+      border: 1px solid var(--border-bright);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-export {
+      background: transparent;
+      border: 1px solid var(--border-bright);
+      color: var(--text-mid);
+      padding: 8px 16px;
+      font-size: 11px;
+    }
+    .btn-export:hover { border-color: var(--green); color: var(--green); }
+
+    /* Questions table */
+    .questions-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .questions-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .questions-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .questions-table tr:last-child td { border-bottom: none; }
+    .q-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .q-text { color: var(--text); line-height: 1.5; }
+    .q-cat {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    /* Processing screen */
+    .processing-screen {
+      padding: 60px 0;
+      text-align: center;
+    }
+    .processing-spinner {
+      width: 64px; height: 64px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+    .processing-spinner::before, .processing-spinner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid transparent;
+      border-radius: 50%;
+    }
+    .processing-spinner::before {
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+    .processing-spinner::after {
+      border-bottom-color: rgba(0,212,255,0.3);
+      animation: spin 1.5s linear infinite reverse;
+      inset: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .processing-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .processing-status {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+    .progress-bar {
+      width: 300px;
+      height: 2px;
+      background: var(--border);
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.5s ease;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    /* Results */
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: gap;
+      gap: 12px;
+    }
+    .results-stats {
+      display: flex;
+      gap: 16px;
+    }
+    .stat-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .export-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .result-item {
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .result-item:hover { border-color: var(--border-bright); }
+    .result-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      background: var(--surface);
+    }
+    .result-confidence {
+      flex-shrink: 0;
+      padding: 4px 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .conf-yes { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+    .conf-no { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,68,85,0.3); }
+    .conf-partial { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(255,170,0,0.3); }
+    .result-question { flex: 1; font-size: 14px; color: var(--text); line-height: 1.5; }
+    .result-chevron { color: var(--text-dim); transition: transform 0.2s; }
+    .result-chevron.open { transform: rotate(180deg); }
+
+    .result-body {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      display: none;
+    }
+    .result-body.open { display: block; }
+    .result-explanation {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .result-sources {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .source-tag {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      margin: 2px 4px 2px 0;
+      color: var(--text-dim);
+    }
+
+    /* Alert */
+    .alert {
+      padding: 12px 16px;
+      border-left: 3px solid var(--red);
+      background: var(--red-dim);
+      font-size: 13px;
+      color: var(--red);
+      margin-bottom: 16px;
+      font-family: var(--mono);
+    }
+
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Grid layout for upload section */
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 700px) {
+      .upload-grid { grid-template-columns: 1fr; }
+      .steps-nav { display: none; }
+      .results-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .questions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .q-count {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .max-h-questions {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .max-h-questions::-webkit-scrollbar { width: 4px; }
+    .max-h-questions::-webkit-scrollbar-track { background: var(--surface); }
+    .max-h-questions::-webkit-scrollbar-thumb { background: var(--border-bright); }
+
+    .footer-bar {
+      border-top: 1px solid var(--border);
+      padding: 20px 0;
+      margin-top: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+    .footer-note { font-size: 11px; color: var(--text-dim); font-family: var(--mono); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <span class="logo-text">Cybe<span>Sure</span> SecureAnswer</span>
+      </div>
+      <div class="badge">AI COMPLIANCE ENGINE</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="steps-nav" id="stepsNav">
+    <div class="step-item">
+      <div class="step-num active" id="stepNum1">01</div>
+      <span class="step-label active" id="stepLabel1">Upload</span>
+    </div>
+    <div class="step-connector" id="conn1"></div>
+    <div class="step-item">
+      <div class="step-num" id="stepNum2">02</div>
+      <span class="step-label" id="stepLabel2">Review</span>
+    </div>
+    <div class="step-connector" id="conn2"></div>
+    <div class="step-item">
+      <div class="step-num" id="stepNum3">03</div>
+      <span class="step-label" id="stepLabel3">Processing</span>
+    </div>
+    <div class="step-connector" id="conn3"></div>
+    <div class="step-item">
+      <div class="step-num" id="stepNum4">04</div>
+      <span class="step-label" id="stepLabel4">Results</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: UPLOAD -->
+  <div class="section active" id="section1">
+    <div id="errorBox" style="display:none" class="alert"></div>
+    <div class="upload-grid">
+      <div class="card">
+        <div class="card-title">// Questionnaire</div>
+        <div class="drop-zone" id="qDrop">
+          <input type="file" id="qFile" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc" />
+          <span class="drop-icon">📋</span>
+          <div class="drop-title">Drop questionnaire file</div>
+          <div class="drop-sub">Excel · Word · CSV · PDF</div>
+        </div>
+        <div class="file-list" id="qFileList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">// Policy Documents</div>
+        <div class="drop-zone" id="docDrop">
+          <input type="file" id="docFiles" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc" multiple />
+          <span class="drop-icon">📁</span>
+          <div class="drop-title">Drop evidence documents</div>
+          <div class="drop-sub">Policies · Procedures · Controls</div>
+        </div>
+        <div class="file-list" id="docFileList"></div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" id="processBtn" disabled onclick="startProcessing()">
+        Process &rarr;
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: REVIEW QUESTIONS -->
+  <div class="section" id="section2">
+    <div class="card">
+      <div class="questions-header">
+        <div class="card-title" style="margin-bottom:0">// Extracted Questions</div>
+        <div class="q-count" id="qCountLabel"></div>
+      </div>
+      <div class="max-h-questions">
+        <table class="questions-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Question</th>
+            </tr>
+          </thead>
+          <tbody id="questionsBody"></tbody>
+        </table>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" id="answerBtn" onclick="runAnswering()">
+          Run AI Answering →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PROCESSING -->
+  <div class="section" id="section3">
+    <div class="processing-screen">
+      <div class="processing-spinner"></div>
+      <div class="processing-label">ANALYSING</div>
+      <div class="processing-status" id="processingStatus">Uploading documents…</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--text-dim);" id="processingDetail"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: RESULTS -->
+  <div class="section" id="section4">
+    <div class="results-header">
+      <div class="results-stats" id="statsRow"></div>
+      <div class="export-row">
+        <button class="btn btn-export" onclick="doExport('excel')">↓ Excel</button>
+        <button class="btn btn-export" onclick="doExport('word')">↓ Word</button>
+        <button class="btn btn-export" onclick="doExport('pdf')">↓ PDF</button>
+        <button class="btn btn-export" onclick="doExport('json')">↓ JSON</button>
+      </div>
+    </div>
+    <div id="resultsContainer"></div>
+    <div class="action-row">
+      <button class="btn btn-ghost" onclick="resetAll()">← New Session</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="container">
+  <div class="footer-bar">
+    <span class="footer-logo">CYBESURE.COM // SECUREANSWER v1.0</span>
+    <span class="footer-note">IN-MEMORY · NO PERSISTENT STORAGE · AUDIT-READY</span>
+  </div>
+</div>
+
+<script>
+  const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:8000'
+    : '';  // Set to your Render backend URL for production
+
+  let questionnaireFile = null;
+  let documentFiles = [];
+  let extractedQuestions = [];
+  let sessionId = null;
+  let finalResults = [];
+
+  // File drop handling
+  function setupDrop(dropId, inputId, multi, onFiles) {
+    const drop = document.getElementById(dropId);
+    const input = document.getElementById(inputId);
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault();
+      drop.classList.remove('drag-over');
+      const files = Array.from(e.dataTransfer.files);
+      onFiles(multi ? files : [files[0]]);
+    });
+    input.addEventListener('change', e => {
+      const files = Array.from(e.target.files);
+      onFiles(multi ? files : [files[0]]);
+    });
+  }
+
+  function formatBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+    return (b/(1024*1024)).toFixed(1) + ' MB';
+  }
+
+  function renderFileList(containerId, files, onRemove) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = files.map((f, i) => `
+      <div class="file-item">
+        <div class="file-dot"></div>
+        <span class="file-name">${f.name}</span>
+        <span class="file-size">${formatBytes(f.size)}</span>
+        <span class="file-remove" onclick="removeFile(${i}, '${containerId}')">×</span>
+      </div>
+    `).join('');
+    checkReady();
+  }
+
+  window.removeFile = function(i, containerId) {
+    if (containerId === 'qFileList') { questionnaireFile = null; }
+    else { documentFiles.splice(i, 1); }
+    renderFileList(containerId, containerId === 'qFileList' ? (questionnaireFile ? [questionnaireFile] : []) : documentFiles, true);
+  };
+
+  setupDrop('qDrop', 'qFile', false, files => {
+    questionnaireFile = files[0];
+    renderFileList('qFileList', [questionnaireFile]);
+  });
+
+  setupDrop('docDrop', 'docFiles', true, files => {
+    documentFiles = [...documentFiles, ...files];
+    renderFileList('docFileList', documentFiles);
+  });
+
+  function checkReady() {
+    document.getElementById('processBtn').disabled = !(questionnaireFile && documentFiles.length > 0);
+  }
+
+  function setStep(n) {
+    for (let i = 1; i <= 4; i++) {
+      const num = document.getElementById('stepNum' + i);
+      const lbl = document.getElementById('stepLabel' + i);
+      num.className = 'step-num' + (i === n ? ' active' : i < n ? ' done' : '');
+      lbl.className = 'step-label' + (i === n ? ' active' : i < n ? ' done' : '');
+    }
+    for (let i = 1; i <= 3; i++) {
+      const conn = document.getElementById('conn' + i);
+      conn.className = 'step-connector' + (i < n ? ' done' : '');
+    }
+  }
+
+  function goTo(n) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section' + n).classList.add('active');
+    setStep(n);
+    window.scrollTo(0, 0);
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('errorBox');
+    box.textContent = '⚠ ' + msg;
+    box.style.display = 'block';
+    setTimeout(() => box.style.display = 'none', 6000);
+  }
+
+  async function startProcessing() {
+    if (!questionnaireFile || documentFiles.length === 0) return;
+
+    goTo(2);
+    setStatus('Parsing questionnaire…', 10);
+
+    try {
+      // Upload questionnaire
+      const qForm = new FormData();
+      qForm.append('file', questionnaireFile);
+      const qRes = await fetch(`${API}/upload/questionnaire`, { method: 'POST', body: qForm });
+      if (!qRes.ok) throw new Error(await qRes.text());
+      const qData = await qRes.json();
+      extractedQuestions = qData.questions;
+
+      // Render questions
+      const tbody = document.getElementById('questionsBody');
+      tbody.innerHTML = extractedQuestions.map(q => `
+        <tr>
+          <td class="q-num">Q${String(q.id + 1).padStart(2,'0')}</td>
+          <td class="q-text">${escHtml(q.text)}</td>
+        </tr>
+      `).join('');
+      document.getElementById('qCountLabel').textContent = `${extractedQuestions.length} questions found`;
+
+      goTo(2);
+    } catch (e) {
+      goTo(1);
+      showError(e.message || 'Failed to parse questionnaire.');
+    }
+  }
+
+  async function runAnswering() {
+    goTo(3);
+    setStatus('Uploading policy documents…', 15);
+
+    try {
+      // Upload documents
+      const docForm = new FormData();
+      documentFiles.forEach(f => docForm.append('files', f));
+      const docRes = await fetch(`${API}/upload/documents`, { method: 'POST', body: docForm });
+      if (!docRes.ok) throw new Error(await docRes.text());
+      const docData = await docRes.json();
+      sessionId = docData.session_id;
+
+      setStatus(`Indexed ${docData.chunks_created} document chunks. Starting AI analysis…`, 40);
+      document.getElementById('processingDetail').textContent = `SESSION: ${sessionId}`;
+
+      // Answer questions
+      const total = extractedQuestions.length;
+      setStatus(`Answering question 1 of ${total}…`, 50);
+
+      const ansRes = await fetch(`${API}/answer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, questions: extractedQuestions })
+      });
+      if (!ansRes.ok) throw new Error(await ansRes.text());
+      const ansData = await ansRes.json();
+      finalResults = ansData.results;
+
+      setStatus('Complete. Rendering results…', 95);
+
+      setTimeout(() => {
+        renderResults(finalResults);
+        goTo(4);
+      }, 600);
+
+    } catch (e) {
+      goTo(1);
+      showError(e.message || 'An error occurred during analysis.');
+    }
+  }
+
+  function setStatus(msg, pct) {
+    document.getElementById('processingStatus').textContent = msg;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function renderResults(results) {
+    // Stats
+    const yes = results.filter(r => r.confidence === 'Yes').length;
+    const no = results.filter(r => r.confidence === 'No').length;
+    const partial = results.filter(r => r.confidence === 'Partial').length;
+
+    document.getElementById('statsRow').innerHTML = `
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--green)"></div>${yes} Yes</div>
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--amber)"></div>${partial} Partial</div>
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--red)"></div>${no} No</div>
+    `;
+
+    document.getElementById('resultsContainer').innerHTML = results.map((r, i) => `
+      <div class="result-item">
+        <div class="result-header" onclick="toggleResult(${i})">
+          <div class="result-confidence conf-${r.confidence.toLowerCase()}">${r.confidence.toUpperCase()}</div>
+          <div class="result-question">Q${r.question_id + 1}: ${escHtml(r.question)}</div>
+          <div class="result-chevron" id="chev${i}">▾</div>
+        </div>
+        <div class="result-body" id="body${i}">
+          <div class="result-explanation">${escHtml(r.explanation)}</div>
+          <div class="result-sources">
+            ${(r.sources || []).map(s => `<span class="source-tag">${escHtml(s)}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.toggleResult = function(i) {
+    const body = document.getElementById('body' + i);
+    const chev = document.getElementById('chev' + i);
+    const open = body.classList.toggle('open');
+    chev.classList.toggle('open', open);
+  };
+
+  async function doExport(fmt) {
+    if (!finalResults.length) return;
+    try {
+      const res = await fetch(`${API}/export`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ results: finalResults, format: fmt })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const ext = fmt === 'excel' ? 'xlsx' : fmt === 'word' ? 'docx' : fmt;
+      a.download = `secureanswer_results.${ext}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch(e) {
+      alert('Export failed: ' + e.message);
+    }
+  }
+
+  function resetAll() {
+    questionnaireFile = null;
+    documentFiles = [];
+    extractedQuestions = [];
+    sessionId = null;
+    finalResults = [];
+    document.getElementById('qFileList').innerHTML = '';
+    document.getElementById('docFileList').innerHTML = '';
+    document.getElementById('processBtn').disabled = true;
+    goTo(1);
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
