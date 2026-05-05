@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  credits   Int      @default(100)
+  createdAt DateTime @default(now())
+
+  questionnaires Questionnaire[]
+}
+
+model Questionnaire {
+  id        String   @id @default(uuid())
+  userId    String
+  filename  String
+  createdAt DateTime @default(now())
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions Question[]
+
+  @@index([userId])
+}
+
+model Question {
+  id              String   @id @default(uuid())
+  questionnaireId String
+  text            String
+  category        String?
+  createdAt       DateTime @default(now())
+
+  questionnaire Questionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  answers       Answer[]
+
+  @@index([questionnaireId])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  questionId String
+  answer     String
+  confidence String
+  createdAt  DateTime @default(now())
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}

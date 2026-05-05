@@ -12,3 +12,4 @@ python-multipart
 reportlab
 requests
 beautifulsoup4
+sqlalchemy>=2.0.0

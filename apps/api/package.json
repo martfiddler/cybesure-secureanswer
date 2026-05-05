@@ -1,0 +1,36 @@
+{
+  "name": "@cybersure/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "build": "node --check src/server.js && node --check src/routes/auth.js && node --check src/routes/questionnaire.js && node --check src/routes/ai.js && node --check src/routes/output.js",
+    "prisma:generate": "prisma generate --schema ../../prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "latest",
+    "axios": "latest",
+    "bcrypt": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "docx": "latest",
+    "express": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "jsonwebtoken": "latest",
+    "multer": "latest",
+    "openai": "latest",
+    "pdfkit": "latest",
+    "validator": "latest",
+    "xlsx": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
