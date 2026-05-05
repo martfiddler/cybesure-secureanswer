@@ -12,3 +12,6 @@ python-multipart
 reportlab
 requests
 beautifulsoup4
+sqlalchemy
+pydantic[email]
+psycopg2-binary
