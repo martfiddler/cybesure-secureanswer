@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="28" fill="#0b1829"/>
+  <path d="M64 16l40 18v32c0 25-17 40-40 48-23-8-40-23-40-48V34l40-18z" fill="#00c8e0"/>
+  <path d="M64 16v98c-23-8-40-23-40-48V34l40-18z" fill="#123a5c"/>
+  <text x="64" y="78" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">CS</text>
+</svg>
