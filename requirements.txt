@@ -1,5 +1,9 @@
 fastapi
 uvicorn
+sqlalchemy
+psycopg2-binary
+python-jose[cryptography]
+email-validator
 pandas
 python-docx
 pdfplumber
@@ -12,3 +16,4 @@ python-multipart
 reportlab
 requests
 beautifulsoup4
+xlrd
