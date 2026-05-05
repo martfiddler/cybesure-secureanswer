@@ -16,25 +16,43 @@ import pdfplumber
 import faiss
 import anthropic
 
-from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Depends, Request
+from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, HTMLResponse
 from pydantic import BaseModel
-from typing import List, Optional, Dict
+from typing import List, Optional
 from docx import Document
 from docx.shared import RGBColor
 from openai import OpenAI
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
-from sqlalchemy.orm import Session
 
 # Database & Auth
-from database import create_tables, get_db, User, Organisation, QuestionnaireRun, UserRole
-from auth import get_current_user, require_role, check_subscription
+from database import create_tables
 from routes_auth import router as auth_router
 
-openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-claude_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+openai_client = None
+claude_client = None
+
+
+def get_openai_client() -> OpenAI:
+    global openai_client
+    if openai_client is None:
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise HTTPException(503, "OPENAI_API_KEY is not configured.")
+        openai_client = OpenAI(api_key=api_key)
+    return openai_client
+
+
+def get_claude_client() -> anthropic.Anthropic:
+    global claude_client
+    if claude_client is None:
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise HTTPException(503, "ANTHROPIC_API_KEY is not configured.")
+        claude_client = anthropic.Anthropic(api_key=api_key)
+    return claude_client
 
 SESSIONS: dict = {}
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -56,6 +74,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router)
+
+
+@app.on_event("startup")
+def startup() -> None:
+    create_tables()
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
@@ -478,8 +502,9 @@ def simple_chunk(text: str) -> list[str]:
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
     all_emb = []
+    client = get_openai_client()
     for i in range(0, len(texts), EMBED_BATCH):
-        resp = openai_client.embeddings.create(
+        resp = client.embeddings.create(
             input=texts[i:i+EMBED_BATCH], model=EMBEDDING_MODEL)
         all_emb.extend([r.embedding for r in resp.data])
         gc.collect()
@@ -589,9 +614,10 @@ Respond in JSON only:
 def ask_claude(question: str, chunks: list[str]) -> dict:
     """Generate comprehensive answer plus an improved 95%+ version."""
     context = "\n\n---\n\n".join(chunks)
+    client = get_claude_client()
 
     # Step 1: Generate primary answer
-    msg = claude_client.messages.create(
+    msg = client.messages.create(
         model="claude-opus-4-5",
         max_tokens=1500,
         system=SYSTEM_PROMPT,
@@ -617,7 +643,7 @@ def ask_claude(question: str, chunks: list[str]) -> dict:
 
     # Step 2: Generate improved 95%+ version
     try:
-        improved_msg = claude_client.messages.create(
+        improved_msg = client.messages.create(
             model="claude-opus-4-5",
             max_tokens=1200,
             system=IMPROVED_PROMPT,
@@ -799,6 +825,12 @@ async def upload_documents_url(req: UrlRequest):
     return result
 
 
+class Question(BaseModel):
+    id: int
+    text: str
+    category: Optional[str] = None
+
+
 # ── OneTrust / portal integration ────────────────────────────────────────────
 
 class PortalRequest(BaseModel):
@@ -890,11 +922,6 @@ async def answer_onetrust(req: PortalRequest):
         "ready_to_paste": True,
         "instructions": "Copy each 'explanation' field and paste into the corresponding question field in your portal."
     }
-
-class Question(BaseModel):
-    id: int
-    text: str
-    category: Optional[str] = None
 
 class AnswerRequest(BaseModel):
     session_id: str
@@ -1416,3 +1443,12 @@ async def export(req: ExportRequest):
         buf.seek(0)
         return StreamingResponse(buf, media_type="application/pdf",
             headers={"Content-Disposition": "attachment; filename=secureanswer_results.pdf"})
+
+    raise HTTPException(400, "Unsupported export format. Use json, excel, word, or pdf.")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.environ.get("PORT", "8000"))
+    uvicorn.run("server:app", host="0.0.0.0", port=port)
