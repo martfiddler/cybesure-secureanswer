@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import io
 import os
 import json
@@ -33,8 +35,11 @@ from database import create_tables, get_db, User, Organisation, QuestionnaireRun
 from auth import get_current_user, require_role, check_subscription
 from routes_auth import router as auth_router
 
-openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-claude_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+
+openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+claude_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
 
 SESSIONS: dict = {}
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -56,6 +61,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router)
+
+@app.on_event("startup")
+def startup() -> None:
+    create_tables()
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
@@ -65,7 +75,7 @@ async def add_security_headers(request, call_next):
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-Powered-By"] = "CybeSure SecureAnswer"
-    response.headers["X-Copyright"] = "© CybeSure Ltd. All rights reserved."
+    response.headers["X-Copyright"] = "(c) CybeSure Ltd. All rights reserved."
     response.headers["X-Data-Residency"] = "UK"
     response.headers["X-GDPR-Compliant"] = "true"
     return response
@@ -477,6 +487,8 @@ def simple_chunk(text: str) -> list[str]:
 # ── embeddings ────────────────────────────────────────────────────────────────
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
+    if openai_client is None:
+        raise HTTPException(503, "OPENAI_API_KEY is not configured.")
     all_emb = []
     for i in range(0, len(texts), EMBED_BATCH):
         resp = openai_client.embeddings.create(
@@ -588,6 +600,8 @@ Respond in JSON only:
 
 def ask_claude(question: str, chunks: list[str]) -> dict:
     """Generate comprehensive answer plus an improved 95%+ version."""
+    if claude_client is None:
+        raise HTTPException(503, "ANTHROPIC_API_KEY is not configured.")
     context = "\n\n---\n\n".join(chunks)
 
     # Step 1: Generate primary answer
@@ -801,10 +815,15 @@ async def upload_documents_url(req: UrlRequest):
 
 # ── OneTrust / portal integration ────────────────────────────────────────────
 
+class Question(BaseModel):
+    id: int
+    text: str
+    category: Optional[str] = None
+
 class PortalRequest(BaseModel):
     portal_url: str
     session_id: str
-    questions: List[Question]
+    questions: List[Question] = []
 
 @app.post("/portal/onetrust")
 async def answer_onetrust(req: PortalRequest):
@@ -890,11 +909,6 @@ async def answer_onetrust(req: PortalRequest):
         "ready_to_paste": True,
         "instructions": "Copy each 'explanation' field and paste into the corresponding question field in your portal."
     }
-
-class Question(BaseModel):
-    id: int
-    text: str
-    category: Optional[str] = None
 
 class AnswerRequest(BaseModel):
     session_id: str
