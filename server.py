@@ -12,6 +12,13 @@ class AskRequest(BaseModel):
     question: Optional[str] = None
 
 
+def mock_answer(question: Optional[str] = None) -> dict[str, str]:
+    return {
+        "question": question or "No question provided",
+        "answer": "This is a mock response from the FastAPI app.",
+    }
+
+
 @app.get("/")
 def root() -> dict[str, str]:
     return {"message": "FastAPI app is running"}
@@ -22,10 +29,11 @@ def health() -> str:
     return "OK"
 
 
+@app.get("/ask")
+def ask_get(question: Optional[str] = None) -> dict[str, str]:
+    return mock_answer(question)
+
+
 @app.post("/ask")
 def ask(request: Optional[AskRequest] = None) -> dict[str, str]:
-    question = request.question if request and request.question else "No question provided"
-    return {
-        "question": question,
-        "answer": "This is a mock response from the FastAPI app.",
-    }
+    return mock_answer(request.question if request else None)
