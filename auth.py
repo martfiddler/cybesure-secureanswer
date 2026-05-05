@@ -1,3 +1,6 @@
+import base64
+import hashlib
+import hmac
 import os
 from datetime import datetime, timedelta
 from typing import Optional
@@ -5,7 +8,6 @@ from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from database import Organisation, User, UserRole, get_db
@@ -14,17 +16,36 @@ from database import Organisation, User, UserRole, get_db
 SECRET_KEY = os.environ.get("SECRET_KEY", "change-me-in-production")
 ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))
+PASSWORD_HASH_ITERATIONS = int(os.environ.get("PASSWORD_HASH_ITERATIONS", "210000"))
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        algorithm, iterations, salt, expected = hashed_password.split("$", 3)
+        if algorithm != "pbkdf2_sha256":
+            return False
+        calculated = _pbkdf2_hash(plain_password, salt, int(iterations))
+        return hmac.compare_digest(calculated, expected)
+    except (TypeError, ValueError):
+        return False
 
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = base64.urlsafe_b64encode(os.urandom(16)).decode("ascii").rstrip("=")
+    digest = _pbkdf2_hash(password, salt, PASSWORD_HASH_ITERATIONS)
+    return f"pbkdf2_sha256${PASSWORD_HASH_ITERATIONS}${salt}${digest}"
+
+
+def _pbkdf2_hash(password: str, salt: str, iterations: int) -> str:
+    digest = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("ascii"),
+        iterations,
+    )
+    return base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

@@ -7,6 +7,7 @@ import re
 import requests
 import smtplib
 import hashlib
+from contextlib import asynccontextmanager
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -63,10 +64,18 @@ EMBED_BATCH = 20
 MAX_CHUNKS = 1200       # Allow more chunks = more document coverage
 DOC_EXTENSIONS = {'.pdf', '.docx', '.doc', '.xlsx', '.xls', '.csv', '.txt'}
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_tables()
+    yield
+
+
 app = FastAPI(
     title="CybeSure SecureAnswer",
     description="© CybeSure Ltd. All rights reserved. SecureAnswer™ is a trademark of CybeSure Ltd.",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -77,10 +86,6 @@ app.add_middleware(
 app.include_router(auth_router)
 
 
-@app.on_event("startup")
-def startup() -> None:
-    create_tables()
-
 @app.middleware("http")
 async def add_security_headers(request, call_next):
     response = await call_next(request)
@@ -89,7 +94,7 @@ async def add_security_headers(request, call_next):
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-Powered-By"] = "CybeSure SecureAnswer"
-    response.headers["X-Copyright"] = "© CybeSure Ltd. All rights reserved."
+    response.headers["X-Copyright"] = "(c) CybeSure Ltd. All rights reserved."
     response.headers["X-Data-Residency"] = "UK"
     response.headers["X-GDPR-Compliant"] = "true"
     return response
