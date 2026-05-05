@@ -17,6 +17,10 @@ import faiss
 import anthropic
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Depends, Request
+app = FastAPi()
+@app.get("/Health")
+def health():
+    return "OK"
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, HTMLResponse
 from pydantic import BaseModel
