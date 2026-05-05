@@ -75,7 +75,7 @@ async def add_security_headers(request, call_next):
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-Powered-By"] = "CybeSure SecureAnswer"
-    response.headers["X-Copyright"] = "© CybeSure Ltd. All rights reserved."
+    response.headers["X-Copyright"] = "(c) CybeSure Ltd. All rights reserved."
     response.headers["X-Data-Residency"] = "UK"
     response.headers["X-GDPR-Compliant"] = "true"
     return response
