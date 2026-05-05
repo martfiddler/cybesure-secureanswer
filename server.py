@@ -29,7 +29,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy.orm import Session
 
 # Database & Auth
-from database import create_tables, get_db, User, Organisation, QuestionnaireRun, UserRole
+# from database import create_tables, get_db, User, Organisation, QuestionnaireRun, UserRole
 from auth import get_current_user, require_role, check_subscription
 from routes_auth import router as auth_router
 
