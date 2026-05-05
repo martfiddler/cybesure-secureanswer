@@ -17,7 +17,7 @@ import faiss
 import anthropic
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Depends, Request
-app = FastAPi()
+app = FastAPI()
 @app.get("/Health")
 def health():
     return "OK"
