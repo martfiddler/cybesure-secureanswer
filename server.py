@@ -21,7 +21,7 @@ if os.getcwd() not in sys.path:
 import numpy as np
 import pandas as pd
 import pdfplumber
-import faiss
+# import faiss
 import anthropic
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Depends, Request
