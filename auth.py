@@ -19,7 +19,10 @@ TOKEN_EXPIRE_HOURS = 24
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-
+def get_org():
+    # temporary placeholder so app doesn't crash
+    return None
+    
 def hash_password(password: str) -> str:
     """Hash password via SHA256 first to avoid bcrypt 72-byte limit."""
     prehash = hashlib.sha256(password.encode("utf-8")).hexdigest()
