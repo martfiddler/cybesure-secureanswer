@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CybeSure SecureAnswer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #0b1829;
+      --navy2:     #0f2035;
+      --navy3:     #152a42;
+      --navy4:     #1c3252;
+      --border:    #1e3a5a;
+      --border-hi: #2d5a80;
+      --teal:      #00c8e0;
+      --teal-dim:  rgba(0,200,224,0.10);
+      --teal-glow: rgba(0,200,224,0.22);
+      --green:     #00d4a0;
+      --green-dim: rgba(0,212,160,0.12);
+      --amber:     #f5a623;
+      --amber-dim: rgba(245,166,35,0.12);
+      --red:       #e84855;
+      --red-dim:   rgba(232,72,85,0.12);
+      --text:      #dce8f5;
+      --text-mid:  #7a9cbf;
+      --text-dim:  #4a6a8a;
+      --fh: 'Montserrat', sans-serif;
+      --fb: 'Open Sans', sans-serif;
+      --fm: 'IBM Plex Mono', monospace;
+    }
+
+    body { font-family: var(--fb); background: var(--navy); color: var(--text); min-height: 100vh; }
+
+    /* ══ HEADER ══ */
+    header {
+      background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.45);
+    }
+    .header-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 16px; }
+    .cs-shield { width: 50px; height: 54px; flex-shrink: 0; }
+    .logo-text-block { display: flex; flex-direction: column; gap: 3px; }
+    .logo-name {
+      font-family: var(--fh); font-size: 26px; font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1; color: #fff;
+    }
+    .logo-name em { color: var(--teal); font-style: normal; }
+    .logo-sub {
+      font-family: var(--fb); font-size: 10px; font-weight: 400;
+      letter-spacing: 2px; color: var(--text-mid); line-height: 1;
+    }
+    .logo-sub em { color: var(--teal); font-style: normal; font-weight: 600; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .header-product { font-family: var(--fb); font-size: 14px; font-weight: 400; color: var(--text-mid); }
+    .header-badge {
+      font-family: var(--fh); font-size: 10px; font-weight: 700;
+      color: var(--teal); border: 1px solid rgba(0,200,224,0.5);
+      padding: 5px 12px; letter-spacing: 1.5px; background: var(--teal-dim);
+    }
+
+    /* ══ LAYOUT ══ */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 36px; }
+    @media(max-width:768px) { .header-inner, .container { padding: 0 18px; } .upload-grid { grid-template-columns: 1fr; } .steps-nav { display: none; } }
+
+    /* ══ STEPS ══ */
+    .steps-nav { display: flex; align-items: center; padding: 30px 0 22px; }
+    .step-item { display: flex; align-items: center; gap: 10px; }
+    .step-num {
+      width: 28px; height: 28px; border: 1px solid var(--border-hi);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--fm); font-size: 10px; color: var(--text-dim); transition: all 0.3s;
+    }
+    .step-num.active { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); box-shadow: 0 0 10px var(--teal-glow); }
+    .step-num.done   { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+    .step-label { font-family: var(--fh); font-size: 11px; font-weight: 600; color: var(--text-dim); letter-spacing: 0.5px; }
+    .step-label.active { color: var(--teal); }
+    .step-label.done   { color: var(--green); }
+    .step-connector { flex: 1; height: 1px; background: var(--border); margin: 0 16px; }
+    .step-connector.done { background: var(--green); opacity: 0.4; }
+
+    /* ══ CARDS ══ */
+    .card { background: var(--navy2); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; }
+
+    /* Card section heading — mixed case, clean */
+    .section-heading {
+      font-family: var(--fh);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 0.3px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-heading::before {
+      content: '';
+      display: inline-block;
+      width: 3px; height: 14px;
+      background: var(--teal);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ══ DROP ZONES ══ */
+    .drop-zone {
+      border: 1px dashed var(--border-hi); padding: 30px 20px;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+      position: relative; margin-bottom: 10px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--teal); background: var(--teal-dim); }
+    .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+    .drop-title { font-family: var(--fh); font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    .drop-sub { font-family: var(--fb); font-size: 12px; color: var(--text-dim); }
+
+    /* ══ FILE LIST ══ */
+    .file-list { margin-bottom: 2px; }
+    .file-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 12px; background: var(--navy3);
+      border: 1px solid var(--border); margin-bottom: 4px; font-size: 12px;
+    }
+    .file-dot { width: 5px; height: 5px; background: var(--teal); border-radius: 50%; flex-shrink: 0; }
+    .file-name { flex: 1; font-family: var(--fb); color: var(--text-mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-size { font-family: var(--fm); color: var(--text-dim); font-size: 10px; }
+    .file-remove { color: var(--red); cursor: pointer; font-size: 16px; opacity: 0.6; line-height: 1; }
+    .file-remove:hover { opacity: 1; }
+
+    /* ══ OR DIVIDER ══ */
+    .or-divider { display: flex; align-items: center; gap: 14px; margin: 16px 0; }
+    .or-line { flex: 1; height: 1px; background: var(--border); }
+    .or-text { font-family: var(--fb); font-size: 11px; font-weight: 600; color: var(--text-dim); letter-spacing: 1px; }
+
+    /* ══ URL SECTION ══ */
+    .url-section { background: var(--navy3); border: 1px solid var(--border-hi); padding: 20px; }
+    .url-section-title {
+      font-family: var(--fh); font-size: 13px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .url-section-title .icon { color: var(--teal); }
+    .url-section-hint { font-family: var(--fb); font-size: 12px; color: var(--text-mid); margin-bottom: 14px; line-height: 1.6; }
+    .url-section-hint strong { color: var(--teal); font-weight: 600; }
+    .url-row { display: flex; gap: 8px; margin-bottom: 6px; }
+    .url-input {
+      flex: 1; background: var(--navy2); border: 1px solid var(--border-hi);
+      color: var(--text); padding: 10px 14px;
+      font-family: var(--fm); font-size: 11px; outline: none;
+    }
+    .url-input:focus { border-color: var(--teal); }
+    .url-input::placeholder { color: var(--text-dim); }
+    .url-add-btn {
+      padding: 10px 20px; background: var(--teal); border: none;
+      color: var(--navy); font-family: var(--fh); font-size: 12px;
+      font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .url-add-btn:hover { background: #00dff8; }
+    .url-note { font-family: var(--fm); font-size: 10px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.5; }
+    .url-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; background: var(--navy2);
+      border: 1px solid var(--teal); margin-bottom: 5px; font-size: 11px;
+    }
+    .url-dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; flex-shrink: 0; }
+    .url-text { flex: 1; font-family: var(--fm); color: var(--text-mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .url-remove { color: var(--red); cursor: pointer; font-size: 16px; opacity: 0.6; line-height: 1; }
+
+    /* ══ BUTTONS ══ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 28px; font-family: var(--fh); font-size: 13px;
+      font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--teal); color: var(--navy); letter-spacing: 0.3px; }
+    .btn-primary:hover:not(:disabled) { background: #00dff8; box-shadow: 0 4px 20px var(--teal-glow); }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--text-mid); border: 1px solid var(--border-hi); }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-export {
+      background: transparent; border: 1px solid var(--border-hi);
+      color: var(--text-mid); padding: 8px 18px;
+      font-family: var(--fh); font-size: 12px; font-weight: 600;
+      cursor: pointer; letter-spacing: 0.3px;
+    }
+    .btn-export-primary { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
+    .btn-export-primary:hover { background: var(--teal); color: var(--navy); }
+
+    .portal-section { background: var(--navy3); border: 1px solid var(--border-hi); padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .portal-title { font-family: var(--fh); font-size: 13px; font-weight: 700; color: var(--text); }
+    .portal-hint { font-family: var(--fb); font-size: 12px; color: var(--text-mid); }
+
+    .copy-btn { font-family: var(--fm); font-size: 10px; color: var(--teal); border: 1px solid var(--teal); padding: 2px 8px; cursor: pointer; background: var(--teal-dim); white-space: nowrap; opacity: 0; transition: opacity 0.2s; }
+    .result-body:hover .copy-btn, .copy-btn:focus { opacity: 1; }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+
+    /* Answer tabs */
+    .answer-tabs { display: flex; gap: 0; margin-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .ans-tab { background: transparent; border: none; border-bottom: 2px solid transparent; padding: 8px 16px; font-family: var(--fh); font-size: 12px; font-weight: 600; color: var(--text-dim); cursor: pointer; margin-bottom: -1px; transition: all 0.2s; }
+    .ans-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .ans-tab:hover:not(.active) { color: var(--text); }
+
+    /* Improved answer */
+    .improved-answer { background: rgba(0,212,160,0.06); border-left-color: var(--green) !important; }
+    .improvement-notes { font-family: var(--fm); font-size: 11px; color: var(--text-dim); background: var(--navy2); border: 1px solid var(--border); padding: 10px 14px; margin-top: 8px; line-height: 1.7; white-space: pre-wrap; }
+
+    /* Approval badges */
+    .approval-badge { font-family: var(--fm); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 2px; flex-shrink: 0; }
+    .approval-badge.approved { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,212,160,0.3); }
+    .approval-badge.rejected { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,72,85,0.3); }
+    .approval-badge.pending { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+
+    /* Approval section */
+    .approval-section { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .approval-title { font-family: var(--fh); font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; margin-bottom: 10px; }
+    .approval-form { background: var(--navy2); border: 1px solid var(--border-hi); padding: 16px; margin-bottom: 10px; }
+    .approval-input { width: 100%; background: var(--navy3); border: 1px solid var(--border-hi); color: var(--text); padding: 9px 12px; font-family: var(--fb); font-size: 13px; margin-bottom: 8px; outline: none; }
+    .approval-input:focus { border-color: var(--teal); }
+    .approval-hint { font-family: var(--fb); font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 4px; }
+    .btn-request-approval { background: transparent; border: 1px solid var(--border-hi); color: var(--text-mid); padding: 8px 16px; font-family: var(--fh); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .btn-request-approval:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-send-approval { background: var(--teal); border: none; color: var(--navy); padding: 9px 20px; font-family: var(--fh); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .btn-send-approval:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-cancel-approval { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 9px 16px; font-family: var(--fh); font-size: 12px; cursor: pointer; }
+    .approval-sent { font-family: var(--fb); font-size: 13px; color: var(--teal); background: var(--teal-dim); border: 1px solid rgba(0,200,224,0.2); padding: 12px 16px; }
+    .approval-done { font-family: var(--fb); font-size: 13px; padding: 10px 14px; margin-bottom: 8px; }
+    .approved-done { color: var(--green); background: var(--green-dim); border: 1px solid rgba(0,212,160,0.2); }
+    .rejected-done { color: var(--red); background: var(--red-dim); border: 1px solid rgba(232,72,85,0.2); }
+
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+    .action-row { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+    /* ══ QUESTIONS TABLE ══ */
+    .q-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .q-count { font-family: var(--fb); font-size: 13px; color: var(--text-mid); }
+    .questions-table { width: 100%; border-collapse: collapse; }
+    .questions-table th {
+      font-family: var(--fh); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.5px; color: var(--text-mid);
+      padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .questions-table td { font-family: var(--fb); font-size: 13px; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); line-height: 1.5; }
+    .questions-table tr:last-child td { border-bottom: none; }
+    .q-num { font-family: var(--fm); font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+    .max-h { max-height: 380px; overflow-y: auto; }
+    .max-h::-webkit-scrollbar { width: 4px; }
+    .max-h::-webkit-scrollbar-thumb { background: var(--border-hi); }
+
+    /* ══ PROCESSING ══ */
+    .processing-screen { padding: 80px 0; text-align: center; }
+    .spinner { width: 60px; height: 60px; margin: 0 auto 24px; position: relative; }
+    .spinner::before, .spinner::after { content: ''; position: absolute; inset: 0; border: 2px solid transparent; border-radius: 50%; }
+    .spinner::before { border-top-color: var(--teal); animation: spin 1s linear infinite; }
+    .spinner::after { border-bottom-color: rgba(0,200,224,0.25); animation: spin 1.5s linear infinite reverse; inset: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .proc-label { font-family: var(--fh); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .proc-status { font-family: var(--fb); color: var(--text-mid); font-size: 14px; margin-bottom: 4px; }
+    .progress-bar { width: 320px; height: 3px; background: var(--border); margin: 20px auto; border-radius: 2px; }
+    .progress-fill { height: 100%; background: var(--teal); transition: width 0.5s; border-radius: 2px; }
+    .proc-detail { font-family: var(--fm); font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+    /* ══ RESULTS ══ */
+    .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .results-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stat-chip { display: flex; align-items: center; gap: 8px; padding: 7px 16px; border: 1px solid var(--border); font-family: var(--fb); font-size: 13px; color: var(--text-mid); }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .export-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .result-item { border: 1px solid var(--border); margin-bottom: 8px; overflow: hidden; transition: border-color 0.2s; }
+    .result-item:hover { border-color: var(--border-hi); }
+    .result-header { display: flex; align-items: flex-start; gap: 16px; padding: 16px 20px; cursor: pointer; background: var(--navy2); }
+    .result-badge { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 62px; }
+    .conf-label { padding: 4px 0; width: 100%; text-align: center; font-family: var(--fh); font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+    .conf-pct { font-family: var(--fh); font-size: 15px; font-weight: 800; }
+    .conf-yes .conf-label  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,212,160,0.3); }
+    .conf-yes .conf-pct    { color: var(--green); }
+    .conf-no .conf-label   { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(232,72,85,0.3); }
+    .conf-no .conf-pct     { color: var(--red); }
+    .conf-partial .conf-label { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+    .conf-partial .conf-pct   { color: var(--amber); }
+
+    .result-question { flex: 1; font-family: var(--fb); font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.55; }
+    .result-chevron { color: var(--text-dim); transition: transform 0.2s; margin-top: 2px; font-size: 14px; }
+    .result-chevron.open { transform: rotate(180deg); }
+
+    .result-body { padding: 22px 20px; border-top: 1px solid var(--border); background: var(--navy3); display: none; }
+    .result-body.open { display: block; }
+    .result-explanation { font-family: var(--fb); font-size: 14px; color: var(--text); line-height: 1.9; margin-bottom: 18px; font-weight: 400; }
+    .sources-heading { font-family: var(--fh); font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; margin-bottom: 10px; }
+    .source-item {
+      background: var(--navy2); border: 1px solid var(--border);
+      border-left: 3px solid var(--teal); padding: 10px 16px;
+      margin-bottom: 6px; font-family: var(--fb); font-size: 13px;
+      color: var(--text-mid); line-height: 1.65; font-style: italic;
+    }
+
+    /* ══ MISC ══ */
+    .alert { padding: 12px 16px; border-left: 3px solid var(--red); background: var(--red-dim); font-family: var(--fb); font-size: 13px; color: var(--red); margin-bottom: 16px; }
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ══ FOOTER ══ */
+    footer { border-top: 1px solid var(--border); padding: 28px 0 0; margin-top: 56px; background: var(--navy2); }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 36px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; }
+    .footer-shield { width: 28px; height: 30px; }
+    .footer-brand { font-family: var(--fh); font-size: 16px; font-weight: 700; color: #fff; }
+    .footer-brand em { color: var(--teal); font-style: normal; }
+    .footer-reg { font-size: 11px; color: var(--text-dim); vertical-align: super; margin-left: 1px; }
+    .footer-sub { font-family: var(--fb); font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+    .footer-middle { display: flex; flex-direction: column; gap: 8px; }
+    .footer-compliance-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .footer-badge { font-family: var(--fm); font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: 2px; letter-spacing: 0.5px; }
+    .footer-badge.uk { background: rgba(0,200,224,0.1); color: var(--teal); border: 1px solid rgba(0,200,224,0.25); }
+    .footer-badge.gdpr { background: rgba(0,212,160,0.1); color: var(--green); border: 1px solid rgba(0,212,160,0.25); }
+    .footer-badge.iso { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+    .footer-product { font-family: var(--fh); font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; }
+    .footer-legal { font-family: var(--fb); font-size: 11px; color: var(--text-dim); line-height: 1.8; text-align: right; }
+    .footer-right { text-align: right; }
+    .footer-bottom { border-top: 1px solid var(--border); padding: 14px 36px; }
+    .footer-bottom-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-family: var(--fm); font-size: 10px; color: var(--text-dim); }
+    .footer-bottom-links { display: flex; gap: 12px; align-items: center; }
+    .footer-bottom-links a { color: var(--text-dim); text-decoration: none; }
+    .footer-bottom-links a:hover { color: var(--teal); }
+
+    /* Compliance bar */
+    .compliance-bar { background: rgba(0,200,224,0.05); border-bottom: 1px solid rgba(0,200,224,0.1); border-top: 1px solid rgba(0,200,224,0.1); padding: 8px 0; }
+    .compliance-inner { max-width: 1280px; margin: 0 auto; padding: 0 36px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .compliance-item { display: flex; align-items: center; gap: 5px; font-family: var(--fm); font-size: 10px; color: var(--text-mid); letter-spacing: 0.3px; }
+    .compliance-item svg { color: var(--teal); flex-shrink: 0; }
+    .admin-tab { background:transparent;border:none;border-bottom:2px solid transparent;padding:12px 20px;font-family:var(--fh);font-size:12px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all 0.2s; }
+    .admin-tab.active { color:var(--teal);border-bottom-color:var(--teal); }
+    .admin-tab:hover:not(.active) { color:var(--text); }
+    .admin-tab-panel { display:none; }
+    .admin-tab-panel.active { display:block; }
+    .user-row { display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy3);border:1px solid var(--border);margin-bottom:4px;border-radius:2px; }
+    .role-badge { font-family:var(--fm);font-size:9px;font-weight:600;padding:3px 8px;border-radius:2px;flex-shrink:0; }
+    .role-admin { background:rgba(0,200,224,0.15);color:var(--teal);border:1px solid rgba(0,200,224,0.3); }
+    .role-contributor { background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,166,35,0.3); }
+    .role-approver { background:var(--green-dim);color:var(--green);border:1px solid rgba(0,212,160,0.3); } align-items: flex-start; gap: 10px; background: rgba(0,200,224,0.06); border: 1px solid rgba(0,200,224,0.18); padding: 12px 16px; margin-bottom: 16px; font-family: var(--fb); font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+    .gdpr-notice strong { color: var(--teal); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <svg class="cs-shield" viewBox="0 0 100 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="lc"><rect x="0" y="0" width="50" height="112"/></clipPath>
+          <clipPath id="rc"><rect x="50" y="0" width="50" height="112"/></clipPath>
+        </defs>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="#0a1e3d"/>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 L50 4Z" fill="#00b4d8" clip-path="url(#rc)"/>
+        <path d="M50 4 L8 22 L8 56 C8 80 26 100 50 108 L50 4Z" fill="#0f3060" clip-path="url(#lc)"/>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="none" stroke="#00c8e0" stroke-width="1.5" opacity="0.7"/>
+        <line x1="50" y1="6" x2="50" y2="107" stroke="#00c8e0" stroke-width="0.8" opacity="0.4"/>
+        <text x="50" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="42" font-weight="700" fill="white" opacity="0.95">Φ</text>
+      </svg>
+      <div class="logo-text-block">
+        <div class="logo-name">Cybe<em>Sure</em></div>
+        <div class="logo-sub">Cyber Security <em>Simplicity</em></div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-product">AI Security Questionnaire System</div>
+      <div id="userInfoBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="text-align:right">
+          <div style="font-family:var(--fh);font-size:12px;font-weight:600;color:var(--text)" id="headerUserName"></div>
+          <div style="font-family:var(--fm);font-size:10px;color:var(--text-mid)" id="headerOrgInfo"></div>
+        </div>
+        <div id="headerUsageBadge" style="font-family:var(--fm);font-size:10px;padding:4px 10px;border-radius:2px;background:var(--green-dim);color:var(--green)"></div>
+        <button id="adminNavBtn" onclick="showAdminPanel()"
+          style="display:none;background:var(--teal);border:none;color:var(--navy);padding:7px 14px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer;border-radius:2px">
+          ⚙ Admin
+        </button>
+        <button onclick="doLogout()"
+          style="background:transparent;border:1px solid var(--border-hi);color:var(--text-dim);padding:5px 12px;font-family:var(--fh);font-size:11px;font-weight:600;cursor:pointer;border-radius:2px">
+          Sign Out
+        </button>
+      </div>
+      <div class="header-badge">SecureAnswer</div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="loginScreen" style="display:block;position:fixed;inset:0;background:#0b1829;z-index:1000;overflow-y:auto">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div style="width:100%;max-width:420px">
+
+      <!-- Logo -->
+      <div style="text-align:center;margin-bottom:32px">
+        <svg width="56" height="60" viewBox="0 0 100 112" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:12px">
+          <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="#0a1e3d"/>
+          <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="none" stroke="#00c8e0" stroke-width="1.5" opacity="0.7"/>
+          <text x="50" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="42" font-weight="700" fill="white">Φ</text>
+        </svg>
+        <div style="font-family:Montserrat,sans-serif;font-size:26px;font-weight:700;color:#fff">Cybe<span style="color:#00c8e0">Sure</span></div>
+        <div style="font-family:Arial,sans-serif;font-size:11px;color:#4a6a8a;letter-spacing:2px;text-transform:uppercase;margin-top:2px">SecureAnswer Platform</div>
+      </div>
+
+      <!-- Sign In -->
+      <div id="loginCard" style="background:#132030;border:1px solid #1e3a5f;padding:32px">
+        <div style="font-family:Montserrat,sans-serif;font-size:16px;font-weight:700;color:#dce8f5;margin-bottom:20px">Sign in to your account</div>
+        <div id="loginError" style="display:none;background:rgba(232,72,85,0.1);border:1px solid rgba(232,72,85,0.4);color:#e84855;padding:10px 14px;font-size:13px;margin-bottom:16px;font-family:Arial,sans-serif;border-radius:2px"></div>
+        <div style="margin-bottom:14px">
+          <label style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#7a9cbf;letter-spacing:0.5px;display:block;margin-bottom:6px">EMAIL ADDRESS</label>
+          <input type="email" id="loginEmail" autocomplete="email"
+            style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:11px 14px;font-family:Arial,sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:2px"
+            placeholder="you@company.com" />
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#7a9cbf;letter-spacing:0.5px;display:block;margin-bottom:6px">PASSWORD</label>
+          <input type="password" id="loginPassword" autocomplete="current-password"
+            style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:11px 14px;font-family:Arial,sans-serif;font-size:14px;outline:none;box-sizing:border-box;border-radius:2px"
+            placeholder="••••••••" />
+        </div>
+        <button id="loginBtn" onclick="doLogin()"
+          style="width:100%;background:#00c8e0;border:none;color:#0b1829;padding:13px;font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;cursor:pointer;border-radius:2px">
+          Sign In
+        </button>
+        <div style="margin-top:16px;text-align:center;font-family:Arial,sans-serif;font-size:12px;color:#4a6a8a">
+          Don't have an account?
+          <a href="#" onclick="showRegister();return false;" style="color:#00c8e0;text-decoration:none">Start free trial</a>
+          &nbsp;·&nbsp;
+          <a href="#" onclick="showDemoRegister();return false;" style="color:#00d4a0;text-decoration:none">Try Demo</a>
+        </div>
+      </div>
+
+      <!-- Register card -->
+      <div id="registerCard" style="display:none;background:#132030;border:1px solid #1e3a5f;padding:32px;margin-top:16px">
+        <div style="font-family:Montserrat,sans-serif;font-size:16px;font-weight:700;color:#dce8f5;margin-bottom:6px" id="regTitle">Start your free 14-day trial</div>
+        <div style="font-family:Arial,sans-serif;font-size:12px;color:#7a9cbf;margin-bottom:20px">No credit card required. Full access during trial.</div>
+        <div id="regError" style="display:none;background:rgba(232,72,85,0.1);border:1px solid rgba(232,72,85,0.4);color:#e84855;padding:10px 14px;font-size:13px;margin-bottom:14px;font-family:Arial,sans-serif"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div>
+            <label style="font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;color:#4a6a8a;display:block;margin-bottom:5px">COMPANY NAME</label>
+            <input id="regOrg" style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:9px 12px;font-size:13px;outline:none;font-family:Arial,sans-serif;box-sizing:border-box" placeholder="Acme Ltd" />
+          </div>
+          <div>
+            <label style="font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;color:#4a6a8a;display:block;margin-bottom:5px">YOUR NAME</label>
+            <input id="regName" style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:9px 12px;font-size:13px;outline:none;font-family:Arial,sans-serif;box-sizing:border-box" placeholder="John Smith" />
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;color:#4a6a8a;display:block;margin-bottom:5px">WORK EMAIL</label>
+          <input id="regEmail" type="email" style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:9px 12px;font-size:13px;outline:none;font-family:Arial,sans-serif;box-sizing:border-box" placeholder="you@company.com" />
+        </div>
+        <div style="margin-bottom:16px">
+          <label style="font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;color:#4a6a8a;display:block;margin-bottom:5px">PASSWORD</label>
+          <input id="regPassword" type="password" style="width:100%;background:#0b1829;border:1px solid #2a4a6f;color:#dce8f5;padding:9px 12px;font-size:13px;outline:none;font-family:Arial,sans-serif;box-sizing:border-box" placeholder="Min 8 characters" />
+        </div>
+        <button id="regBtn" onclick="doRegister()"
+          style="width:100%;background:#00c8e0;border:none;color:#0b1829;padding:12px;font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;cursor:pointer;border-radius:2px">
+          Start Free Trial
+        </button>
+        <div style="margin-top:12px;text-align:center;font-family:Arial,sans-serif;font-size:12px;color:#4a6a8a">
+          Already have an account? <a href="#" onclick="showLogin();return false;" style="color:#00c8e0;text-decoration:none">Sign in</a>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:#132030;border:1px solid #1e3a5f;padding:14px;text-align:center">
+          <div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#00c8e0;margin-bottom:4px">STARTER</div>
+          <div style="font-family:Montserrat,sans-serif;font-size:18px;font-weight:800;color:#dce8f5">£5,000</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;color:#4a6a8a">50 questionnaires/yr</div>
+        </div>
+        <div style="background:#132030;border:1px solid #1e3a5f;padding:14px;text-align:center">
+          <div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#00c8e0;margin-bottom:4px">BUSINESS</div>
+          <div style="font-family:Montserrat,sans-serif;font-size:18px;font-weight:800;color:#dce8f5">£8,500</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;color:#4a6a8a">100 questionnaires/yr</div>
+        </div>
+        <div style="background:#132030;border:1px solid #1e3a5f;padding:14px;text-align:center">
+          <div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#f5a623;margin-bottom:4px">CORPORATE</div>
+          <div style="font-family:Montserrat,sans-serif;font-size:18px;font-weight:800;color:#dce8f5">£15,000</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;color:#4a6a8a">200 questionnaires/yr</div>
+        </div>
+        <div style="background:#132030;border:1px solid #1e3a5f;padding:14px;text-align:center">
+          <div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:700;color:#00d4a0;margin-bottom:4px">ENTERPRISE</div>
+          <div style="font-family:Montserrat,sans-serif;font-size:18px;font-weight:800;color:#dce8f5">£25,000</div>
+          <div style="font-family:Arial,sans-serif;font-size:11px;color:#4a6a8a">500 questionnaires/yr</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Self-contained login script — no dependencies on main app JS -->
+  <script>
+  (function() {
+    function loginShowError(msg) {
+      var el = document.getElementById('loginError');
+      if(el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+    function regShowError(msg) {
+      var el = document.getElementById('regError');
+      if(el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    window.showLogin = function() {
+      document.getElementById('registerCard').style.display = 'none';
+      document.getElementById('loginCard').style.display = 'block';
+    };
+    window.showRegister = function() {
+      document.getElementById('loginCard').style.display = 'none';
+      document.getElementById('registerCard').style.display = 'block';
+      document.getElementById('regTitle').textContent = 'Start your free 14-day trial';
+      document.getElementById('regBtn').textContent = 'Start Free Trial';
+      document.getElementById('regBtn').style.background = '#00c8e0';
+      document.getElementById('regBtn').onclick = window.doRegister;
+    };
+    window.showDemoRegister = function() {
+      window.showRegister();
+      document.getElementById('regTitle').textContent = 'Try CybeSure SecureAnswer — Demo';
+      document.getElementById('regBtn').textContent = 'Start Demo (10 questions max)';
+      document.getElementById('regBtn').style.background = '#00d4a0';
+      document.getElementById('regBtn').onclick = window.doDemoRegister;
+    };
+
+    window.doLogin = async function() {
+      var email = (document.getElementById('loginEmail').value || '').trim();
+      var pass  =  document.getElementById('loginPassword').value || '';
+      var btn   =  document.getElementById('loginBtn');
+      var err   =  document.getElementById('loginError');
+      if(err) err.style.display = 'none';
+      if(!email || !pass) { loginShowError('Please enter your email and password.'); return; }
+      if(btn) { btn.textContent = 'Signing in…'; btn.disabled = true; }
+      try {
+        var resp = await fetch('/auth/login-json', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email: email, password: pass})
+        });
+        var data = await resp.json();
+        if(resp.ok && data.access_token) {
+          // Store token
+          try { localStorage.setItem('cybesure_token', data.access_token); } catch(e) {}
+          // Always call _onLoginSuccess - it's defined in the main script
+          if(typeof window._onLoginSuccess === 'function') {
+            window._onLoginSuccess(data);
+          } else {
+            // Should never happen - but if it does, just hide login show app
+            try { document.getElementById('loginScreen').style.display = 'none'; } catch(e2) {}
+            try { document.getElementById('mainContent').style.display = 'block'; } catch(e2) {}
+            try { document.getElementById('userInfoBar').style.display = 'flex'; } catch(e2) {}
+          }
+        } else {
+          var msg = (data && data.detail) ? data.detail : ('Login failed — HTTP ' + resp.status);
+          loginShowError(msg);
+        }
+      } catch(e) {
+        loginShowError('Connection error: ' + e.message);
+      }
+      if(btn) { btn.textContent = 'Sign In'; btn.disabled = false; }
+    };
+
+    window.doRegister = async function() {
+      var org  = (document.getElementById('regOrg').value || '').trim();
+      var name = (document.getElementById('regName').value || '').trim();
+      var email= (document.getElementById('regEmail').value || '').trim();
+      var pass =  document.getElementById('regPassword').value || '';
+      var err  =  document.getElementById('regError');
+      if(err) err.style.display = 'none';
+      if(!org || !name || !email || !pass) { regShowError('Please fill in all fields.'); return; }
+      if(pass.length < 8) { regShowError('Password must be at least 8 characters.'); return; }
+      try {
+        var resp = await fetch('/auth/register', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({org_name:org, contact_email:email, admin_name:name, admin_email:email, password:pass})
+        });
+        var data = await resp.json();
+        if(resp.ok) {
+          document.getElementById('loginEmail').value = email;
+          document.getElementById('loginPassword').value = pass;
+          window.showLogin();
+          window.doLogin();
+        } else {
+          regShowError(data.detail || 'Registration failed.');
+        }
+      } catch(e) { regShowError('Connection error: ' + e.message); }
+    };
+
+    window.doDemoRegister = async function() {
+      var org  = (document.getElementById('regOrg').value || '').trim();
+      var name = (document.getElementById('regName').value || '').trim();
+      var email= (document.getElementById('regEmail').value || '').trim();
+      var pass =  document.getElementById('regPassword').value || '';
+      var err  =  document.getElementById('regError');
+      if(err) err.style.display = 'none';
+      if(!org || !name || !email || !pass) { regShowError('Please fill in all fields.'); return; }
+      if(pass.length < 8) { regShowError('Password must be at least 8 characters.'); return; }
+      try {
+        var resp = await fetch('/auth/register-demo', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({org_name:org, contact_email:email, admin_name:name, admin_email:email, password:pass})
+        });
+        var data = await resp.json();
+        if(resp.ok) {
+          document.getElementById('loginEmail').value = email;
+          document.getElementById('loginPassword').value = pass;
+          window.showLogin();
+          window.doLogin();
+        } else {
+          regShowError(data.detail || 'Registration failed.');
+        }
+      } catch(e) { regShowError('Connection error: ' + e.message); }
+    };
+
+    // Enter key support
+    document.addEventListener('keydown', function(e) {
+      if(e.key === 'Enter') {
+        var ls = document.getElementById('loginScreen');
+        if(ls && ls.style.display !== 'none') {
+          var rc = document.getElementById('registerCard');
+          if(rc && rc.style.display !== 'none') { window.doRegister(); }
+          else { window.doLogin(); }
+        }
+      }
+    });
+  })();
+  </script>
+</div>
+
+<!-- ══ LIMIT REACHED MODAL ══ -->
+<div id="limitModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center">
+  <div style="background:var(--navy2);border:1px solid var(--border-hi);padding:40px;max-width:560px;width:90%;margin:24px">
+    <div style="font-size:36px;text-align:center;margin-bottom:16px">🔒</div>
+    <div style="font-family:var(--fh);font-size:20px;font-weight:700;color:var(--text);text-align:center;margin-bottom:8px">Questionnaire Limit Reached</div>
+    <div style="font-family:var(--fb);font-size:14px;color:var(--text-mid);text-align:center;margin-bottom:28px;line-height:1.6" id="limitModalMsg">You have used all questionnaires in your current subscription.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div style="background:var(--navy3);border:1px solid var(--teal);padding:20px;text-align:center">
+        <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--teal);margin-bottom:6px;letter-spacing:1px">TOP-UP — 5 QUESTIONNAIRES</div>
+        <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:var(--text);margin-bottom:4px">£750</div>
+        <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-bottom:14px">£150 per questionnaire</div>
+        <button onclick="purchaseTopup('five')" style="width:100%;background:var(--teal);border:none;color:var(--navy);padding:10px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer">Buy 5</button>
+      </div>
+      <div style="background:var(--navy3);border:1px solid var(--green);padding:20px;text-align:center;position:relative">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--navy);font-family:var(--fh);font-size:9px;font-weight:700;padding:3px 10px;letter-spacing:1px">BEST VALUE</div>
+        <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--green);margin-bottom:6px;letter-spacing:1px">TOP-UP — 10 QUESTIONNAIRES</div>
+        <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:var(--text);margin-bottom:4px">£1,500</div>
+        <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-bottom:14px">£150 per questionnaire</div>
+        <button onclick="purchaseTopup('ten')" style="width:100%;background:var(--green);border:none;color:var(--navy);padding:10px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer">Buy 10</button>
+      </div>
+    </div>
+
+    <div style="border:1px solid var(--border);padding:16px;margin-bottom:16px">
+      <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--text-mid);margin-bottom:10px;letter-spacing:0.5px">UPGRADE YOUR ANNUAL SUBSCRIPTION</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        <div style="text-align:center;padding:10px;background:var(--navy3)">
+          <div style="font-family:var(--fh);font-size:10px;color:var(--teal);font-weight:700">STARTER</div>
+          <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text)">£5k</div>
+          <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">50/yr</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--navy3)">
+          <div style="font-family:var(--fh);font-size:10px;color:var(--teal);font-weight:700">BUSINESS</div>
+          <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text)">£8.5k</div>
+          <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">100/yr</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--navy3)">
+          <div style="font-family:var(--fh);font-size:10px;color:var(--amber);font-weight:700">CORPORATE</div>
+          <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text)">£15k</div>
+          <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">200/yr</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--navy3)">
+          <div style="font-family:var(--fh);font-size:10px;color:var(--green);font-weight:700">ENTERPRISE</div>
+          <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text)">£25k</div>
+          <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">500/yr</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;text-align:center">
+        <a href="https://cybesure.com/secureanswer" target="_blank" style="color:var(--teal);font-family:var(--fb);font-size:12px">Subscribe on cybesure.com →</a>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button onclick="hideLimitModal()" style="background:transparent;border:1px solid var(--border-hi);color:var(--text-dim);padding:8px 20px;font-family:var(--fh);font-size:12px;cursor:pointer">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DEMO BANNER ══ -->
+<div id="demoBanner" style="display:none;background:linear-gradient(90deg,#1a2f10,#0f2520);border-bottom:2px solid var(--green);padding:10px 36px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--green);letter-spacing:1px">DEMO MODE</span>
+      <span style="font-family:var(--fb);font-size:12px;color:var(--text-mid)">Limited to 10 questions per session and 3 questionnaires total. Upgrade to process unlimited questionnaires.</span>
+    </div>
+    <a href="https://cybesure.com/secureanswer" target="_blank" style="background:var(--green);color:var(--navy);padding:6px 16px;font-family:var(--fh);font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap">Upgrade Now</a>
+  </div>
+</div>
+
+<!-- ══ TEST MODE BANNER ══ -->
+<div id="testBanner" style="display:none;background:linear-gradient(90deg,#1a1a0a,#251f00);border-bottom:2px solid var(--amber);padding:10px 36px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px">🧪 TEST MODE</span>
+      <span style="font-family:var(--fb);font-size:12px;color:var(--text-mid)">Unlimited access active. All subscription features enabled for testing.</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="switchMode('demo')" style="background:transparent;border:1px solid var(--green);color:var(--green);padding:5px 12px;font-family:var(--fh);font-size:10px;font-weight:700;cursor:pointer">Test Demo Mode</button>
+      <button onclick="switchMode('test')" style="background:transparent;border:1px solid var(--amber);color:var(--amber);padding:5px 12px;font-family:var(--fh);font-size:10px;font-weight:700;cursor:pointer">Reset Test Mode</button>
+    </div>
+  </div>
+</div>
+
+  <!-- Steps -->
+  <div id="mainContent" style="display:none">
+  <div class="steps-nav">
+    <div class="step-item"><div class="step-num active" id="sn1">01</div><span class="step-label active" id="sl1">Upload</span></div>
+    <div class="step-connector" id="sc1"></div>
+    <div class="step-item"><div class="step-num" id="sn2">02</div><span class="step-label" id="sl2">Review</span></div>
+    <div class="step-connector" id="sc2"></div>
+    <div class="step-item"><div class="step-num" id="sn3">03</div><span class="step-label" id="sl3">Processing</span></div>
+    <div class="step-connector" id="sc3"></div>
+    <div class="step-item"><div class="step-num" id="sn4">04</div><span class="step-label" id="sl4">Results</span></div>
+  </div>
+
+  <!-- ══ UPLOAD ══ -->
+  <div class="section active" id="section1">
+    <div id="errorBox" style="display:none" class="alert"></div>
+    <div class="gdpr-notice">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--teal)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span><strong>UK Data Residency &amp; GDPR Compliant.</strong> All document processing is performed in-memory. No data is stored or retained after your session ends.</span>
+    </div>
+
+    <!-- Source selector -->
+    <div style="margin-bottom:16px">
+      <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Step 1 — Where is the questionnaire coming from?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div id="srcFile" onclick="switchSource('file')" style="padding:16px 20px;border:2px solid var(--teal);background:var(--teal-dim);cursor:pointer;border-radius:2px;transition:all 0.2s">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:24px">📋</span>
+            <div>
+              <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--teal)">Upload Questionnaire File</div>
+              <div style="font-family:var(--fb);font-size:12px;color:var(--text-mid)">Excel, Word, CSV or PDF</div>
+            </div>
+          </div>
+        </div>
+        <div id="srcPortal" onclick="switchSource('portal')" style="padding:16px 20px;border:2px solid var(--border);background:var(--navy2);cursor:pointer;border-radius:2px;transition:all 0.2s">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:24px">🔗</span>
+            <div>
+              <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text-mid)">Fetch from Compliance Portal</div>
+              <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">OneTrust, Vanta, Whistic, EcoVadis &amp; more</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- File source -->
+    <div id="fileSourcePanel">
+      <div class="upload-grid">
+        <div class="card">
+          <div class="section-heading">Security Questionnaire</div>
+          <div class="drop-zone" id="qDrop">
+            <input type="file" id="qFile" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc" />
+            <span class="drop-icon">📋</span>
+            <div class="drop-title">Drop your questionnaire file here</div>
+            <div class="drop-sub">Accepts Excel, Word, CSV or PDF</div>
+          </div>
+          <div class="file-list" id="qFileList"></div>
+        </div>
+        <div class="card">
+          <div class="section-heading">ISMS &amp; Policy Documents</div>
+          <div class="drop-zone" id="docDrop">
+            <input type="file" id="docFiles" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc" multiple />
+            <span class="drop-icon">📁</span>
+            <div class="drop-title">Drop your policy documents here</div>
+            <div class="drop-sub">.doc .docx .pdf .xlsx .csv — multiple files</div>
+          </div>
+          <div class="file-list" id="docFileList"></div>
+          <div class="or-divider"><div class="or-line"></div><div class="or-text">Or link to a document repository</div><div class="or-line"></div></div>
+          <div class="url-section">
+            <div class="url-section-title"><span class="icon">🔗</span> SharePoint / Google Drive / Web Link</div>
+            <div class="url-section-hint">Paste a link. Must be set to <strong>"Anyone with the link can view"</strong>.</div>
+            <div class="url-row">
+              <input type="text" class="url-input" id="urlInput" placeholder="https://sharepoint.com/sites/... or drive.google.com/..." />
+              <button class="url-add-btn" onclick="addUrl()">Add Link</button>
+            </div>
+            <div class="url-note">Supported: SharePoint · Google Drive · Direct .pdf / .docx / .xlsx URLs</div>
+            <div id="urlList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portal source -->
+    <div id="portalSourcePanel" style="display:none">
+      <div class="upload-grid">
+        <div class="card">
+          <div class="section-heading">Compliance Portal Connection</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px" id="srcPortalGrid"></div>
+          <div style="margin-bottom:8px">
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">API KEY / TOKEN</label>
+            <input id="srcApiKey" class="url-input" style="width:100%" type="password" placeholder="Paste your portal API key or Bearer token" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">USERNAME (if needed)</label>
+              <input id="srcUsername" class="url-input" style="width:100%" placeholder="Username or Client ID" />
+            </div>
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">PASSWORD / SECRET</label>
+              <input id="srcPassword" class="url-input" style="width:100%" type="password" placeholder="Password or Secret" />
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">PORTAL BASE URL (leave blank for default)</label>
+            <input id="srcBaseUrl" class="url-input" style="width:100%" placeholder="e.g. https://app.onetrust.com/api/assessment/v2" />
+          </div>
+          <div style="margin-bottom:10px">
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">QUESTIONNAIRE / ASSESSMENT ID</label>
+            <input id="srcQId" class="url-input" style="width:100%" placeholder="Paste the questionnaire or assessment ID from your portal" />
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn-send-approval" id="srcFetchBtn" onclick="fetchFromPortal()">Connect &amp; Fetch Questions</button>
+            <div id="srcFetchStatus" style="font-family:var(--fm);font-size:11px;color:var(--text-dim)"></div>
+          </div>
+          <div id="portalFetchedQuestions" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <div class="section-heading">ISMS &amp; Policy Documents</div>
+          <div class="drop-zone" id="docDropPortal">
+            <input type="file" id="docFilesPortal" accept=".xlsx,.xls,.csv,.pdf,.docx,.doc" multiple />
+            <span class="drop-icon">📁</span>
+            <div class="drop-title">Drop your policy documents here</div>
+            <div class="drop-sub">.doc .docx .pdf .xlsx .csv — multiple files</div>
+          </div>
+          <div class="file-list" id="docFileListPortal"></div>
+          <div class="or-divider"><div class="or-line"></div><div class="or-text">Or link to repository</div><div class="or-line"></div></div>
+          <div class="url-section">
+            <div class="url-section-title"><span class="icon">🔗</span> SharePoint / Google Drive</div>
+            <div class="url-row">
+              <input type="text" class="url-input" id="urlInputPortal" placeholder="https://sharepoint.com/sites/..." />
+              <button class="url-add-btn" onclick="addUrlPortal()">Add</button>
+            </div>
+            <div id="urlListPortal"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-primary" id="processBtn" disabled onclick="startProcessing()">Continue &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ══ REVIEW ══ -->
+  <div class="section" id="section2">
+    <div class="card">
+      <div class="q-header">
+        <div class="section-heading" style="margin-bottom:0;border:none;padding:0">Extracted Questions</div>
+        <div class="q-count" id="qCountLabel"></div>
+      </div>
+      <div class="max-h">
+        <table class="questions-table">
+          <thead>
+            <tr><th style="width:52px">#</th><th>Question</th></tr>
+          </thead>
+          <tbody id="questionsBody"></tbody>
+        </table>
+      </div>
+      <div class="action-row">
+        <div style="margin-right:auto;display:flex;align-items:center;gap:10px">
+          <label style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--text-mid);white-space:nowrap">INDUSTRY SECTOR</label>
+          <select id="industrySectorSelect" style="background:var(--navy3);border:1px solid var(--border-hi);color:var(--text);padding:8px 12px;font-family:var(--fb);font-size:12px;min-width:200px;cursor:pointer">
+            <option value="">Select sector (optional)</option>
+            <option value="Financial Services">Financial Services</option>
+            <option value="Banking">Banking</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Healthcare & NHS">Healthcare &amp; NHS</option>
+            <option value="Pharmaceuticals">Pharmaceuticals</option>
+            <option value="Technology & SaaS">Technology &amp; SaaS</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Legal & Professional Services">Legal &amp; Professional Services</option>
+            <option value="Retail & E-commerce">Retail &amp; E-commerce</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Energy & Utilities">Energy &amp; Utilities</option>
+            <option value="Government & Public Sector">Government &amp; Public Sector</option>
+            <option value="Education">Education</option>
+            <option value="Transport & Logistics">Transport &amp; Logistics</option>
+            <option value="Telecoms">Telecoms</option>
+            <option value="Media & Entertainment">Media &amp; Entertainment</option>
+            <option value="Construction & Real Estate">Construction &amp; Real Estate</option>
+            <option value="Charity & Not-for-Profit">Charity &amp; Not-for-Profit</option>
+            <option value="Defence & Aerospace">Defence &amp; Aerospace</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" onclick="runAnswering()">Run AI Analysis →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROCESSING ══ -->
+  <div class="section" id="section3">
+    <div class="processing-screen">
+      <div class="spinner"></div>
+      <div class="proc-label">Analysing Your Documents</div>
+      <div class="proc-status" id="procStatus">Initialising…</div>
+      <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+      <div class="proc-detail" id="procDetail"></div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div class="section" id="section4">
+    <div class="results-header">
+      <div class="results-stats" id="statsRow"></div>
+      <div class="export-row">
+        <button class="btn btn-export btn-export-primary" onclick="doExport('excel')" title="Downloads your original questionnaire with answers filled in — all other columns preserved">↓ Completed Questionnaire</button>
+        <button class="btn btn-export" onclick="doExport('report')" title="Clean summary report with Question, Answer, Confidence, Sources and Approval">↓ Summary Report</button>
+        <button class="btn btn-export" onclick="doExport('word')">↓ Word</button>
+        <button class="btn btn-export" onclick="doExport('pdf')">↓ PDF</button>
+        <button class="btn btn-export" onclick="doExport('json')">↓ JSON</button>
+      </div>
+    </div>
+
+    <!-- Portal Connector Panel -->
+    <div class="card" id="portalConnectorPanel" style="margin-bottom:16px;display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="section-heading" style="margin:0;border:none;padding:0">🔗 Portal Connector</div>
+        <button onclick="closePortalPanel()" style="background:transparent;border:none;color:var(--text-dim);font-size:18px;cursor:pointer">×</button>
+      </div>
+
+      <!-- Step 1: Select portal -->
+      <div id="portalStep1">
+        <div style="font-family:var(--fb);font-size:13px;color:var(--text-mid);margin-bottom:14px">
+          Connect directly to your compliance portal — SecureAnswer will fetch questions automatically and submit answers back.
+        </div>
+        <div id="portalGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px"></div>
+        <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:10px">CONNECTION DETAILS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div>
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">PORTAL BASE URL</label>
+            <input id="portalBaseUrl" class="url-input" style="width:100%" placeholder="https://app.onetrust.com/api/... (leave blank to use default)" />
+          </div>
+          <div>
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">API KEY / TOKEN</label>
+            <input id="portalApiKey" class="url-input" style="width:100%" type="password" placeholder="Bearer token or API key" />
+          </div>
+          <div>
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">USERNAME (if needed)</label>
+            <input id="portalUsername" class="url-input" style="width:100%" placeholder="Username or client ID" />
+          </div>
+          <div>
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">PASSWORD / SECRET</label>
+            <input id="portalPassword" class="url-input" style="width:100%" type="password" placeholder="Password or client secret" />
+          </div>
+        </div>
+        <div>
+          <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">QUESTIONNAIRE / ASSESSMENT ID (optional)</label>
+          <input id="portalQId" class="url-input" style="width:100%;margin-bottom:10px" placeholder="e.g. assessment-12345 (leave blank to list all)" />
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-send-approval" id="portalConnectBtn" onclick="connectPortal()" style="padding:10px 24px">Connect & Fetch Questions</button>
+          <div id="portalConnectStatus" style="font-family:var(--fm);font-size:11px;color:var(--text-dim)"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Review & submit -->
+      <div id="portalStep2" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div>
+            <span id="portalConnectedBadge" style="font-family:var(--fm);font-size:10px;padding:3px 10px;background:var(--green-dim);color:var(--green);border:1px solid rgba(0,212,160,0.3)">✓ Connected</span>
+            <span id="portalName" style="font-family:var(--fh);font-size:14px;font-weight:600;color:var(--text);margin-left:10px"></span>
+          </div>
+          <button onclick="resetPortalConnection()" style="background:transparent;border:1px solid var(--border-hi);color:var(--text-dim);padding:5px 12px;font-family:var(--fh);font-size:11px;cursor:pointer">Change Portal</button>
+        </div>
+
+        <div id="portalQuestionsList" style="margin-bottom:14px;max-height:250px;overflow-y:auto"></div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <button class="btn-send-approval" onclick="submitToPortal('draft')" id="portalDraftBtn">Save as Draft</button>
+          <button class="btn-send-approval" onclick="submitToPortal('submit')" style="background:var(--green)" id="portalSubmitBtn">Submit Answers to Portal</button>
+          <div id="portalSubmitStatus" style="font-family:var(--fm);font-size:11px;color:var(--text-dim)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portal integration bar -->
+    <div class="portal-section" id="portalSection">
+      <div class="portal-title">🔗 Portal Integration</div>
+      <div class="portal-hint">Copy answers to paste into any portal, or connect directly via API.</div>
+      <button onclick="showPortalConnector()" style="background:var(--teal);border:none;color:var(--navy);padding:7px 16px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">Connect to Portal →</button>
+    </div>
+
+    <!-- Approver Directory Panel -->
+    <div class="card" id="approverPanel" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="section-heading" style="margin:0;border:none;padding:0">Approver &amp; Reviewer Directory</div>
+        <button onclick="toggleDirectoryPanel()" style="background:transparent;border:1px solid var(--border-hi);color:var(--text-dim);padding:5px 12px;font-family:var(--fh);font-size:11px;font-weight:600;cursor:pointer" id="dirToggleBtn">Manage</button>
+      </div>
+      <div id="directoryPanel" style="display:none">
+        <div id="directoryList" style="margin-bottom:12px"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end">
+          <div>
+            <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:4px">NAME</div>
+            <input id="newContactName" class="approval-input" placeholder="John Smith" style="margin:0"/>
+          </div>
+          <div>
+            <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:4px">EMAIL</div>
+            <input id="newContactEmail" class="approval-input" placeholder="john@company.com" type="email" style="margin:0"/>
+          </div>
+          <div>
+            <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:4px">TITLE</div>
+            <input id="newContactTitle" class="approval-input" placeholder="e.g. CISO, DPO" style="margin:0"/>
+          </div>
+          <div>
+            <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:4px">ROLE</div>
+            <select id="newContactRole" class="approval-input" style="margin:0;cursor:pointer">
+              <option value="approver">Approver</option>
+              <option value="reviewer">Reviewer</option>
+            </select>
+          </div>
+          <button onclick="addDirectoryContact()" style="background:var(--teal);border:none;color:var(--navy);padding:10px 16px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">+ Add</button>
+        </div>
+      </div>
+    </div>
+    <div id="resultsContainer"></div>
+    <div class="action-row">
+      <button class="btn btn-ghost" onclick="resetAll()">← Start New Session</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:3000;overflow-y:auto">
+  <div style="max-width:900px;margin:40px auto;padding:0 24px 40px">
+    <div style="background:var(--navy2);border:1px solid var(--border)">
+      <!-- Admin header -->
+      <div style="background:var(--navy3);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-family:var(--fh);font-size:18px;font-weight:700;color:var(--text)">⚙ Administration</div>
+          <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-top:2px" id="adminOrgLabel"></div>
+        </div>
+        <button onclick="closeAdminPanel()" style="background:transparent;border:none;color:var(--text-dim);font-size:24px;cursor:pointer">×</button>
+      </div>
+
+      <!-- Admin tabs -->
+      <div style="display:flex;border-bottom:1px solid var(--border);overflow-x:auto">
+        <button class="admin-tab active" id="atab-dashboard" onclick="showAdminTab('dashboard')">📊 Dashboard</button>
+        <button class="admin-tab" id="atab-users" onclick="showAdminTab('users')">👥 Users</button>
+        <button class="admin-tab" id="atab-subscription" onclick="showAdminTab('subscription')">💳 Subscription</button>
+        <button class="admin-tab" id="atab-usage" onclick="showAdminTab('usage')">📋 Activity</button>
+        <button class="admin-tab" id="atab-testing" onclick="showAdminTab('testing')">🧪 Testing</button>
+      </div>
+
+      <!-- ── DASHBOARD TAB ── -->
+      <div id="admin-dashboard" class="admin-tab-panel" style="padding:24px;display:block">
+        <div id="dashboardContent">
+          <div style="font-family:var(--fb);font-size:13px;color:var(--text-dim)">Loading analytics…</div>
+        </div>
+      </div>
+
+      <!-- ── USERS TAB ── -->
+      <div id="admin-users" class="admin-tab-panel" style="padding:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text)">Team Members</div>
+          <button onclick="showAddUserForm()" style="background:var(--teal);border:none;color:var(--navy);padding:8px 16px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer">+ Add User</button>
+        </div>
+
+        <!-- Add user form -->
+        <div id="addUserForm" style="display:none;background:var(--navy3);border:1px solid var(--border-hi);padding:16px;margin-bottom:16px">
+          <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:0.5px;margin-bottom:12px">NEW USER</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">FULL NAME</label>
+              <input id="newUserName" class="approval-input" placeholder="Jane Smith" style="margin:0" />
+            </div>
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">EMAIL</label>
+              <input id="newUserEmail" class="approval-input" type="email" placeholder="jane@company.com" style="margin:0" />
+            </div>
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">TEMPORARY PASSWORD</label>
+              <input id="newUserPassword" class="approval-input" type="password" placeholder="Min 8 characters" style="margin:0" />
+            </div>
+            <div>
+              <label style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);display:block;margin-bottom:4px">ROLE</label>
+              <select id="newUserRole" class="approval-input" style="margin:0;cursor:pointer">
+                <option value="admin">Admin — Can upload questionnaires and manage users</option>
+                <option value="contributor">Contributor — Can add comments to answers</option>
+                <option value="approver">Approver — Can approve or reject answers</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="addUser()" class="btn-send-approval">Add User</button>
+            <button onclick="document.getElementById('addUserForm').style.display='none'" class="btn-cancel-approval">Cancel</button>
+            <span id="addUserStatus" style="font-family:var(--fm);font-size:11px;color:var(--text-dim);margin-left:8px;align-self:center"></span>
+          </div>
+        </div>
+
+        <!-- Role descriptions -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+          <div style="padding:10px 14px;background:var(--navy3);border-left:3px solid var(--teal)">
+            <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--teal);margin-bottom:4px">Admin</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim)">Upload questionnaires, upload policy documents, manage users, access all answers and exports</div>
+          </div>
+          <div style="padding:10px 14px;background:var(--navy3);border-left:3px solid var(--amber)">
+            <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--amber);margin-bottom:4px">Contributor</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim)">View answers, add comments and notes to responses, cannot upload or approve</div>
+          </div>
+          <div style="padding:10px 14px;background:var(--navy3);border-left:3px solid var(--green)">
+            <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px">Approver</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim)">Receive approval requests by email, approve or reject answers with comments</div>
+          </div>
+        </div>
+
+        <!-- Users list -->
+        <div id="adminUsersList"><div style="font-family:var(--fb);font-size:13px;color:var(--text-dim)">Loading users…</div></div>
+      </div>
+
+      <!-- ── SUBSCRIPTION TAB ── -->
+      <div id="admin-subscription" class="admin-tab-panel" style="display:none;padding:24px">
+        <div id="adminSubInfo"></div>
+        <div style="margin-top:20px">
+          <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px">Purchase Additional Questionnaires</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div style="background:var(--navy3);border:1px solid var(--teal);padding:20px;text-align:center">
+              <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:1px;margin-bottom:8px">TOP-UP — 5 QUESTIONNAIRES</div>
+              <div style="font-family:var(--fh);font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px">£750</div>
+              <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-bottom:14px">£150 per questionnaire</div>
+              <button onclick="purchaseTopup('five')" style="width:100%;background:var(--teal);border:none;color:var(--navy);padding:10px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer">Buy 5</button>
+            </div>
+            <div style="background:var(--navy3);border:1px solid var(--green);padding:20px;text-align:center">
+              <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;margin-bottom:8px">TOP-UP — 10 QUESTIONNAIRES</div>
+              <div style="font-family:var(--fh);font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px">£1,500</div>
+              <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-bottom:14px">£150 per questionnaire</div>
+              <button onclick="purchaseTopup('ten')" style="width:100%;background:var(--green);border:none;color:var(--navy);padding:10px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer">Buy 10</button>
+            </div>
+          </div>
+          <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">
+            To upgrade your annual subscription, visit <a href="https://cybesure.com/secureanswer" target="_blank" style="color:var(--teal)">cybesure.com/secureanswer</a> or email <a href="mailto:sales@cybesure.com" style="color:var(--teal)">sales@cybesure.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── USAGE TAB ── -->
+      <div id="admin-usage" class="admin-tab-panel" style="display:none;padding:24px">
+        <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">Recent Activity</div>
+        <div id="adminUsageList"><div style="font-family:var(--fb);font-size:13px;color:var(--text-dim)">Loading activity…</div></div>
+      </div>
+
+      <!-- ── TESTING TAB ── -->
+      <div id="admin-testing" class="admin-tab-panel" style="display:none;padding:24px">
+        <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px">Test Mode Controls</div>
+        <div style="font-family:var(--fb);font-size:13px;color:var(--text-mid);margin-bottom:20px">Switch between modes to test the full user experience including subscription limits and demo behaviour.</div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+          <div style="background:var(--navy3);border:1px solid var(--green);padding:20px;text-align:center">
+            <div style="font-size:28px;margin-bottom:8px">🧪</div>
+            <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px">Test Mode</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);margin-bottom:14px">Unlimited questionnaires, all features enabled</div>
+            <button onclick="switchMode('test');closeAdminPanel()" style="width:100%;background:var(--green);border:none;color:var(--navy);padding:8px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer">Activate</button>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--teal);padding:20px;text-align:center">
+            <div style="font-size:28px;margin-bottom:8px">🎯</div>
+            <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--teal);margin-bottom:6px">Demo Mode</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);margin-bottom:14px">3 questionnaires max, 10 questions each</div>
+            <button onclick="switchMode('demo');closeAdminPanel()" style="width:100%;background:var(--teal);border:none;color:var(--navy);padding:8px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer">Activate</button>
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--amber);padding:20px;text-align:center">
+            <div style="font-size:28px;margin-bottom:8px">🔒</div>
+            <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px">Starter Tier</div>
+            <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);margin-bottom:14px">50 questionnaire limit — test subscription cap</div>
+            <button onclick="switchMode('starter');closeAdminPanel()" style="width:100%;background:var(--amber);border:none;color:var(--navy);padding:8px;font-family:var(--fh);font-size:11px;font-weight:700;cursor:pointer">Activate</button>
+          </div>
+        </div>
+
+        <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:8px">WooCommerce Integration Status</div>
+        <div id="wooStatus" style="font-family:var(--fm);font-size:11px;color:var(--text-dim);padding:10px;background:var(--navy3);border:1px solid var(--border)">Checking…</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="compliance-bar">
+  <div class="compliance-inner">
+    <span class="compliance-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      UK Data Residency
+    </span>
+    <span class="compliance-sep">·</span>
+    <span class="compliance-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      UK GDPR Compliant
+    </span>
+    <span class="compliance-sep">·</span>
+    <span class="compliance-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      In-Memory Processing — No Data Stored
+    </span>
+    <span class="compliance-sep">·</span>
+    <span class="compliance-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      ISO 27001 Aligned
+    </span>
+  </div>
+</div>
+
+  </div><!-- /mainContent -->
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg class="footer-shield" viewBox="0 0 100 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="flc"><rect x="0" y="0" width="50" height="112"/></clipPath>
+          <clipPath id="frc"><rect x="50" y="0" width="50" height="112"/></clipPath>
+        </defs>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="#0a1e3d"/>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 L50 4Z" fill="#00b4d8" clip-path="url(#frc)"/>
+        <path d="M50 4 L8 22 L8 56 C8 80 26 100 50 108 L50 4Z" fill="#0f3060" clip-path="url(#flc)"/>
+        <path d="M50 4 L92 22 L92 56 C92 80 74 100 50 108 C26 100 8 80 8 56 L8 22 Z" fill="none" stroke="#00c8e0" stroke-width="1.5" opacity="0.5"/>
+        <text x="50" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="42" font-weight="700" fill="white" opacity="0.9">Φ</text>
+      </svg>
+      <div>
+        <div class="footer-brand">Cybe<em>Sure</em><span class="footer-reg">&reg;</span></div>
+        <div class="footer-sub">Cyber Security Simplicity</div>
+      </div>
+    </div>
+    <div class="footer-middle">
+      <div class="footer-compliance-badges">
+        <span class="footer-badge uk">🇬🇧 UK Data Residency</span>
+        <span class="footer-badge gdpr">UK GDPR Compliant</span>
+        <span class="footer-badge iso">ISO 27001 Aligned</span>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-product">SecureAnswer — AI-Powered Compliance Engine</div>
+      <div class="footer-legal">
+        &copy; <span id="footerYear"></span> CybeSure Ltd. All rights reserved.<br/>
+        SecureAnswer&trade; is a registered trademark of CybeSure Ltd.<br/>
+        Unauthorised reproduction or distribution is prohibited.
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>CybeSure Ltd &mdash; Registered in England &amp; Wales</span>
+      <span class="footer-bottom-links">
+        <a href="https://cybesure.com/privacy" target="_blank">Privacy Policy</a>
+        <span>&middot;</span>
+        <a href="https://cybesure.com/terms" target="_blank">Terms of Service</a>
+        <span>&middot;</span>
+        <a href="https://cybesure.com/gdpr" target="_blank">GDPR Statement</a>
+        <span>&middot;</span>
+        <a href="https://cybesure.com" target="_blank">cybesure.com</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API = '';
+  // Clear any stale session data from previous broken sessions
+  try {
+    const storedToken = localStorage.getItem('cybesure_token');
+    // If token exists but looks malformed, clear it
+    if(storedToken && storedToken === 'no-auth') {
+      localStorage.removeItem('cybesure_token');
+    }
+  } catch(e) {}
+
+  let questionnaireFile = null, documentFiles = [], documentUrls = [];
+  let extractedQuestions = [], sessionId = null, finalResults = [], originalFileB64 = null, structureKey = null;
+  // ── Login success handler — called by the login screen's inline script ──────
+  let authToken = null, currentUser = null;
+  let _skipNextAuthCheck = false;
+
+  // Set copyright year
+  try { document.getElementById('footerYear').textContent = new Date().getFullYear(); } catch(e) {}
+
+  window._onLoginSuccess = function(data) {
+    authToken = data.access_token;
+    window._isLoggedIn = true;
+    try { 
+      sessionStorage.setItem('justLoggedIn', '1');
+      sessionStorage.setItem('cybesure_user', JSON.stringify({
+        full_name: data.user_name || data.full_name || data.email || 'User',
+        role: data.user_role || data.role || 'admin',
+        org_name: data.org_name || 'CybeSure',
+        remaining: data.questionnaires_remaining || data.remaining || 999,
+        tier: data.subscription_tier || data.tier || 'test',
+        tier_name: data.tier_name || data.subscription_tier || 'Test',
+        org_id: data.org_id,
+        user_id: data.user_id
+      }));
+    } catch(e) {}
+    _skipNextAuthCheck = true;
+
+    // Fully normalise user object
+    currentUser = {
+      user_id:    data.user_id || data.id,
+      email:      data.email || '',
+      full_name:  data.user_name || data.full_name || data.email || 'User',
+      role:       data.user_role || data.role || 'admin',
+      org_id:     data.org_id,
+      org_name:   data.org_name || 'CybeSure',
+      subscription_tier: data.subscription_tier || data.tier || 'test',
+      tier:       data.subscription_tier || data.tier || 'test',
+      tier_name:  data.tier_name || data.subscription_tier || 'Test',
+      remaining:  data.questionnaires_remaining ?? data.remaining ?? 999,
+      questionnaires_remaining: data.questionnaires_remaining ?? data.remaining ?? 999,
+      is_demo:    data.is_demo || false,
+      is_test:    data.is_test || false
+    };
+
+    // Show app
+    showApp();
+
+    // Update header
+    try {
+      const nameEl = document.getElementById('headerUserName');
+      const orgEl  = document.getElementById('headerOrgInfo');
+      const badge  = document.getElementById('headerUsageBadge');
+      if(nameEl) nameEl.textContent = currentUser.full_name;
+      if(orgEl)  orgEl.textContent  = currentUser.org_name + ' · ' + currentUser.role + ' · ' + currentUser.tier_name;
+      if(badge)  { badge.textContent = currentUser.remaining + ' questionnaires remaining'; badge.style.background='var(--green-dim)'; badge.style.color='var(--green)'; }
+    } catch(e) {}
+
+    // Show admin button if admin
+    try {
+      const adminBtn = document.getElementById('adminNavBtn');
+      if(adminBtn) adminBtn.style.display = currentUser.role === 'admin' ? 'inline-flex' : 'none';
+    } catch(e) {}
+  };
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+
+  function getToken() {
+    if(authToken) return authToken;
+    try { return localStorage.getItem('cybesure_token'); } catch(e) { return null; }
+  }
+  function setToken(t) {
+    authToken = t;
+    try { localStorage.setItem('cybesure_token', t); } catch(e) {}
+  }
+  function clearToken() {
+    authToken = null; currentUser = null;
+    try { localStorage.removeItem('cybesure_token'); } catch(e) {}
+  }
+
+  function authFetch(url, opts = {}) {
+    const t = getToken();
+    opts.headers = { ...(opts.headers || {}), ...(t ? { 'Authorization': `Bearer ${t}` } : {}) };
+    return fetch(url, opts);
+  }
+
+  function checkAuth() {
+    const token = getToken();
+    if (!token) { showLoginScreen(); }
+    else { showApp(); }
+  }
+
+  function showLoginScreen() {
+    if(window._isLoggedIn) { console.log('showLoginScreen blocked'); return; }
+    try { document.getElementById('loginScreen').style.display = 'block'; } catch(e) {}
+    try { document.getElementById('mainContent').style.display = 'none'; } catch(e) {}
+    try { document.getElementById('userInfoBar').style.display = 'none'; } catch(e) {}
+  }
+
+  function showApp() {
+    try { document.getElementById('loginScreen').style.display = 'none'; } catch(e) {}
+    try { document.getElementById('mainContent').style.display = 'block'; } catch(e) {}
+    try { document.getElementById('userInfoBar').style.display = 'flex'; } catch(e) {}
+    try {
+      const tier = (currentUser && (currentUser.subscription_tier || currentUser.tier)) || '';
+      const db2 = document.getElementById('demoBanner');
+      const tb  = document.getElementById('testBanner');
+      if(db2) db2.style.display = tier === 'demo' ? 'block' : 'none';
+      if(tb)  tb.style.display  = tier === 'test'  ? 'block' : 'none';
+    } catch(e) {}
+    try { updateAdminNav(); } catch(e) {}
+  }
+
+  function showRegister() {
+    document.getElementById('registerCard').style.display = 'block';
+    document.getElementById('loginCard').style.display = 'none';
+  }
+
+  function showLogin() {
+    document.getElementById('registerCard').style.display = 'none';
+    document.getElementById('loginCard').style.display = 'block';
+  }
+
+  function showDemoRegister() {
+    showRegister();
+    const btn = document.querySelector('#registerCard button');
+    if(btn) {
+      btn.textContent = 'Start Demo (3 questionnaires, 10 questions each)';
+      btn.style.background = 'var(--green)';
+      btn.onclick = doDemoRegister;
+    }
+  }
+
+  async function doDemoRegister() {
+    const orgName = document.getElementById('regOrg').value.trim();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const pass = document.getElementById('regPassword').value;
+    const err = document.getElementById('regError');
+    if(!orgName||!name||!email||!pass){err.textContent='Please fill in all fields.';err.style.display='block';return;}
+    if(pass.length<8){err.textContent='Password must be at least 8 characters.';err.style.display='block';return;}
+    try {
+      const r = await fetch(API+'/auth/register-demo',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({org_name:orgName,contact_email:email,admin_name:name,admin_email:email,password:pass})
+      });
+      const d = await r.json();
+      if(r.ok) {
+        showLogin();
+        document.getElementById('loginEmail').value = email;
+        document.getElementById('loginPassword').value = pass;
+        await doLogin();
+      } else {
+        err.textContent = d.detail||'Registration failed.';
+        err.style.display='block';
+      }
+    } catch(e){err.textContent='Connection error.';err.style.display='block';}
+  }
+
+  function updateUserBar() {
+    try {
+      if (!currentUser) return;
+      const nameEl = document.getElementById('headerUserName');
+      const orgEl  = document.getElementById('headerOrgInfo');
+      const badge  = document.getElementById('headerUsageBadge');
+      if(nameEl) nameEl.textContent = currentUser.full_name || currentUser.user_name || currentUser.email || '';
+      const orgName  = currentUser.org_name || '';
+      const role     = currentUser.role || currentUser.user_role || '';
+      const tierName = currentUser.tier_name || currentUser.subscription_tier || '';
+      if(orgEl) orgEl.textContent = `${orgName} · ${role}${tierName ? ' · ' + tierName : ''}`;
+      const remaining = currentUser.remaining ?? currentUser.questionnaires_remaining ?? 999;
+      if(badge) {
+        badge.textContent = `${remaining} questionnaires remaining`;
+        if (remaining <= 5) {
+          badge.style.background = 'var(--red-dim)';
+          badge.style.color = 'var(--red)';
+          badge.style.border = '1px solid rgba(232,72,85,0.3)';
+        } else if (remaining <= 15) {
+          badge.style.background = 'var(--amber-dim)';
+          badge.style.color = 'var(--amber)';
+          badge.style.border = '1px solid rgba(245,166,35,0.3)';
+        } else {
+          badge.style.background = 'var(--green-dim)';
+          badge.style.color = 'var(--green)';
+          badge.style.border = '1px solid rgba(0,212,160,0.3)';
+        }
+      }
+      try { updateAdminNav(); } catch(e) {}
+    } catch(e) { console.log('updateUserBar error:', e); }
+  }
+
+  async function doLogin() {
+    const emailEl = document.getElementById('loginEmail');
+    const passEl  = document.getElementById('loginPassword');
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginError');
+
+    const email = emailEl ? emailEl.value.trim() : '';
+    const pass  = passEl  ? passEl.value : '';
+
+    if (!email || !pass) {
+      if(err) { err.textContent = 'Please enter your email and password.'; err.style.display = 'block'; }
+      return;
+    }
+
+    if(btn) { btn.textContent = 'Signing in…'; btn.disabled = true; }
+
+    try {
+      const r = await fetch('/auth/login-json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: pass })
+      });
+
+      let d;
+      try { d = await r.json(); } catch(je) { d = {}; }
+
+      if (r.ok && d.access_token) {
+        // Store token
+        try { localStorage.setItem('cybesure_token', d.access_token); } catch(e) {}
+        authToken = d.access_token;
+
+        // Set user
+        currentUser = {
+          ...d,
+          full_name: d.user_name || d.full_name || email,
+          role: d.user_role || d.role || 'admin',
+          org_name: d.org_name || 'CybeSure',
+          remaining: d.questionnaires_remaining ?? d.remaining ?? 999,
+          tier_name: d.tier_name || d.subscription_tier || d.tier || 'Test'
+        };
+
+        // Hide login screen
+        const ls = document.getElementById('loginScreen');
+        if(ls) ls.style.display = 'none';
+
+        // Show main content
+        const mc = document.getElementById('mainContent');
+        if(mc) mc.style.display = 'block';
+
+        // Show user bar
+        const ub = document.getElementById('userInfoBar');
+        if(ub) ub.style.display = 'flex';
+
+        // Update banners safely
+        try {
+          const tier = currentUser.subscription_tier || currentUser.tier || '';
+          const db2 = document.getElementById('demoBanner');
+          const tb  = document.getElementById('testBanner');
+          if(db2) db2.style.display = tier === 'demo' ? 'block' : 'none';
+          if(tb)  tb.style.display  = tier === 'test'  ? 'block' : 'none';
+        } catch(be) { console.log('Banner error:', be); }
+
+        // Update user bar text safely
+        try { updateUserBar(); } catch(ube) { console.log('UserBar error:', ube); }
+
+        // Admin nav safely
+        try { updateAdminNav(); } catch(ane) { console.log('AdminNav error:', ane); }
+
+        if(err) err.style.display = 'none';
+        _skipNextAuthCheck = true;  // prevent checkAuth from overriding this login
+
+      } else {
+        const msg = (d && d.detail) ? d.detail : `Login failed (HTTP ${r.status})`;
+        if(err) {
+          err.textContent = r.status === 401
+            ? 'Incorrect email or password.'
+            : r.status === 503
+              ? 'Service starting — wait 30s and retry.'
+              : msg;
+          err.style.display = 'block';
+        }
+      }
+    } catch(e) {
+      console.error('Login error:', e);
+      if(err) { err.textContent = 'Connection error: ' + e.message; err.style.display = 'block'; }
+    }
+
+    if(btn) { btn.textContent = 'Sign In'; btn.disabled = false; }
+  }
+
+  async function doRegister() {
+    const orgName = document.getElementById('regOrg').value.trim();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const pass = document.getElementById('regPassword').value;
+    const err = document.getElementById('regError');
+    if (!orgName || !name || !email || !pass) { err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return; }
+    if (pass.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+    try {
+      const r = await fetch(API + '/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ org_name: orgName, contact_email: email, admin_name: name, admin_email: email, password: pass })
+      });
+      const d = await r.json();
+      if (r.ok) {
+        // Auto login after register
+        document.getElementById('loginEmail').value = email;
+        document.getElementById('loginPassword').value = pass;
+        showLogin();
+        await doLogin();
+      } else {
+        err.textContent = d.detail || 'Registration failed.';
+        err.style.display = 'block';
+      }
+    } catch(e) {
+      err.textContent = 'Connection error. Please try again.';
+      err.style.display = 'block';
+    }
+  }
+
+  function doLogout() {
+    clearToken();
+    currentUser = null;
+    window._isLoggedIn = false;
+    try { sessionStorage.clear(); } catch(e) {}
+    try { document.getElementById('loginScreen').style.display = 'block'; } catch(e) {}
+    try { document.getElementById('mainContent').style.display = 'none'; } catch(e) {}
+    try { document.getElementById('userInfoBar').style.display = 'none'; } catch(e) {}
+    try { resetAll(); } catch(e) {}
+  }
+
+  // ── Subscription limit handling ───────────────────────────────────────────
+
+  function showLimitModal() {
+    document.getElementById('limitModal').style.display = 'flex';
+  }
+
+  function hideLimitModal() {
+    document.getElementById('limitModal').style.display = 'none';
+  }
+
+  async function purchaseTopup(type) {
+    try {
+      const r = await authFetch(`/billing/create-topup-session?topup_type=${type}`, {method:'POST'});
+      const d = await r.json();
+      if(r.ok && d.checkout_url) {
+        window.location.href = d.checkout_url;
+      } else {
+        alert(d.detail || 'Payment setup failed. Please contact support@cybesure.com');
+      }
+    } catch(e) { alert('Error: '+e.message); }
+  }
+
+  function showUpgradePlans() {
+    hideLimitModal();
+    window.open('https://cybesure.com/secureanswer', '_blank');
+  }
+
+  async function switchMode(mode) {
+    const endpoint = mode === 'demo' ? '/billing/activate-demo' : '/billing/activate-test-mode';
+    try {
+      const r = await authFetch(endpoint, {method:'POST'});
+      const d = await r.json();
+      if(r.ok) {
+        currentUser.subscription_tier = mode;
+        currentUser.tier = mode;
+        currentUser.is_demo = (mode === 'demo');
+        currentUser.remaining = mode === 'test' ? 999 : 3;
+        currentUser.questionnaires_remaining = currentUser.remaining;
+        showApp();
+        updateUserBar();
+        alert(d.message);
+      }
+    } catch(e) { alert('Error: '+e.message); }
+  }
+
+  // Add keypress login support
+  function addUrl() {
+    const input = document.getElementById('urlInput');
+    const val = input.value.trim();
+    if (!val) return;
+    if (!val.startsWith('http')) { showError('Please enter a valid URL starting with http'); return; }
+    documentUrls.push(val);
+    input.value = '';
+    renderUrlList();
+    checkReady();
+  }
+
+  function renderUrlList() {
+    document.getElementById('urlList').innerHTML = documentUrls.map((u,i) => `
+      <div class="url-item">
+        <div class="url-dot"></div>
+        <span class="url-text">${escHtml(u)}</span>
+        <span class="url-remove" onclick="removeUrl(${i})">×</span>
+      </div>
+    `).join('');
+  }
+  window.removeUrl = i => { documentUrls.splice(i,1); renderUrlList(); checkReady(); };
+
+  function setupDrop(dropId, inputId, multi, cb) {
+    const drop = document.getElementById(dropId);
+    const input = document.getElementById(inputId);
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag-over'); cb(Array.from(e.dataTransfer.files).slice(0,multi?999:1)); });
+    input.addEventListener('change', e => cb(Array.from(e.target.files)));
+  }
+
+  function formatBytes(b) { return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'; }
+
+  function renderFileList(cid, files) {
+    document.getElementById(cid).innerHTML = files.map((f,i) => `
+      <div class="file-item">
+        <div class="file-dot"></div>
+        <span class="file-name">${f.name}</span>
+        <span class="file-size">${formatBytes(f.size)}</span>
+        <span class="file-remove" onclick="removeFile(${i},'${cid}')">×</span>
+      </div>
+    `).join('');
+    checkReady();
+  }
+
+  window.removeFile = (i, cid) => {
+    if(cid==='qFileList'){ questionnaireFile=null; renderFileList('qFileList',[]); }
+    else { documentFiles.splice(i,1); renderFileList('docFileList',documentFiles); }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupDrop('qDrop','qFile',false,files=>{ questionnaireFile=files[0]; renderFileList('qFileList',[files[0]]); checkReady(); });
+    setupDrop('docDrop','docFiles',true,files=>{ documentFiles=[...documentFiles,...files]; renderFileList('docFileList',documentFiles); checkReady(); });
+
+    const urlInput = document.getElementById('urlInput');
+    if(urlInput) urlInput.addEventListener('keypress', e => { if(e.key==='Enter') addUrl(); });
+
+    const ddp = document.getElementById('docDropPortal');
+    const dfi = document.getElementById('docFilesPortal');
+    if(ddp && dfi) {
+      ddp.addEventListener('dragover', e=>{e.preventDefault();ddp.classList.add('drag-over');});
+      ddp.addEventListener('dragleave',()=>ddp.classList.remove('drag-over'));
+      ddp.addEventListener('drop',e=>{e.preventDefault();ddp.classList.remove('drag-over');const files=Array.from(e.dataTransfer.files);documentFiles=[...documentFiles,...files];renderFileList('docFileListPortal',documentFiles);});
+      dfi.addEventListener('change',e=>{documentFiles=[...documentFiles,...Array.from(e.target.files)];renderFileList('docFileListPortal',documentFiles);});
+    }
+
+    checkAuth();
+  });
+
+  function checkReady() {
+    const hasQ = currentSource === 'portal'
+      ? (extractedQuestions.length > 0)
+      : !!questionnaireFile;
+    const hasDocs = documentFiles.length > 0 || documentUrls.length > 0;
+    document.getElementById('processBtn').disabled = !(hasQ && hasDocs);
+  }
+
+  function setStep(n) {
+    for(let i=1;i<=4;i++){
+      document.getElementById('sn'+i).className='step-num'+(i===n?' active':i<n?' done':'');
+      document.getElementById('sl'+i).className='step-label'+(i===n?' active':i<n?' done':'');
+    }
+    for(let i=1;i<=3;i++) document.getElementById('sc'+i).className='step-connector'+(i<n?' done':'');
+  }
+
+  function goTo(n) {
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById('section'+n).classList.add('active');
+    setStep(n); window.scrollTo(0,0);
+  }
+
+  function showError(msg) {
+    const b=document.getElementById('errorBox'); b.textContent='⚠ '+msg; b.style.display='block';
+    setTimeout(()=>b.style.display='none',7000);
+  }
+
+  function setStatus(msg, pct) {
+    document.getElementById('procStatus').textContent=msg;
+    document.getElementById('progFill').style.width=pct+'%';
+  }
+
+  async function startProcessing() {
+    // If portal source, skip questionnaire upload — questions already fetched
+    if(currentSource === 'portal' && extractedQuestions.length > 0) {
+      document.getElementById('questionsBody').innerHTML = extractedQuestions.map(q=>`
+        <tr><td class="q-num">Q${String(q.id+1).padStart(2,'0')}</td><td>${escHtml(q.text)}</td></tr>`).join('');
+      document.getElementById('qCountLabel').textContent = `${extractedQuestions.length} questions from portal`;
+      goTo(2);
+      return;
+    }
+    goTo(3); setStatus('Parsing questionnaire…',10);
+    try {
+      const token = getToken();
+      const f=new FormData(); f.append('file',questionnaireFile);
+      const r=await fetch(API+'/upload/questionnaire',{
+        method:'POST',
+        headers: token ? {'Authorization':`Bearer ${token}`} : {},
+        body:f
+      });
+      if(!r.ok) {
+        const err = await r.json().catch(()=>({detail:null}));
+        if(r.status === 402) { showLimitModal(); goTo(1); return; }
+        if(r.status === 401) { throw new Error('Session expired. Please refresh and log in again.'); }
+        throw new Error(err.detail || 'Failed to parse questionnaire.');
+      }
+      const d=await r.json();
+      extractedQuestions = d.questions;
+      originalFileB64 = d.original_file || null;
+      structureKey = d.structure_key || null;
+      const sheetCount = d.sheet_count || 1;
+      if(currentUser && d.remaining !== undefined) {
+        currentUser.remaining = d.remaining;
+        updateUserBar();
+      }
+      document.getElementById('questionsBody').innerHTML=extractedQuestions.map(q=>`
+        <tr>
+          <td class="q-num">Q${String(q.id+1).padStart(2,'0')}</td>
+          <td>${escHtml(q.text)}</td>
+        </tr>
+      `).join('');
+      document.getElementById('qCountLabel').textContent=`${extractedQuestions.length} questions found`;
+      goTo(2);
+    } catch(e){ goTo(1); showError(e.message||'Failed to parse questionnaire.'); }
+  }
+
+  async function runAnswering() {
+    goTo(3); setStatus('Uploading and indexing documents…',15);
+    try {
+      let docData;
+      if(documentFiles.length>0){
+        const f=new FormData(); documentFiles.forEach(file=>f.append('files',file));
+        const token = getToken();
+        if(token) f.append('token', token);
+        const r=await authFetch(`/upload/documents`,{method:'POST',headers:token?{'Authorization':`Bearer ${token}`}:{},body:f});
+        if(!r.ok) {
+          const err = await r.json();
+          if(r.status === 402) { showLimitModal(); goTo(1); return; }
+          throw new Error(err.detail || await r.text());
+        }
+        docData=await r.json(); sessionId=docData.session_id;
+      }
+      if(documentUrls.length>0){
+        setStatus('Fetching documents from linked repository…',32);
+        const r=await authFetch(`/upload/documents-url`,{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({urls:documentUrls, session_id:sessionId||null})
+        });
+        if(!r.ok){
+          const err = await r.json();
+          if(r.status === 402) { showLimitModal(); goTo(1); return; }
+          throw new Error(err.detail || 'URL fetch failed');
+        }
+        docData=await r.json(); sessionId=docData.session_id;
+      }
+      setStatus(`Indexed ${docData.chunks_created} document sections. Running AI analysis…`,50);
+      if(docData.files_failed?.length)
+        document.getElementById('procDetail').textContent=`${docData.files_processed} files processed · ${docData.files_failed.length} could not be read`;
+
+      const r=await authFetch(`/answer`,{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          session_id:sessionId,
+          questions:extractedQuestions,
+          is_demo: currentUser?.is_demo || currentUser?.subscription_tier === 'demo',
+          org_id: currentUser?.org_id || null,
+          industry_sector: document.getElementById('industrySectorSelect')?.value || null
+        })
+      });
+      if(!r.ok){
+        const err = await r.json().catch(()=>({detail:'Analysis failed'}));
+        if(r.status === 402) { showLimitModal(); goTo(1); return; }
+        throw new Error(typeof err.detail === 'object' ? err.detail.message : (err.detail || 'Analysis failed'));
+      }
+      const d=await r.json();
+      finalResults=d.results;
+
+      // Handle demo truncation notice
+      if(d.demo_truncated) {
+        showError(`Demo mode: showing ${d.results.length} of ${extractedQuestions.length} questions (max ${d.demo_max}). Upgrade for unlimited.`);
+      }
+
+      // Update remaining count
+      if(currentUser && d.remaining !== undefined && d.remaining !== null) {
+        currentUser.remaining = d.remaining;
+        currentUser.questionnaires_remaining = d.remaining;
+        updateUserBar();
+      }
+
+      setStatus('Analysis complete',100);
+      setTimeout(()=>{ renderResults(finalResults); goTo(4); loadApproverDirectory(); },500);
+    } catch(e){ goTo(1); showError(e.message||'An error occurred during analysis.'); }
+  }
+
+  function renderResults(results) {
+    const yes=results.filter(r=>r.confidence==='Yes').length;
+    const no=results.filter(r=>r.confidence==='No').length;
+    const partial=results.filter(r=>r.confidence==='Partial').length;
+    const avg=Math.round(results.reduce((s,r)=>s+(r.confidence_pct||50),0)/results.length);
+    document.getElementById('statsRow').innerHTML=`
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--green)"></div>${yes} Confirmed</div>
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--amber)"></div>${partial} Partial</div>
+      <div class="stat-chip"><div class="stat-dot" style="background:var(--red)"></div>${no} Not evidenced</div>
+      <div class="stat-chip" style="border-color:var(--teal);color:var(--teal);font-weight:600">Average confidence ${avg}%</div>
+    `;
+    document.getElementById('resultsContainer').innerHTML=results.map((r,i)=>`
+      <div class="result-item">
+        <div class="result-header" onclick="toggle(${i})">
+          <div class="result-badge conf-${r.confidence.toLowerCase()}">
+            <div class="conf-label">${r.confidence==='Yes'?'Confirmed':r.confidence==='No'?'No Evidence':r.confidence}</div>
+            <div class="conf-pct">${r.confidence_pct||50}%</div>
+          </div>
+          <div class="result-question">Q${r.question_id+1}: ${escHtml(r.question)}</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+            ${r.approval_status==='approved'
+              ? `<span class="approval-badge approved">✓ Approved</span>`
+              : r.approval_status==='rejected'
+              ? `<span class="approval-badge rejected">✗ Rejected</span>`
+              : `<span class="approval-badge pending">Pending</span>`}
+            <div class="result-chevron" id="chev${i}">▾</div>
+          </div>
+        </div>
+        <div class="result-body" id="body${i}">
+
+          <!-- Answer tabs -->
+          <div class="answer-tabs">
+            <button class="ans-tab active" id="tab-orig-${i}" onclick="switchTab(${i},'orig')">AI Answer</button>
+            ${r.improved_answer ? `<button class="ans-tab" id="tab-imp-${i}" onclick="switchTab(${i},'imp')">⬆ Enhanced (95%+)</button>` : ''}
+          </div>
+
+          <!-- Original answer -->
+          <div id="panel-orig-${i}">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+              <span class="copy-btn" id="copybtn${i}" onclick="copyAnswer(${i},'orig')">Copy answer</span>
+            </div>
+            <div class="result-explanation" id="exp${i}">${escHtml(r.explanation)}</div>
+          </div>
+
+          <!-- Improved answer -->
+          ${r.improved_answer ? `
+          <div id="panel-imp-${i}" style="display:none">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+              <span class="copy-btn" id="copybtn-imp-${i}" onclick="copyAnswer(${i},'imp')">Copy enhanced answer</span>
+            </div>
+            <div class="result-explanation improved-answer" id="exp-imp-${i}">${escHtml(r.improved_answer)}</div>
+            ${r.improvement_notes ? `<div class="improvement-notes">${escHtml(r.improvement_notes)}</div>` : ''}
+          </div>` : ''}
+
+          <!-- Policy sources -->
+          ${r.document_names ? `
+            <div class="sources-heading" style="margin-top:14px">Policy Sources</div>
+            <div class="source-item" style="font-style:normal;font-size:12px">${escHtml(r.document_names)}</div>
+          ` : ''}
+
+          <!-- Supporting evidence -->
+          ${r.sources&&r.sources.length ? `
+            <div class="sources-heading">Supporting Evidence</div>
+            ${r.sources.map(s=>`<div class="source-item">${escHtml(s)}</div>`).join('')}
+          ` : ''}
+
+          <!-- Approval section -->
+          <div class="approval-section" id="approval-${i}">
+            <div class="approval-title">Request Review or Approval</div>
+            ${r.approval_status==='approved' ? `
+              <div class="approval-done approved-done">✓ Approved by ${escHtml(r.approved_by||'approver')}</div>
+            ` : r.approval_status==='rejected' ? `
+              <div class="approval-done rejected-done">✗ Rejected — changes requested</div>
+              <button class="btn-request-approval" onclick="showApprovalForm(${i})">Re-submit for Approval</button>
+            ` : `
+              <div class="approval-form" id="apform-${i}" style="display:none">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+                  <div>
+                    <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:5px">APPROVER</div>
+                    <select class="approval-input" id="app-select-${i}" onchange="fillApprover(${i})" style="cursor:pointer">
+                      <option value="">— Select approver —</option>
+                    </select>
+                    <input class="approval-input" id="app-name-${i}" placeholder="Or type name (e.g. John Smith, CISO)" style="margin-top:6px"/>
+                    <input class="approval-input" id="app-email-${i}" placeholder="Email address" type="email" style="margin-top:6px"/>
+                  </div>
+                  <div>
+                    <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:5px">REVIEWER (OPTIONAL)</div>
+                    <select class="approval-input" id="rev-select-${i}" onchange="fillReviewer(${i})" style="cursor:pointer">
+                      <option value="">— Select reviewer —</option>
+                    </select>
+                    <input class="approval-input" id="rev-name-${i}" placeholder="Reviewer name (optional)" style="margin-top:6px"/>
+                    <input class="approval-input" id="rev-email-${i}" placeholder="Reviewer email (optional)" type="email" style="margin-top:6px"/>
+                  </div>
+                </div>
+                <div class="approval-hint">Approver receives approve/reject buttons. Reviewer receives a copy for comments only.</div>
+                <div style="display:flex;gap:8px;margin-top:10px">
+                  <button class="btn-send-approval" onclick="sendApproval(${i}, '${escHtml(r.question)}', '${encodeURIComponent(r.explanation)}', '${encodeURIComponent(r.improved_answer||'')}', '${r.approval_token||''}')">Send</button>
+                  <button class="btn-cancel-approval" onclick="document.getElementById('apform-${i}').style.display='none';document.getElementById('apbtn-${i}').style.display='inline-flex'">Cancel</button>
+                </div>
+              </div>
+              <button class="btn-request-approval" id="apbtn-${i}" onclick="showApprovalForm(${i})">Request Review / Approval</button>
+            `}
+          </div>
+
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.switchTab = function(i, tab) {
+    document.getElementById('panel-orig-'+i).style.display = tab==='orig'?'block':'none';
+    const impPanel = document.getElementById('panel-imp-'+i);
+    if(impPanel) impPanel.style.display = tab==='imp'?'block':'none';
+    document.getElementById('tab-orig-'+i).classList.toggle('active', tab==='orig');
+    const impTab = document.getElementById('tab-imp-'+i);
+    if(impTab) impTab.classList.toggle('active', tab==='imp');
+  };
+
+  window.copyAnswer = function(i, type) {
+    const expId = type==='imp' ? 'exp-imp-'+i : 'exp'+i;
+    const btnId = type==='imp' ? 'copybtn-imp-'+i : 'copybtn'+i;
+    const exp = document.getElementById(expId);
+    const btn = document.getElementById(btnId);
+    if(exp) {
+      navigator.clipboard.writeText(exp.textContent).then(()=>{
+        btn.textContent='✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent = type==='imp'?'Copy enhanced answer':'Copy answer'; btn.classList.remove('copied'); },2000);
+      });
+    }
+  };
+
+  function renderDirectoryList() {
+    const list = document.getElementById('directoryList');
+    if(!list) return;
+    if(!approverDirectory.length) {
+      list.innerHTML = '<div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);padding:8px 0">No contacts added yet. Add approvers and reviewers below.</div>';
+      return;
+    }
+    list.innerHTML = approverDirectory.map(c => `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--navy3);border:1px solid var(--border);margin-bottom:4px">
+        <div style="width:6px;height:6px;border-radius:50%;background:${c.role==='approver'?'var(--teal)':'var(--amber)'}"></div>
+        <div style="flex:1;font-family:var(--fb);font-size:13px;font-weight:600;color:var(--text)">${escHtml(c.name)}</div>
+        <div style="font-family:var(--fb);font-size:12px;color:var(--text-mid)">${escHtml(c.email)}</div>
+        ${c.title?`<div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">${escHtml(c.title)}</div>`:''}
+        <div style="font-family:var(--fm);font-size:10px;padding:2px 8px;border-radius:2px;background:${c.role==='approver'?'var(--teal-dim)':'var(--amber-dim)'};color:${c.role==='approver'?'var(--teal)':'var(--amber)'}">${c.role}</div>
+        <span onclick="removeDirectoryContact('${c.id}')" style="color:var(--red);cursor:pointer;font-size:16px;opacity:0.7">×</span>
+      </div>
+    `).join('');
+  }
+
+  function toggleDirectoryPanel() {
+    const panel = document.getElementById('directoryPanel');
+    const btn = document.getElementById('dirToggleBtn');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'Manage' : 'Close';
+    if(!isOpen) renderDirectoryList();
+  }
+
+  async function addDirectoryContact() {
+    const name = document.getElementById('newContactName').value.trim();
+    const email = document.getElementById('newContactEmail').value.trim();
+    const title = document.getElementById('newContactTitle').value.trim();
+    const role = document.getElementById('newContactRole').value;
+    if(!name || !email) { alert('Name and email are required.'); return; }
+    try {
+      const r = await authFetch('/admin/approvers', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({name, email, title, role})
+      });
+      const d = await r.json();
+      if(r.ok) {
+        approverDirectory.push(d.contact);
+        document.getElementById('newContactName').value='';
+        document.getElementById('newContactEmail').value='';
+        document.getElementById('newContactTitle').value='';
+        renderDirectoryList();
+        updateApproverSelects();
+      } else {
+        alert(d.detail || 'Failed to add contact');
+      }
+    } catch(e) { alert('Error: '+e.message); }
+  }
+
+  async function removeDirectoryContact(id) {
+    try {
+      await authFetch(`/admin/approvers/${id}`, {method:'DELETE'});
+      approverDirectory = approverDirectory.filter(c=>c.id!==id);
+      renderDirectoryList();
+      updateApproverSelects();
+    } catch(e) { console.error(e); }
+  }
+  // ── Portal Connector ──────────────────────────────────────────────────────
+  let selectedPortalType = 'generic';
+  let portalConnectionId = null;
+  let portalQuestions = [];
+
+  const PORTAL_TYPES = {
+    onetrust:          { name:'OneTrust',          logo:'🛡️', color:'#00c8e0' },
+    vanta:             { name:'Vanta',              logo:'✅', color:'#00d4a0' },
+    whistic:           { name:'Whistic',            logo:'🔍', color:'#7a9cbf' },
+    ecovadis:          { name:'EcoVadis',           logo:'🌿', color:'#00d4a0' },
+    securityscorecard: { name:'SecurityScorecard',  logo:'📊', color:'#f5a623' },
+    archer:            { name:'RSA Archer',         logo:'🏹', color:'#e84855' },
+    servicenow:        { name:'ServiceNow GRC',     logo:'⚙️', color:'#7a9cbf' },
+    generic:           { name:'Custom / Generic',   logo:'🔗', color:'#dce8f5' }
+  };
+
+  function showPortalSetup() {
+    const panel = document.getElementById('portalSetupPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    renderSetupPortalGrid();
+    loadSavedConnections();
+  }
+
+  function renderSetupPortalGrid() {
+    const grid = document.getElementById('setupPortalGrid');
+    if(!grid) return;
+    grid.innerHTML = Object.entries(PORTAL_TYPES).map(([type, info]) => `
+      <div onclick="selectSetupPortal('${type}')" id="sptile-${type}"
+        style="padding:10px;text-align:center;border:2px solid ${selectedPortalType===type?info.color:'var(--border)'};
+               background:${selectedPortalType===type?'rgba(0,200,224,0.08)':'var(--navy3)'};
+               cursor:pointer;transition:all 0.2s;border-radius:2px">
+        <div style="font-size:18px;margin-bottom:3px">${info.logo}</div>
+        <div style="font-family:var(--fh);font-size:9px;font-weight:700;color:${selectedPortalType===type?info.color:'var(--text-mid)'}">
+          ${info.name}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.selectSetupPortal = function(type) {
+    selectedPortalType = type;
+    renderSetupPortalGrid();
+    if(typeof renderPortalGrid === 'function') renderPortalGrid();
+    const urls = {
+      onetrust: 'https://app.onetrust.com/api/assessment/v2',
+      vanta: 'https://api.vanta.com/v1',
+      whistic: 'https://api.whistic.com/v1',
+      ecovadis: 'https://api.ecovadis.com/v1',
+      securityscorecard: 'https://api.securityscorecard.io',
+    };
+    const el = document.getElementById('setupPortalUrl');
+    if(el && urls[type]) el.placeholder = urls[type];
+  };
+
+  async function setupPortalConnection() {
+    const btn = document.getElementById('setupConnectBtn');
+    const status = document.getElementById('setupConnectStatus');
+    btn.textContent = 'Testing…'; btn.disabled = true;
+    status.textContent = '';
+    try {
+      const r = await authFetch('/portal/connect', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          portal_type: selectedPortalType,
+          base_url: document.getElementById('setupPortalUrl').value.trim(),
+          api_key: document.getElementById('setupApiKey').value.trim(),
+          username: document.getElementById('setupUsername').value.trim(),
+          password: document.getElementById('setupPassword').value.trim(),
+        })
+      });
+      const d = await r.json();
+      if(r.ok) {
+        portalConnectionId = d.connection_id;
+        status.textContent = '✓ ' + d.test_message;
+        status.style.color = d.connected ? 'var(--green)' : 'var(--amber)';
+        loadSavedConnections();
+      } else {
+        status.textContent = '✗ ' + (d.detail || 'Failed');
+        status.style.color = 'var(--red)';
+      }
+    } catch(e) {
+      status.textContent = '✗ ' + e.message;
+      status.style.color = 'var(--red)';
+    }
+    btn.textContent = 'Test & Save Connection'; btn.disabled = false;
+  }
+
+  async function loadSavedConnections() {
+    try {
+      const r = await authFetch('/portal/connections');
+      if(!r.ok) return;
+      const d = await r.json();
+      const list = document.getElementById('savedConnectionsList');
+      if(!list || !d.connections?.length) return;
+      list.innerHTML = `
+        <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:8px">SAVED CONNECTIONS</div>
+        ${d.connections.map(c => `
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--navy3);border:1px solid ${c.connected?'rgba(0,212,160,0.3)':'var(--border)'};margin-bottom:4px">
+            <span style="font-size:16px">${PORTAL_TYPES[c.portal_type]?.logo||'🔗'}</span>
+            <div style="flex:1">
+              <div style="font-family:var(--fh);font-size:12px;font-weight:600;color:var(--text)">${escHtml(c.portal_name)}</div>
+              <div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">${c.portal_type}</div>
+            </div>
+            <span style="font-family:var(--fm);font-size:9px;padding:2px 8px;background:${c.connected?'var(--green-dim)':'var(--amber-dim)'};color:${c.connected?'var(--green)':'var(--amber)'}">
+              ${c.connected ? '✓ Connected' : '⚠ Untested'}
+            </span>
+            <button onclick="useConnection('${c.id}')" style="background:var(--teal);border:none;color:var(--navy);padding:4px 10px;font-family:var(--fh);font-size:10px;font-weight:700;cursor:pointer">Use</button>
+            <button onclick="deleteConnection('${c.id}')" style="background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:4px 10px;font-family:var(--fh);font-size:10px;cursor:pointer">Remove</button>
+          </div>
+        `).join('')}`;
+    } catch(e) { console.log('Load connections error:', e); }
+  }
+
+  window.useConnection = function(id) {
+    portalConnectionId = id;
+    const status = document.getElementById('setupConnectStatus');
+    if(status) { status.textContent = `✓ Using connection ${id.substring(0,8)}…`; status.style.color = 'var(--green)'; }
+  };
+
+  async function deleteConnection(id) {
+    try {
+      await authFetch(`/portal/connections/${id}`, {method:'DELETE'});
+      loadSavedConnections();
+    } catch(e) { console.error(e); }
+  }
+
+  function showPortalConnector() {
+    document.getElementById('portalConnectorPanel').style.display = 'block';
+    renderPortalGrid();
+    document.getElementById('portalConnectorPanel').scrollIntoView({behavior:'smooth'});
+  }
+
+  function closePortalPanel() {
+    document.getElementById('portalConnectorPanel').style.display = 'none';
+  }
+
+  function renderPortalGrid() {
+    const grid = document.getElementById('portalGrid');
+    if(!grid) return;
+    grid.innerHTML = Object.entries(PORTAL_TYPES).map(([type, info]) => `
+      <div onclick="selectPortal('${type}')" id="ptile-${type}"
+        style="padding:12px;text-align:center;border:2px solid ${selectedPortalType===type?info.color:'var(--border)'};
+               background:${selectedPortalType===type?'rgba(0,200,224,0.08)':'var(--navy3)'};
+               cursor:pointer;transition:all 0.2s;border-radius:2px">
+        <div style="font-size:20px;margin-bottom:4px">${info.logo}</div>
+        <div style="font-family:var(--fh);font-size:10px;font-weight:700;color:${selectedPortalType===type?info.color:'var(--text-mid)'}">
+          ${info.name}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.selectPortal = function(type) {
+    selectedPortalType = type;
+    renderPortalGrid();
+    const urls = {
+      onetrust: 'https://app.onetrust.com/api/assessment/v2',
+      vanta: 'https://api.vanta.com/v1',
+      whistic: 'https://api.whistic.com/v1',
+      ecovadis: 'https://api.ecovadis.com/v1',
+      securityscorecard: 'https://api.securityscorecard.io',
+    };
+    const urlEl = document.getElementById('portalBaseUrl');
+    if(urlEl && urls[type]) urlEl.placeholder = urls[type];
+  };
+
+  async function connectPortal() {
+    const btn = document.getElementById('portalConnectBtn');
+    const status = document.getElementById('portalConnectStatus');
+    btn.textContent = 'Connecting…'; btn.disabled = true;
+    status.textContent = 'Testing connection…';
+
+    try {
+      const payload = {
+        portal_type: selectedPortalType,
+        base_url: document.getElementById('portalBaseUrl').value.trim(),
+        api_key: document.getElementById('portalApiKey').value.trim(),
+        username: document.getElementById('portalUsername').value.trim(),
+        password: document.getElementById('portalPassword').value.trim(),
+      };
+      const r = await authFetch('/portal/connect', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const d = await r.json();
+      if(!r.ok) { status.textContent = '✗ ' + (d.detail||'Failed'); btn.textContent='Connect & Fetch Questions'; btn.disabled=false; return; }
+
+      portalConnectionId = d.connection_id;
+      status.textContent = d.test_message + ' — Fetching questions…';
+
+      const fr = await authFetch('/portal/fetch-questions', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          connection_id: portalConnectionId,
+          session_id: sessionId || '',
+          questionnaire_id: document.getElementById('portalQId').value.trim()
+        })
+      });
+      const fd = await fr.json();
+      if(!fr.ok) { status.textContent = '✗ ' + (fd.detail||'Failed to fetch'); btn.textContent='Connect & Fetch Questions'; btn.disabled=false; return; }
+
+      portalQuestions = fd.questions || [];
+      document.getElementById('portalStep1').style.display = 'none';
+      document.getElementById('portalStep2').style.display = 'block';
+      document.getElementById('portalName').textContent = PORTAL_TYPES[selectedPortalType]?.name || selectedPortalType;
+      renderPortalQuestions();
+
+    } catch(e) { status.textContent = '✗ Error: ' + e.message; }
+    btn.textContent = 'Connect & Fetch Questions'; btn.disabled = false;
+  }
+
+  function renderPortalQuestions() {
+    const list = document.getElementById('portalQuestionsList');
+    if(!list) return;
+    if(!portalQuestions.length) {
+      list.innerHTML = '<div style="font-family:var(--fb);font-size:13px;color:var(--text-dim);padding:12px">No questions found. Try entering a specific questionnaire ID above.</div>';
+      return;
+    }
+    const resultMap = {};
+    finalResults.forEach(r => { resultMap[r.question.trim().toLowerCase()] = r; });
+    const matched = portalQuestions.filter(q => resultMap[q.text?.trim().toLowerCase()]).length;
+    list.innerHTML = `
+      <div style="font-family:var(--fb);font-size:12px;color:var(--text-mid);margin-bottom:8px">
+        Found <strong style="color:var(--teal)">${portalQuestions.length}</strong> portal questions.
+        <strong style="color:var(--green)">${matched}</strong> matched to SecureAnswer results.
+      </div>
+    ` + portalQuestions.map(q => {
+      const m = resultMap[q.text?.trim().toLowerCase()];
+      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:7px 10px;background:var(--navy3);border:1px solid ${m?'rgba(0,212,160,0.3)':'var(--border)'};margin-bottom:3px">
+        <span style="font-family:var(--fm);font-size:9px;color:${m?'var(--green)':'var(--text-dim)'};flex-shrink:0;margin-top:2px;letter-spacing:0.5px">${m?'✓ MATCHED':'○'}</span>
+        <span style="font-family:var(--fb);font-size:12px;color:var(--text);flex:1">${escHtml(q.text||'')}</span>
+        ${q.category?`<span style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">${escHtml(q.category)}</span>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  async function submitToPortal(mode) {
+    const btnId = mode==='draft' ? 'portalDraftBtn' : 'portalSubmitBtn';
+    const btn = document.getElementById(btnId);
+    const status = document.getElementById('portalSubmitStatus');
+    btn.disabled = true;
+    btn.textContent = mode==='draft' ? 'Saving…' : 'Submitting…';
+    const resultMap = {};
+    finalResults.forEach(r => { resultMap[r.question.trim().toLowerCase()] = r; });
+    const submissionResults = portalQuestions.map(q => {
+      const m = resultMap[q.text?.trim().toLowerCase()];
+      return { portal_question_id:q.id, question_id:q.id, question:q.text, explanation:m?.explanation||'', confidence:m?.confidence||'Partial' };
+    }).filter(r => r.explanation);
+    try {
+      const r = await authFetch('/portal/submit-answers', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          connection_id: portalConnectionId, session_id: sessionId||'',
+          results: submissionResults,
+          questionnaire_id: document.getElementById('portalQId')?.value?.trim()||'',
+          submit_mode: mode
+        })
+      });
+      const d = await r.json();
+      if(r.ok) {
+        status.textContent = `✓ ${d.submitted} answers ${mode==='draft'?'saved as draft':'submitted'} to ${d.portal}`;
+        status.style.color = 'var(--green)';
+      } else {
+        status.textContent = '✗ ' + (d.detail||'Failed');
+        status.style.color = 'var(--red)';
+      }
+    } catch(e) { status.textContent='✗ '+e.message; status.style.color='var(--red)'; }
+    btn.disabled=false;
+    btn.textContent = mode==='draft' ? 'Save as Draft' : 'Submit Answers to Portal';
+  }
+
+  function resetPortalConnection() {
+    portalConnectionId = null; portalQuestions = [];
+    document.getElementById('portalStep1').style.display = 'block';
+    document.getElementById('portalStep2').style.display = 'none';
+    document.getElementById('portalConnectStatus').textContent = '';
+  }
+
+  // ── Admin show/hide in header ─────────────────────────────────────────────
+  function updateAdminNav() {
+    const btn = document.getElementById('adminNavBtn');
+    if(!btn) return;
+    const role = (currentUser && (currentUser.role || currentUser.user_role)) || '';
+    btn.style.display = role === 'admin' ? 'inline-flex' : 'none';
+  }
+
+  // ── Source Switcher ───────────────────────────────────────────────────────
+  let currentSource = 'file';
+  let portalFetchedQs = [];
+
+  function switchSource(src) {
+    currentSource = src;
+    document.getElementById('fileSourcePanel').style.display = src==='file'?'block':'none';
+    document.getElementById('portalSourcePanel').style.display = src==='portal'?'block':'none';
+    const fEl = document.getElementById('srcFile');
+    const pEl = document.getElementById('srcPortal');
+    fEl.style.borderColor = src==='file'?'var(--teal)':'var(--border)';
+    fEl.style.background = src==='file'?'var(--teal-dim)':'var(--navy2)';
+    pEl.style.borderColor = src==='portal'?'var(--teal)':'var(--border)';
+    pEl.style.background = src==='portal'?'var(--teal-dim)':'var(--navy2)';
+    if(src==='portal') renderSrcPortalGrid();
+    checkReady();
+  }
+
+  function renderSrcPortalGrid() {
+    const grid = document.getElementById('srcPortalGrid');
+    if(!grid) return;
+    grid.innerHTML = Object.entries(PORTAL_TYPES).map(([type, info]) => `
+      <div onclick="selectSrcPortal('${type}')" style="padding:8px;text-align:center;border:2px solid ${selectedPortalType===type?info.color:'var(--border)'};background:${selectedPortalType===type?'rgba(0,200,224,0.08)':'var(--navy3)'};cursor:pointer;border-radius:2px">
+        <div style="font-size:16px;margin-bottom:2px">${info.logo}</div>
+        <div style="font-family:var(--fh);font-size:9px;font-weight:700;color:${selectedPortalType===type?info.color:'var(--text-dim)'}">${info.name}</div>
+      </div>`).join('');
+  }
+
+  window.selectSrcPortal = function(type) {
+    selectedPortalType = type; renderSrcPortalGrid();
+    const urls = {onetrust:'https://app.onetrust.com/api/assessment/v2',vanta:'https://api.vanta.com/v1',whistic:'https://api.whistic.com/v1'};
+    const el = document.getElementById('srcBaseUrl');
+    if(el && urls[type]) el.placeholder = urls[type];
+  };
+
+  async function fetchFromPortal() {
+    const btn = document.getElementById('srcFetchBtn');
+    const status = document.getElementById('srcFetchStatus');
+    btn.textContent='Connecting…'; btn.disabled=true;
+    try {
+      const cr = await authFetch('/portal/connect', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({portal_type:selectedPortalType,base_url:document.getElementById('srcBaseUrl').value.trim(),api_key:document.getElementById('srcApiKey').value.trim(),username:document.getElementById('srcUsername').value.trim(),password:document.getElementById('srcPassword').value.trim()})});
+      const cd = await cr.json();
+      if(!cr.ok){status.textContent='✗ '+(cd.detail||'Failed');btn.textContent='Connect & Fetch Questions';btn.disabled=false;return;}
+      portalConnectionId = cd.connection_id;
+      status.textContent='Connected — fetching…';
+      const fr = await authFetch('/portal/fetch-questions', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({connection_id:portalConnectionId,session_id:sessionId||'',questionnaire_id:document.getElementById('srcQId').value.trim()})});
+      const fd = await fr.json();
+      if(!fr.ok){status.textContent='✗ '+(fd.detail||'Fetch failed');btn.textContent='Connect & Fetch Questions';btn.disabled=false;return;}
+      portalFetchedQs = fd.questions||[];
+      extractedQuestions = portalFetchedQs.map((q,i)=>({id:i,text:q.text||q.name||'',category:q.category||''}));
+      status.textContent=`✓ ${portalFetchedQs.length} questions from ${PORTAL_TYPES[selectedPortalType]?.name}`;
+      status.style.color='var(--green)';
+      const list = document.getElementById('portalFetchedQuestions');
+      list.innerHTML=`<div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px">✓ ${portalFetchedQs.length} questions ready</div>`
+        +portalFetchedQs.slice(0,5).map((q,i)=>`<div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);padding:4px 0;border-bottom:1px solid var(--border)">${i+1}. ${escHtml(q.text||'')}</div>`).join('')
+        +(portalFetchedQs.length>5?`<div style="font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-top:4px">+ ${portalFetchedQs.length-5} more</div>`:'');
+      checkReady();
+    } catch(e){status.textContent='✗ '+e.message;status.style.color='var(--red)';}
+    btn.textContent='Connect & Fetch Questions'; btn.disabled=false;
+  }
+
+  function addUrlPortal() {
+    const input=document.getElementById('urlInputPortal'); const val=input.value.trim();
+    if(!val||!val.startsWith('http')) return;
+    documentUrls.push(val); input.value='';
+    document.getElementById('urlListPortal').innerHTML=documentUrls.map((u,i)=>`<div class="url-item"><div class="url-dot"></div><span class="url-text">${escHtml(u)}</span><span class="url-remove" onclick="removeUrl(${i})">×</span></div>`).join('');
+    checkReady();
+  }
+
+  // ── Admin Panel ───────────────────────────────────────────────────────────
+  function showAdminPanel() {
+    const panel = document.getElementById('adminPanel');
+    if(panel) panel.style.display = 'block';
+    const ol = document.getElementById('adminOrgLabel');
+    if(ol) ol.textContent = (currentUser && currentUser.org_name) || '';
+    // Show all tab panels hidden first
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    // Activate dashboard tab
+    const dashTab = document.getElementById('atab-dashboard');
+    const dashPanel = document.getElementById('admin-dashboard');
+    if(dashTab) dashTab.classList.add('active');
+    if(dashPanel) dashPanel.style.display = 'block';
+    // Load dashboard data
+    loadDashboard();
+  }
+
+  function closeAdminPanel() { document.getElementById('adminPanel').style.display='none'; }
+
+  function showAdminTab(tab) {
+    document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-panel').forEach(p=>p.style.display='none');
+    const tabEl=document.getElementById('atab-'+tab);
+    const panEl=document.getElementById('admin-'+tab);
+    if(tabEl) tabEl.classList.add('active');
+    if(panEl) panEl.style.display='block';
+    if(tab==='dashboard') loadDashboard();
+    else if(tab==='users') loadAdminUsers();
+    else if(tab==='subscription') loadSubInfo();
+    else if(tab==='usage') loadUsage();
+    else if(tab==='testing') loadTestingInfo();
+  }
+
+  function fmtMins(mins) {
+    if(mins <= 0) return '0 mins';
+    if(mins < 60) return `${Math.round(mins)} mins`;
+    const h = Math.floor(mins/60), m = Math.round(mins%60);
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  }
+  function fmtSecs(secs) {
+    if(secs < 60) return `${Math.round(secs)}s`;
+    return `${Math.floor(secs/60)}m ${Math.round(secs%60)}s`;
+  }
+
+  async function loadDashboard() {
+    const div = document.getElementById('dashboardContent');
+    if(!div) return;
+    div.innerHTML = '<div style="font-family:var(--fb);font-size:13px;color:var(--text-dim);padding:20px 0">Loading analytics…</div>';
+    try {
+      const r = await authFetch('/analytics/dashboard');
+      if(!r.ok) {
+        div.innerHTML = emptyDashboard();
+        return;
+      }
+      const d = await r.json();
+      const s = d.summary;
+      const t = d.time_savings;
+      const sectors = d.industry_sectors || [];
+      const recent = d.recent_runs || [];
+
+      if(s.total_questionnaires === 0) {
+        div.innerHTML = emptyDashboard();
+        return;
+      }
+
+      div.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">
+          ${kpiCard('📋', s.total_questionnaires, 'Questionnaires Processed', 'var(--teal)')}
+          ${kpiCard('❓', s.total_questions_answered, 'Total Questions Answered', 'var(--green)')}
+          ${kpiCard('📊', s.avg_questions_per_questionnaire, 'Avg Questions / Questionnaire', 'var(--text)')}
+          ${kpiCard('⚡', fmtSecs(s.avg_processing_secs_per_questionnaire), 'Avg Time / Questionnaire', 'var(--amber)')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+          ${kpiCard('⏱', fmtSecs(s.avg_processing_secs_per_question), 'Avg AI Time / Question', 'var(--teal)')}
+          ${kpiCard('💾', fmtMins(t.per_question_saved_average) + ' saved', 'Per Question vs Manual', 'var(--green)')}
+          ${kpiCard('🚀', fmtMins(t.per_questionnaire_saved_average) + ' saved', 'Per Questionnaire vs Manual', 'var(--green)')}
+        </div>
+
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:20px;margin-bottom:16px">
+          <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">⏰ Time Savings vs Manual</div>
+          <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);margin-bottom:14px">Based on ${s.total_questions_answered} questions. AI processing time: ${fmtMins(t.ai_processing_mins)}.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            ${savingsCard('Simple', '5 min/question', t.saved_hrs_simple, t.saved_mins_simple, '#00c8e0')}
+            ${savingsCard('Average', '10 min/question', t.saved_hrs_average, t.saved_mins_average, '#00d4a0')}
+            ${savingsCard('Complex', '15 min/question', t.saved_hrs_complex, t.saved_mins_complex, '#f5a623')}
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--navy3);border:1px solid var(--border);padding:16px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">🏢 Industry Sectors</div>
+            ${sectors.length ? (() => {
+              const maxC = sectors[0]?.count || 1;
+              return sectors.slice(0,8).map(sec => `
+                <div style="margin-bottom:10px">
+                  <div style="display:flex;justify-content:space-between;font-family:var(--fb);font-size:12px;margin-bottom:3px">
+                    <span style="color:var(--text)">${escHtml(sec.sector)}</span>
+                    <span style="color:var(--teal);font-weight:600">${sec.count}</span>
+                  </div>
+                  <div style="height:4px;background:var(--border);border-radius:2px">
+                    <div style="height:100%;width:${Math.round(sec.count/maxC*100)}%;background:var(--teal);border-radius:2px"></div>
+                  </div>
+                </div>`).join('');
+            })() : '<div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">Select a sector when processing to see this breakdown.</div>'}
+          </div>
+          <div style="background:var(--navy3);border:1px solid var(--border);padding:16px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">📋 Recent Questionnaires</div>
+            ${recent.length ? recent.slice(0,6).map(r => `
+              <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+                <div style="flex:1;min-width:0">
+                  <div style="font-family:var(--fh);font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(r.filename)}</div>
+                  <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">${escHtml(r.industry_sector||'No sector')} · ${r.question_count}Q · ${new Date(r.created_at).toLocaleDateString('en-GB')}</div>
+                </div>
+                <span style="font-family:var(--fm);font-size:9px;padding:2px 6px;background:${r.status==='complete'?'var(--green-dim)':'var(--amber-dim)'};color:${r.status==='complete'?'var(--green)':'var(--amber)'};flex-shrink:0">${r.processing_secs>0?fmtSecs(r.processing_secs):r.status}</span>
+              </div>`).join('') : '<div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">No questionnaires processed yet.</div>'}
+          </div>
+        </div>`;
+    } catch(e) {
+      div.innerHTML = emptyDashboard();
+    }
+  }
+
+  function emptyDashboard() {
+    return `
+      <div style="text-align:center;padding:40px 20px">
+        <div style="font-size:48px;margin-bottom:16px">📊</div>
+        <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Dashboard Ready</div>
+        <div style="font-family:var(--fb);font-size:13px;color:var(--text-mid);max-width:400px;margin:0 auto 24px">
+          Process your first questionnaire to see analytics, time savings, and industry breakdowns here.
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:500px;margin:0 auto">
+          ${kpiCard('📋', 0, 'Questionnaires', 'var(--text-dim)')}
+          ${kpiCard('❓', 0, 'Questions Answered', 'var(--text-dim)')}
+          ${kpiCard('⏰', '—', 'Time Saved', 'var(--text-dim)')}
+        </div>
+      </div>`;
+  }
+
+      div.innerHTML = `
+        <!-- KPI Cards -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+          ${kpiCard('📋', s.total_questionnaires, 'Questionnaires Processed', 'var(--teal)')}
+          ${kpiCard('❓', s.total_questions_answered, 'Total Questions Answered', 'var(--green)')}
+          ${kpiCard('📊', s.avg_questions_per_questionnaire, 'Avg Questions / Questionnaire', 'var(--text)')}
+          ${kpiCard('⚡', fmtSecs(s.avg_processing_secs_per_questionnaire), 'Avg Time / Questionnaire', 'var(--amber)')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+          ${kpiCard('⏱', fmtSecs(s.avg_processing_secs_per_question), 'Avg Time / Question (AI)', 'var(--teal)')}
+          ${kpiCard('💾', fmtMins(t.per_question_saved_average), 'Saved Per Question vs Manual', 'var(--green)')}
+          ${kpiCard('🚀', fmtMins(t.per_questionnaire_saved_average), 'Saved Per Questionnaire', 'var(--green)')}
+        </div>
+
+        <!-- Time Savings Section -->
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:20px;margin-bottom:20px">
+          <div style="font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">⏰ Time Savings Analysis</div>
+          <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim);margin-bottom:16px">Based on ${s.total_questions_answered} questions answered. Manual time estimates vs AI processing time of ${fmtMins(t.ai_processing_mins)}.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            ${savingsCard('Simple Questions', '5 mins each', t.saved_mins_simple, t.saved_hrs_simple, '#00c8e0')}
+            ${savingsCard('Average Questions', '10 mins each', t.saved_mins_average, t.saved_hrs_average, '#00d4a0')}
+            ${savingsCard('Complex Questions', '15 mins each', t.saved_mins_complex, t.saved_hrs_complex, '#f5a623')}
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+          <!-- Industry Sectors -->
+          <div style="background:var(--navy3);border:1px solid var(--border);padding:20px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">🏢 Industry Sectors</div>
+            ${sectors.length ? (() => {
+              const maxCount = sectors[0]?.count || 1;
+              return sectors.slice(0,8).map(sec => `
+                <div style="margin-bottom:10px">
+                  <div style="display:flex;justify-content:space-between;font-family:var(--fb);font-size:12px;margin-bottom:4px">
+                    <span style="color:var(--text)">${escHtml(sec.sector)}</span>
+                    <span style="color:var(--teal);font-weight:600">${sec.count} questionnaire${sec.count!==1?'s':''}</span>
+                  </div>
+                  <div style="height:5px;background:var(--border);border-radius:3px">
+                    <div style="height:100%;width:${Math.round(sec.count/maxCount*100)}%;background:var(--teal);border-radius:3px;transition:width 0.5s"></div>
+                  </div>
+                </div>`).join('');
+            })() : '<div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">Select a sector when processing questionnaires to see this breakdown.</div>'}
+          </div>
+
+          <!-- Recent runs -->
+          <div style="background:var(--navy3);border:1px solid var(--border);padding:20px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">📋 Recent Questionnaires</div>
+            ${recent.length ? recent.slice(0,6).map(r => `
+              <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+                <div style="flex:1">
+                  <div style="font-family:var(--fh);font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${escHtml(r.filename)}</div>
+                  <div style="font-family:var(--fm);font-size:9px;color:var(--text-dim)">${r.industry_sector} · ${r.question_count}Q · ${new Date(r.created_at).toLocaleDateString('en-GB')}</div>
+                </div>
+                <span style="font-family:var(--fm);font-size:9px;padding:2px 6px;background:${r.status==='complete'?'var(--green-dim)':'var(--amber-dim)'};color:${r.status==='complete'?'var(--green)':'var(--amber)'}">
+                  ${r.processing_secs > 0 ? fmtSecs(r.processing_secs) : r.status}
+                </span>
+              </div>`).join('') : '<div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">No questionnaires processed yet.</div>'}
+          </div>
+        </div>
+
+  function kpiCard(icon, value, label, color) {
+    return `<div style="background:var(--navy3);border:1px solid var(--border);padding:16px;text-align:center">
+      <div style="font-size:20px;margin-bottom:6px">${icon}</div>
+      <div style="font-family:var(--fh);font-size:22px;font-weight:800;color:${color};margin-bottom:4px">${value || 0}</div>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--text-dim);line-height:1.4">${label}</div>
+    </div>`;
+  }
+
+  function savingsCard(title, subtitle, savedMins, savedHrs, color) {
+    return `<div style="background:var(--navy2);border:1px solid var(--border);padding:16px;text-align:center">
+      <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:${color};margin-bottom:4px">${title}</div>
+      <div style="font-family:var(--fb);font-size:11px;color:var(--text-dim);margin-bottom:12px">${subtitle} manually</div>
+      <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:${color};margin-bottom:2px">${savedHrs > 0 ? savedHrs + 'h' : Math.round(savedMins) + 'm'}</div>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">saved (${Math.round(savedMins)} minutes)</div>
+    </div>`;
+  }
+
+  async function loadAdminUsers() {
+    const list=document.getElementById('adminUsersList');
+    try {
+      const r=await authFetch('/admin/users');
+      if(!r.ok){list.innerHTML='<div style="color:var(--red);font-family:var(--fb);font-size:13px">Admin access required.</div>';return;}
+      const users=await r.json();
+      if(!users.length){list.innerHTML='<div style="font-family:var(--fb);font-size:13px;color:var(--text-dim)">No users yet. Add your first team member above.</div>';return;}
+      list.innerHTML=users.map(u=>`
+        <div class="user-row">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--navy2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:13px;font-weight:700;color:var(--teal);flex-shrink:0">${u.full_name.charAt(0).toUpperCase()}</div>
+          <div style="flex:1"><div style="font-family:var(--fh);font-size:13px;font-weight:600;color:var(--text)">${escHtml(u.full_name)}</div><div style="font-family:var(--fb);font-size:11px;color:var(--text-dim)">${escHtml(u.email)}</div></div>
+          <span class="role-badge role-${u.role}">${u.role.toUpperCase()}</span>
+          <span style="font-family:var(--fm);font-size:10px;color:${u.is_active?'var(--green)':'var(--red)'}">${u.is_active?'Active':'Inactive'}</span>
+          <span style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">${u.last_login?new Date(u.last_login).toLocaleDateString('en-GB'):'Never'}</span>
+          ${u.id!==currentUser?.user_id?`<button onclick="removeUser(${u.id})" style="background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:3px 10px;font-family:var(--fh);font-size:10px;cursor:pointer">Remove</button>`:'<span style="font-size:10px;color:var(--text-dim)">You</span>'}
+        </div>`).join('');
+    } catch(e){list.innerHTML='<div style="color:var(--red);font-family:var(--fb)">Error: '+e.message+'</div>';}
+  }
+
+  function showAddUserForm(){document.getElementById('addUserForm').style.display='block';}
+
+  async function addUser() {
+    const name=document.getElementById('newUserName').value.trim();
+    const email=document.getElementById('newUserEmail').value.trim();
+    const pass=document.getElementById('newUserPassword').value;
+    const role=document.getElementById('newUserRole').value;
+    const status=document.getElementById('addUserStatus');
+    if(!name||!email||!pass){status.textContent='All fields required';status.style.color='var(--red)';return;}
+    if(pass.length<8){status.textContent='Password min 8 chars';status.style.color='var(--red)';return;}
+    try {
+      const r=await authFetch('/admin/users/invite',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,full_name:name,password:pass,role})});
+      const d=await r.json();
+      if(r.ok){status.textContent='✓ '+d.message;status.style.color='var(--green)';document.getElementById('newUserName').value='';document.getElementById('newUserEmail').value='';document.getElementById('newUserPassword').value='';setTimeout(()=>{document.getElementById('addUserForm').style.display='none';loadAdminUsers();},1500);}
+      else{status.textContent='✗ '+(d.detail||'Failed');status.style.color='var(--red)';}
+    } catch(e){status.textContent='✗ '+e.message;status.style.color='var(--red)';}
+  }
+
+  async function removeUser(userId) {
+    if(!confirm('Remove this user?')) return;
+    try{const r=await authFetch(`/admin/users/${userId}`,{method:'DELETE'});if(r.ok) loadAdminUsers();}
+    catch(e){alert('Error: '+e.message);}
+  }
+
+  async function loadSubInfo() {
+    const div=document.getElementById('adminSubInfo');
+    try {
+      const r=await authFetch('/org/dashboard'); if(!r.ok){div.innerHTML='<div style="color:var(--text-dim)">Unavailable</div>';return;}
+      const d=await r.json();
+      const pct=Math.round((d.questionnaires_used/(d.total_limit||1))*100);
+      div.innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--teal)">${d.remaining}</div><div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">Remaining</div></div>
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--text)">${d.questionnaires_used}</div><div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">Used</div></div>
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--text)">${d.total_limit}</div><div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">Total</div></div>
+        <div style="background:var(--navy3);border:1px solid var(--border);padding:16px;text-align:center"><div style="font-family:var(--fh);font-size:15px;font-weight:700;color:var(--teal)">${d.tier_name||d.tier}</div><div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">Tier</div></div>
+      </div>
+      <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-family:var(--fm);font-size:10px;color:var(--text-dim);margin-bottom:4px"><span>Usage</span><span>${pct}%</span></div><div style="height:6px;background:var(--border);border-radius:3px"><div style="height:100%;width:${pct}%;background:${pct>90?'var(--red)':pct>70?'var(--amber)':'var(--teal)'};border-radius:3px"></div></div></div>
+      <div style="font-family:var(--fb);font-size:12px;color:var(--text-dim)">Expires: <strong style="color:var(--text)">${new Date(d.subscription_end).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</strong> · ${d.days_remaining} days remaining</div>`;
+    } catch(e){div.innerHTML='<div style="color:var(--red)">Error</div>';}
+  }
+
+  async function loadUsage() {
+    const list=document.getElementById('adminUsageList');
+    try {
+      const r=await authFetch('/org/dashboard'); if(!r.ok){list.innerHTML='<div style="color:var(--text-dim)">Unavailable</div>';return;}
+      const d=await r.json(); const runs=d.recent_runs||[];
+      if(!runs.length){list.innerHTML='<div style="font-family:var(--fb);font-size:13px;color:var(--text-dim)">No questionnaires processed yet.</div>';return;}
+      list.innerHTML=runs.map(r=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy3);border:1px solid var(--border);margin-bottom:4px"><span style="font-size:16px">📋</span><div style="flex:1"><div style="font-family:var(--fh);font-size:12px;font-weight:600;color:var(--text)">${escHtml(r.filename||'Questionnaire')}</div><div style="font-family:var(--fm);font-size:10px;color:var(--text-dim)">${new Date(r.created_at).toLocaleString('en-GB')}</div></div><span style="font-family:var(--fm);font-size:10px;padding:2px 8px;background:${r.status==='complete'?'var(--green-dim)':'var(--amber-dim)'};color:${r.status==='complete'?'var(--green)':'var(--amber)'}">${r.status}</span></div>`).join('');
+    } catch(e){list.innerHTML='<div style="color:var(--red)">Error</div>';}
+  }
+
+  async function loadTestingInfo() {
+    const el=document.getElementById('wooStatus');
+    try {
+      const r=await authFetch('/auth/me'); const d=await r.json();
+      el.textContent=d.woocommerce_verified?'✓ WooCommerce active — tier verified on login':'○ WooCommerce not configured — add WC_CONSUMER_KEY and WC_CONSUMER_SECRET in Render environment';
+      el.style.color=d.woocommerce_verified?'var(--green)':'var(--amber)';
+    } catch(e){el.textContent='Could not check';}
+  }
+
+  let approverDirectory = [];
+
+  async function loadApproverDirectory() {
+    try {
+      const r = await authFetch('/admin/approvers');
+      if(r.ok) {
+        const d = await r.json();
+        approverDirectory = d.contacts || [];
+        updateApproverSelects();
+      }
+    } catch(e) { console.log('Directory load error:', e); }
+  }
+
+  function updateApproverSelects() {
+    document.querySelectorAll('[id^="app-select-"],[id^="rev-select-"]').forEach(sel => {
+      const current = sel.value;
+      const opts = approverDirectory.map(c =>
+        `<option value="${c.id}" data-name="${escHtml(c.name)}" data-email="${escHtml(c.email)}" data-role="${c.role}">
+          ${escHtml(c.name)}${c.title?' — '+escHtml(c.title):''} (${c.role})
+        </option>`
+      ).join('');
+      sel.innerHTML = '<option value="">— Select from directory —</option>' + opts;
+      sel.value = current;
+    });
+  }
+
+  window.fillApprover = function(i) {
+    const sel = document.getElementById('app-select-'+i);
+    const opt = sel.options[sel.selectedIndex];
+    if(opt && opt.value) {
+      document.getElementById('app-name-'+i).value = opt.dataset.name || '';
+      document.getElementById('app-email-'+i).value = opt.dataset.email || '';
+    }
+  };
+
+  window.fillReviewer = function(i) {
+    const sel = document.getElementById('rev-select-'+i);
+    const opt = sel.options[sel.selectedIndex];
+    if(opt && opt.value) {
+      document.getElementById('rev-name-'+i).value = opt.dataset.name || '';
+      document.getElementById('rev-email-'+i).value = opt.dataset.email || '';
+    }
+  };
+
+  window.showApprovalForm = function(i) {
+    const form = document.getElementById('apform-'+i);
+    const btn = document.getElementById('apbtn-'+i);
+    if(form) {
+      form.style.display='block';
+      if(btn) btn.style.display='none';
+      updateApproverSelects();
+    }
+  };
+
+  window.sendApproval = async function(i, question, answerEnc, improvedEnc, token) {
+    const name = document.getElementById('app-name-'+i).value.trim();
+    const email = document.getElementById('app-email-'+i).value.trim();
+    const revName = document.getElementById('rev-name-'+i)?.value.trim() || '';
+    const revEmail = document.getElementById('rev-email-'+i)?.value.trim() || '';
+    if(!name || !email) { alert('Please enter approver name and email.'); return; }
+    if(!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if(revEmail && !revEmail.includes('@')) { alert('Please enter a valid reviewer email.'); return; }
+
+    const btn = document.querySelector(`#apform-${i} .btn-send-approval`);
+    btn.textContent = 'Sending…'; btn.disabled = true;
+
+    try {
+      const r = await authFetch(`/approval/request`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          session_id: sessionId || 'no-session',
+          question_id: i,
+          question: question,
+          answer: decodeURIComponent(answerEnc),
+          improved_answer: decodeURIComponent(improvedEnc),
+          approver_email: email,
+          approver_name: name,
+          approver_type: 'approver',
+          reviewer_email: revEmail || null,
+          reviewer_name: revName || null,
+          requester_name: currentUser?.full_name || 'CybeSure SecureAnswer'
+        })
+      });
+      const d = await r.json();
+      if(r.ok) {
+        const msg = revName
+          ? `✉ Sent to <strong>${escHtml(name)}</strong> (approver) and <strong>${escHtml(revName)}</strong> (reviewer)`
+          : `✉ Sent to <strong>${escHtml(name)}</strong>`;
+        document.getElementById('apform-'+i).innerHTML=`
+          <div class="approval-sent">${msg}<br>
+            <span style="font-size:11px;color:var(--text-dim);margin-top:4px;display:block">Status updates automatically every 10 seconds.</span>
+          </div>`;
+        pollApprovalStatus(i, d.token);
+      } else {
+        btn.textContent='Send'; btn.disabled=false;
+        alert('Failed: '+(d.detail||'Unknown error'));
+      }
+    } catch(e) {
+      btn.textContent='Send'; btn.disabled=false;
+      alert('Error: '+e.message);
+    }
+  };
+
+  function pollApprovalStatus(i, token) {
+    const interval = setInterval(async ()=>{
+      try {
+        const r = await fetch(`${API}/approval/status/${token}`);
+        const d = await r.json();
+        if(d.status !== 'pending') {
+          clearInterval(interval);
+          const section = document.getElementById('approval-'+i);
+          if(d.status === 'approved') {
+            section.querySelector('.approval-sent').innerHTML = `
+              <div class="approval-done approved-done">✓ Approved by ${escHtml(d.approver)}${d.comments?' — "'+escHtml(d.comments)+'"':''}</div>`;
+          } else {
+            section.querySelector('.approval-sent').innerHTML = `
+              <div class="approval-done rejected-done">✗ Rejected by ${escHtml(d.approver)}${d.comments?' — "'+escHtml(d.comments)+'"':''}</div>
+              <button class="btn-request-approval" onclick="showApprovalForm(${i})">Re-submit for Approval</button>`;
+          }
+        }
+      } catch(e) { clearInterval(interval); }
+    }, 10000); // poll every 10 seconds
+  }
+
+  window.toggle = i => {
+    document.getElementById('body'+i).classList.toggle('open');
+    document.getElementById('chev'+i).classList.toggle('open');
+  };
+
+  async function doExport(fmt) {
+    if(!finalResults.length) return;
+    try {
+      const serverFmt = fmt === 'report' ? 'excel' : fmt;
+      const payload = {
+        results: finalResults,
+        format: serverFmt,
+        original_file: (fmt === 'excel') ? (originalFileB64 || null) : null,
+        structure_key: (fmt === 'excel') ? (structureKey || null) : null
+      };
+      const r = await authFetch(`/export`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!r.ok) { const err = await r.text(); alert('Export failed: ' + err); return; }
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url;
+      const names = {
+        'excel':  'SecureAnswer_Completed.xlsx',
+        'report': 'SecureAnswer_Report.xlsx',
+        'word':   'SecureAnswer_Results.docx',
+        'pdf':    'SecureAnswer_Results.pdf',
+        'json':   'SecureAnswer_Results.json'
+      };
+      a.download = names[fmt] || 'secureanswer_export';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch(e) { alert('Export failed: ' + e.message); }
+  }
+
+  function resetAll() {
+    questionnaireFile=null; documentFiles=[]; documentUrls=[];
+    extractedQuestions=[]; sessionId=null; finalResults=[]; originalFileB64=null; structureKey=null;
+    ['qFileList','docFileList','urlList','docFileListPortal','urlListPortal'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.innerHTML='';
+    });
+    const pb=document.getElementById('processBtn'); if(pb) pb.disabled=true;
+    goTo(1);
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
